@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Bugshot: bugs hide in your real home. A game pitch with a playable demo.">
-<title>Bugshot Demo</title>
+<link rel="icon" href="art/brand/wordmark-a1-badge.svg">
+<title>Bugshot</title>
 <!--
 References (feel, not looks): Pokémon GO catch circle + AR+ awareness meter (closing ring, sneak meter); New Pokémon Snap (still moments, shutter beat);
 Animal Crossing tarantula (tell, stop, settle); Monster Hunter Now (fixed shot pips); Peridot (creature reacts to you);
@@ -50,8 +51,9 @@ body{background:var(--paper);overflow-x:hidden;font-family:var(--text);-webkit-f
 .cover{background:var(--paper)}
 .cover .art{position:absolute;inset:0;background:url(art/scene-home-patch-noon.webp) 60% 70%/cover no-repeat;-webkit-mask-image:linear-gradient(180deg,#0000 0,#0003 30%,#000 65%);mask-image:linear-gradient(180deg,#0000 0,#0003 30%,#000 65%)}
 .cover .wrap{text-align:center;margin-top:-8vh}
-.brand{font-family:var(--display);font-weight:800;font-size:clamp(64px,15vw,184px);letter-spacing:-.05em;line-height:.9;margin:0}
-.brand .hx{display:inline-block;width:.32em;height:.36em;margin:0 .02em 0 .04em;vertical-align:.52em}
+.brand{margin:0;line-height:0}
+.brand img{display:block;width:min(640px,84vw);height:auto;margin:0 auto;transform:rotate(-4deg);filter:drop-shadow(0 14px 22px rgba(19,33,58,.22))}
+.close .brand img{width:min(340px,64vw)}
 .cover .lead{margin:20px auto 28px;text-align:center;max-width:24em}
 .cta{display:inline-flex;height:58px;padding:0 26px;border-radius:16px;background:var(--primary);color:#fff;font-size:17px;font-weight:700;align-items:center;gap:10px;text-decoration:none;box-shadow:0 10px 26px rgba(19,33,58,.2);transition:transform .14s ease-out,background .14s}
 .cta:active{transform:scale(.97);background:var(--primaryPress)}
@@ -87,7 +89,7 @@ body{background:var(--paper);overflow-x:hidden;font-family:var(--text);-webkit-f
 .note{margin-top:12px;font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--muted)}
 /* collect */
 .pair{display:grid;grid-template-columns:1.25fr 1fr;gap:20px;align-items:center}
-@media (max-width:760px){.pair{grid-template-columns:1fr;gap:28px}.pair .miniBack{width:170px}}
+@media (max-width:760px){.pair{grid-template-columns:1fr;gap:28px}}
 .grid12{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .tileB{aspect-ratio:1;border-radius:14px;background:var(--plate);display:flex;align-items:center;justify-content:center;position:relative;padding:8px}
 .tileB img{width:82%;height:82%;object-fit:contain}
@@ -99,15 +101,123 @@ body{background:var(--paper);overflow-x:hidden;font-family:var(--text);-webkit-f
 .miniBack .bi{position:relative;width:100%;height:100%;border-radius:17px;overflow:hidden;background:radial-gradient(circle at 50% 48%,#1a2442 0%,#0b1020 72%)}
 .miniBack svg{position:absolute;inset:0;width:100%;height:100%}
 .miniBack .wm{position:absolute;left:0;right:0;bottom:12%;text-align:center;font-family:var(--display);font-weight:800;font-size:14px;letter-spacing:.32em;padding-left:.32em;color:rgba(255,255,255,.82)}
+.flipC{position:relative;text-align:center}
+.epicT{margin:0 0 12px;font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:-.02em;line-height:1;color:#4f22b0;opacity:0}
+.flipC.rev .epicT{animation:titleIn .45s 1.45s var(--pop) both}
+.mcard{position:relative;width:min(260px,70vw);aspect-ratio:268/408;margin:0 auto;transform:rotate(-4deg);perspective:1400px}
+.mflip{position:relative;width:100%;height:100%;transform-style:preserve-3d}
+.flipC.rev .mflip{animation:mFlip .8s .8s var(--ease) both}
+@keyframes mFlip{0%{transform:rotateY(0)}50%{transform:rotateY(90deg) scale(1.06)}100%{transform:rotateY(180deg)}}
+.mflip .miniBack,.mface{position:absolute;inset:0;width:auto;margin:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.mflip .miniBack{transform:none}
+.mface{transform:rotateY(180deg);border-radius:22px;padding:6px;background:linear-gradient(120deg,#7b3ff2,#19c9a3,#3e8bff,#c04ff2,#7b3ff2);background-size:300% 300%;animation:irid 5s linear infinite;box-shadow:0 0 0 1px rgba(123,63,242,.2),0 0 30px rgba(123,63,242,.42),0 22px 44px rgba(11,16,32,.3)}
+.mface .fi2{position:relative;width:100%;height:100%;border-radius:17px;background:#fff;border:2px solid #e2d6ff;display:flex;flex-direction:column}
+.mph{position:relative;height:50%;flex:none;border-radius:15px 15px 0 0;background:#dfe6d6 url(art/scene-home-patch-noon.webp) 40% 78%/auto 170% no-repeat}
+.mph .clip{position:absolute;inset:0;border-radius:inherit;overflow:hidden}
+.mph .clip img{position:absolute;left:50%;bottom:12%;width:72%;height:70%;transform:translateX(-50%);object-fit:contain;object-position:50% 100%;filter:drop-shadow(0 8px 6px rgba(30,36,20,.3))}
+.mph .clip .psh{position:absolute;left:26%;right:26%;bottom:9%;height:9%;border-radius:50%;background:radial-gradient(closest-side,rgba(36,40,20,.38),rgba(36,40,20,0))}
+.mph .lv{position:absolute;left:8px;top:8px;height:21px;display:flex;align-items:center;gap:2px;padding:0 7px;border-radius:999px;background:rgba(6,8,14,.72)}
+.mph .lv svg{display:block}
+.mph .tags{position:absolute;right:8px;top:8px;display:flex;gap:4px}
+.mph .tags span{display:flex;align-items:center;gap:4px;height:21px;padding:0 8px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.06em;line-height:1}
+.mph .newP{background:#fff;color:#0b0b10}
+.mph .typeP{background:rgba(6,8,14,.72);color:#fff;padding-left:4px!important}
+.mph .typeP svg{display:block;flex:none}
+.bHp,.bAtk{position:absolute;padding:3px;background:linear-gradient(120deg,#7b3ff2,#19c9a3,#3e8bff,#c04ff2,#7b3ff2);background-size:300% 300%;animation:irid 5s linear infinite;z-index:2}
+.bHp{left:8px;bottom:-22px;width:48px;height:48px;border-radius:50%}
+.bAtk{right:12px;bottom:-18px;width:40px;height:40px;border-radius:10px;transform:rotate(45deg)}
+.bHp>span,.bAtk>span{display:flex;width:100%;height:100%;align-items:center;justify-content:center;background:#0b0b10;color:#fff}
+.bHp>span{border-radius:50%;flex-direction:column}
+.bAtk>span{border-radius:7px}
+.bAtk>span>span{display:flex;flex-direction:column;align-items:center;transform:rotate(-45deg)}
+.bHp b,.bAtk b{font-family:var(--display);font-weight:800;font-size:19px;line-height:1}
+.bHp small,.bAtk small{font-size:11px;font-weight:800;letter-spacing:.06em;line-height:1;color:#c9a8ff}
+.minf{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;padding:9px 12px 9px;text-align:center}
+.minf h3{margin:0;padding:0 40px;font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.02em;line-height:1.1}
+.minf .lat{margin-top:3px;font-size:12px;font-weight:500;font-style:italic;color:var(--ink2)}
+.mst{display:flex;gap:16px;justify-content:center;margin-top:8px}
+.mst span{display:flex;align-items:center;gap:4px}
+.mst svg{display:block;flex:none}
+.mst b{font-family:var(--display);font-weight:800;font-size:15px;line-height:1}
+.mst small{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--muted)}
+.mfact{margin:8px 0 0;padding-top:8px;border-top:1px solid #e2d6ff;align-self:stretch;font-size:12px;line-height:1.35;font-style:italic;color:#2e3548}
+.mno{margin-top:auto;font-size:11px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.mface .sweepL{border-radius:22px}
+.flipC.rev .sweepL::after{animation:sweep .9s 1.45s ease-out both}
+.spk{position:absolute;z-index:3;opacity:0;pointer-events:none}
+.flipC.rev .spk{animation:twk var(--t) var(--dl) ease-in-out infinite}
+@keyframes twk{0%,100%{transform:scale(.4);opacity:0}50%{transform:scale(1);opacity:1}}
+@media (max-width:760px){
+  .pair .mcard{width:224px}
+  .epicT{font-size:18px;margin-bottom:10px}
+  .mph{height:46%}
+  .minf{padding:8px 10px}
+  .minf h3{font-size:17px;padding:0 36px}
+  .mst{margin-top:6px}
+  .mfact{font-size:11px;margin-top:6px;padding-top:6px}
+  .bHp{width:44px;height:44px;bottom:-20px}
+  .bAtk{width:36px;height:36px;bottom:-16px}
+  .bHp b,.bAtk b{font-size:17px}
+}
+@media (prefers-reduced-motion:reduce){
+  .flipC.rev .mflip{animation:none!important}
+  .mface{transform:none;opacity:0;transition:opacity .25s ease-out!important}
+  .mflip .miniBack{transition:opacity .25s ease-out!important}
+  .flipC.rev .mface{opacity:1}
+  .flipC.rev .miniBack{opacity:0}
+  .flipC.rev .epicT{animation:none!important;opacity:1}
+}
 /* battle */
 .battle{background:#14190f;color:var(--onInk)}
 .battle .art{position:absolute;inset:0;background:url(art/scene-arena-forest.webp) center/cover no-repeat}
-.battle .art::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,16,32,.75),rgba(11,16,32,.2) 45%,rgba(11,16,32,.65))}
+.battle .art::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,16,32,.78),rgba(11,16,32,.3) 38%,rgba(11,16,32,.55) 62%,rgba(11,16,32,.88))}
 .battle .lead{color:var(--onInkMuted)}
 .battle .kick{color:var(--goldLite)}
-.arena{position:relative;height:clamp(220px,34vh,340px);margin-top:28px}
-.arena img{position:absolute;bottom:0;object-fit:contain;filter:drop-shadow(0 14px 10px rgba(0,0,0,.45))}
-.vs{position:absolute;left:50%;bottom:40%;transform:translateX(-50%);font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:.1em;color:var(--goldLite)}
+.facts{display:flex;flex-wrap:wrap;gap:8px 0;margin:18px 0 0;padding:0;list-style:none;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--onInk)}
+.facts li+li::before{content:'';display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--goldLite);margin:0 12px;vertical-align:3px}
+.arena{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) 88px minmax(0,2.2fr);grid-template-rows:auto auto;column-gap:14px;row-gap:12px;margin-top:30px}
+.ground{grid-column:1/-1;grid-row:1;align-self:end;height:1px;background:linear-gradient(90deg,rgba(242,247,244,0),rgba(242,247,244,.28) 12%,rgba(242,247,244,.28) 88%,rgba(242,247,244,0))}
+.ground.g2{display:none}
+.stand{position:relative;grid-row:1;align-self:end;display:flex;align-items:flex-end;justify-content:center;height:108px}
+.stand::before{content:'';position:absolute;left:12%;right:12%;bottom:-6px;height:14px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.55),rgba(0,0,0,0))}
+.stand img{position:relative;display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+.stand.mir img{transform:scaleX(-1)}
+.foe.stand{grid-column:5;height:236px;padding-top:58px}
+.plate{grid-row:2;align-self:start;min-width:0;padding:8px 10px 9px;border-radius:12px;background:rgba(242,241,239,.95);color:var(--ink);box-shadow:0 6px 16px rgba(0,0,0,.28)}
+.plate .row{display:flex;align-items:baseline;gap:6px;line-height:1}
+.plate b{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.plate em{margin-left:auto;font-style:normal;font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--ink2);font-variant-numeric:tabular-nums}
+.plate .hp{display:block;margin-top:7px;height:6px;border-radius:3px;background:var(--paper2);overflow:hidden}
+.plate .hp i{display:block;height:100%;width:var(--w);background:var(--primary)}
+.boss{grid-column:5;padding:9px 12px 11px}
+.boss .row{align-items:center;gap:8px}
+.boss .row svg{flex:none;display:block}
+.boss b{font-family:var(--display);font-size:20px;font-weight:800;letter-spacing:-.02em}
+.boss small{font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--goldInk);white-space:nowrap}
+.boss em{font-size:12px}
+.boss .hp{margin-top:9px;height:14px;border-radius:7px;box-shadow:inset 0 0 0 2px var(--goldInk)}
+.boss .hp i{background:linear-gradient(180deg,#e3c477,var(--gold) 55%,#ad8636);box-shadow:inset 0 0 0 2px var(--goldInk);border-radius:7px 0 0 7px}
+.vsB{grid-column:4;grid-row:1;align-self:center;justify-self:center;margin-top:40px;filter:drop-shadow(0 6px 12px rgba(0,0,0,.4))}
+.vsB svg{display:block}
+.intent{position:absolute;left:24%;top:0;display:flex;align-items:center;gap:8px;height:40px;padding:0 10px 0 7px;border-radius:10px;background:var(--paper);color:var(--ink);border:1px solid var(--ink);box-shadow:0 4px 12px rgba(11,16,32,.3);white-space:nowrap}
+.intent svg{flex:none;display:block}
+.intent span{font-size:14px;font-weight:700}
+.intent strong{font-family:var(--display);font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.intent::before{content:'';position:absolute;left:30px;top:100%;width:1px;height:58px;background:var(--paper)}
+.intent::after{content:'';position:absolute;left:27px;top:calc(100% + 56px);width:7px;height:7px;border-radius:50%;background:var(--paper);box-shadow:0 0 0 1.5px var(--ink)}
+@media (max-width:760px){
+  .arena{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto auto auto auto auto;column-gap:10px;row-gap:10px;margin-top:24px}
+  .stand{height:76px}
+  .vsB{grid-column:1/-1;grid-row:3;margin:2px 0 -4px}
+  .vsB svg{width:46px;height:50px}
+  .foe.stand{grid-column:1/-1;grid-row:4;height:196px;padding-top:54px}
+  .foe.stand img{max-width:78%}
+  .ground.g2{display:block;grid-row:4}
+  .boss{grid-column:1/-1;grid-row:5}
+  .plate{padding:7px 8px 8px}
+  .plate b{font-size:12px}
+  .intent{left:30%}
+}
 /* privacy */
 .medalBig{width:min(380px,80vw);aspect-ratio:1;border-radius:50%;padding:9px;margin:0 auto;background:conic-gradient(from 20deg,#b8913d,#fff0b0,#c9a24a,#8a6a1f,#e8c66a,#b8913d);box-shadow:0 22px 50px rgba(19,33,58,.25)}
 .medalBig .in{position:relative;width:100%;height:100%;border-radius:50%;overflow:hidden;background:#fbfaf8 url(art/scene-patch-map.webp) center/cover}
@@ -378,7 +488,7 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
   <img class="coverBug" src="art/cut/swallowtail.webp" alt="" style="left:9%;bottom:30%;width:clamp(80px,11vw,160px);transform:rotate(10deg)">
   <img class="coverBug" src="art/cut/ant.webp" alt="" style="left:38%;bottom:7%;width:clamp(44px,5vw,70px);transform:rotate(18deg)">
   <div class="wrap">
-    <h1 class="brand" data-in>Bugshot</h1>
+    <h1 class="brand" data-in><img src="art/brand/wordmark-a1-badge.svg" alt="Bugshot" width="580" height="206"></h1>
     <p class="lead" data-in style="--d:.12s">Bugs hide in your real home. Find them through your camera, catch them with one good shot.</p>
     <a class="cta" href="#demo" data-in style="--d:.24s"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5 L18.5 12 L8 18.5 Z" fill="currentColor"/></svg>Play the demo</a>
   </div>
@@ -439,7 +549,35 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
     </div>
     <div class="pair" data-in style="--d:.2s">
       <div class="grid12" id="dexGrid"></div>
-      <div class="miniBack"><div class="bi"><svg class="backArt" viewBox="0 0 268 408" aria-hidden="true"></svg><div class="wm">BUGSHOT</div></div></div>
+      <div class="flipC" id="miniCard" role="img" aria-label="A card lands face down, then flips: Epic catch, Jewel beetle">
+        <p class="epicT" aria-hidden="true">Epic catch</p>
+        <div class="mcard" aria-hidden="true">
+          <svg class="spk" style="left:-12px;top:14%;--t:2.2s;--dl:1.7s" width="20" height="20" viewBox="0 0 20 20"><path d="M10 0 C11 7 13 9 20 10 C13 11 11 13 10 20 C9 13 7 11 0 10 C7 9 9 7 10 0 Z" fill="#7fffe0"/></svg>
+          <svg class="spk" style="right:-12px;top:34%;--t:2.6s;--dl:2.1s" width="16" height="16" viewBox="0 0 20 20"><path d="M10 0 C11 7 13 9 20 10 C13 11 11 13 10 20 C9 13 7 11 0 10 C7 9 9 7 10 0 Z" fill="#c9a8ff"/></svg>
+          <svg class="spk" style="left:-8px;bottom:18%;--t:2.4s;--dl:2.5s" width="14" height="14" viewBox="0 0 20 20"><path d="M10 0 C11 7 13 9 20 10 C13 11 11 13 10 20 C9 13 7 11 0 10 C7 9 9 7 10 0 Z" fill="#c9a8ff"/></svg>
+          <svg class="spk" style="right:-10px;bottom:6%;--t:2s;--dl:1.8s" width="20" height="20" viewBox="0 0 20 20"><path d="M10 0 C11 7 13 9 20 10 C13 11 11 13 10 20 C9 13 7 11 0 10 C7 9 9 7 10 0 Z" fill="#7fffe0"/></svg>
+          <svg class="spk" style="right:18%;top:-12px;--t:2.8s;--dl:2.3s" width="14" height="14" viewBox="0 0 20 20"><path d="M10 0 C11 7 13 9 20 10 C13 11 11 13 10 20 C9 13 7 11 0 10 C7 9 9 7 10 0 Z" fill="#7fffe0"/></svg>
+          <div class="mflip">
+            <div class="miniBack"><div class="bi"><svg class="backArt" viewBox="0 0 268 408" aria-hidden="true"></svg><div class="wm">BUGSHOT</div></div></div>
+            <div class="mface"><div class="fi2">
+              <div class="mph">
+                <div class="clip"><span class="psh"></span><img src="art/cut/jewel_beetle.webp" alt=""></div>
+                <span class="lv"><svg width="10" height="11" viewBox="0 0 12 13"><path d="M6 0.5 L11.2 3.5 V9.5 L6 12.5 L0.8 9.5 V3.5 Z" fill="#c9a8ff" stroke="#c9a8ff" stroke-width="1.2"/></svg><svg width="10" height="11" viewBox="0 0 12 13"><path d="M6 0.5 L11.2 3.5 V9.5 L6 12.5 L0.8 9.5 V3.5 Z" fill="#c9a8ff" stroke="#c9a8ff" stroke-width="1.2"/></svg><svg width="10" height="11" viewBox="0 0 12 13"><path d="M6 0.5 L11.2 3.5 V9.5 L6 12.5 L0.8 9.5 V3.5 Z" fill="#c9a8ff" stroke="#c9a8ff" stroke-width="1.2"/></svg><svg width="10" height="11" viewBox="0 0 12 13"><path d="M6 0.5 L11.2 3.5 V9.5 L6 12.5 L0.8 9.5 V3.5 Z" fill="#c9a8ff" stroke="#c9a8ff" stroke-width="1.2"/></svg><svg width="10" height="11" viewBox="0 0 12 13"><path d="M6 0.5 L11.2 3.5 V9.5 L6 12.5 L0.8 9.5 V3.5 Z" fill="none" stroke="#c9a8ff" stroke-width="1.2"/></svg></span>
+                <span class="tags"><span class="newP">NEW</span><span class="typeP"><svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="rgba(255,255,255,.22)"/><path d="M5 15.5 C5 10 8 7 12 7 C16 7 19 10 19 15.5 Z M12 7 V15.5" fill="#fff" stroke="#0b0b10" stroke-width="1.2" stroke-linejoin="round"/></svg>SHELL</span></span>
+                <span class="bHp"><span><b>42</b><small>HP</small></span></span>
+                <span class="bAtk"><span><span><b>18</b><small>ATK</small></span></span></span>
+              </div>
+              <div class="minf">
+                <h3>Jewel beetle</h3>
+                <div class="lat">Buprestidae</div>
+                <div class="mst"><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7b3ff2" stroke-width="2.6" stroke-linejoin="round"><path d="M12 3 L20 6 V12 C20 16.5 16.5 19.5 12 21 C7.5 19.5 4 16.5 4 12 V6 Z"/></svg><b>36</b><small>DEF</small></span><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7b3ff2" stroke-width="2.6" stroke-linejoin="round"><path d="M13 2 L4 14 H12 L11 22 L20 10 H12 Z"/></svg><b>24</b><small>SPD</small></span></div>
+                <p class="mfact">“Shine comes from microscopic texture, not pigment.”</p>
+                <div class="mno">No. 008</div>
+              </div>
+            </div><div class="sweepL"></div></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -450,12 +588,22 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
     <p class="kick" data-in>Battles</p>
     <h2 class="h1" data-in style="--d:.08s;max-width:11em">Your catches fight back.</h2>
     <p class="lead" data-in style="--d:.16s">3v3 against the AI. Epic and Legendary bugs are Guardians: beat them first to earn the shot.</p>
-    <div class="arena" data-in style="--d:.24s" aria-hidden="true">
-      <img src="art/cut/ladybird.webp" alt="" style="left:2%;width:15%;max-width:150px">
-      <img src="art/cut/mantis.webp" alt="" style="left:15%;width:19%;max-width:190px">
-      <img src="art/cut/ant.webp" alt="" style="left:31%;width:12%;max-width:120px">
-      <span class="vs">VS</span>
-      <span style="position:absolute;right:4%;bottom:0;width:34%;max-width:340px"><img src="art/cut/jewel_beetle.webp" alt="" style="position:relative;display:block;width:100%"><svg width="30" height="34" viewBox="0 0 20 22" style="position:absolute;left:50%;top:-40px;transform:translateX(-50%);filter:drop-shadow(0 2px 4px rgba(0,0,0,.4))"><path d="M10 1 L18.5 6 V16 L10 21 L1.5 16 V6 Z" fill="#c9a24a" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg></span>
+    <ul class="facts" data-in style="--d:.2s"><li>3v3</li><li>10 turns</li><li>Focus to spend</li></ul>
+    <div class="arena" data-in style="--d:.24s" role="img" aria-label="Your Ladybird, Mantis and Ant face the Guardian Jewel Beetle, which plans to ram for 18">
+      <div class="ground" aria-hidden="true"></div>
+      <div class="ground g2" aria-hidden="true"></div>
+      <div class="stand mir" style="grid-column:1"><img src="art/cut/ladybird.webp" alt=""></div>
+      <div class="plate" style="grid-column:1"><span class="row"><b>Ladybird</b><em>38</em></span><span class="hp"><i style="--w:100%"></i></span></div>
+      <div class="stand" style="grid-column:2"><img src="art/cut/mantis.webp" alt=""></div>
+      <div class="plate" style="grid-column:2"><span class="row"><b>Mantis</b><em>29</em></span><span class="hp"><i style="--w:62%"></i></span></div>
+      <div class="stand" style="grid-column:3"><img src="art/cut/ant.webp" alt=""></div>
+      <div class="plate" style="grid-column:3"><span class="row"><b>Ant</b><em>34</em></span><span class="hp"><i style="--w:84%"></i></span></div>
+      <div class="vsB" aria-hidden="true"><svg width="64" height="70" viewBox="0 0 64 70"><defs><linearGradient id="vsG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3d57a"/><stop offset=".55" stop-color="#c9a24a"/><stop offset="1" stop-color="#ad8636"/></linearGradient></defs><path d="M32 3 L59 18.5 V51.5 L32 67 L5 51.5 V18.5 Z" fill="url(#vsG)" stroke="#f2f1ef" stroke-width="2.5" stroke-linejoin="round"/><path d="M32 9.5 L53.5 22 V48 L32 60.5 L10.5 48 V22 Z" fill="none" stroke="#7d5f14" stroke-width="1.2" stroke-linejoin="round" opacity=".7"/><text x="32" y="43" text-anchor="middle" font-family="Bricolage Grotesque, system-ui, sans-serif" font-weight="800" font-size="22" letter-spacing="-.5" fill="#13213a">VS</text></svg></div>
+      <div class="foe stand">
+        <div class="intent"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#f3e6cc"/><path d="M13.5 4.5 L7 13.2 H11.2 L10.3 19.5 L17 10.6 H12.8 Z" fill="#13213a"/></svg><span>Ram</span><strong>18</strong></div>
+        <img src="art/cut/jewel_beetle.webp" alt="">
+      </div>
+      <div class="plate boss"><span class="row"><svg width="22" height="24" viewBox="0 0 20 22" aria-hidden="true"><path d="M10 1 L18.5 6 V16 L10 21 L1.5 16 V6 Z" fill="#c9a24a" stroke="#13213a" stroke-width="1.4" stroke-linejoin="round"/><path d="M6.5 7.5 L13.5 14.5 M13.5 7.5 L6.5 14.5" stroke="#13213a" stroke-width="1.8" stroke-linecap="round"/></svg><b>Jewel Beetle</b><small>GUARDIAN</small><em>86 / 120</em></span><span class="hp"><i style="--w:72%"></i></span></div>
     </div>
   </div>
 </section>
@@ -623,7 +771,7 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 <section class="slide close" aria-label="Thank you">
   <div class="wrap">
     <img src="art/cut/jewel_beetle.webp" alt="" data-in style="width:clamp(110px,14vw,170px);filter:drop-shadow(0 16px 12px rgba(19,33,58,.22))">
-    <h2 class="brand" data-in style="--d:.08s;margin-top:10px">Bugshot</h2>
+    <h2 class="brand" data-in style="--d:.08s;margin-top:18px"><img src="art/brand/wordmark-a1-badge.svg" alt="Bugshot" width="580" height="206"></h2>
     <p class="lead" data-in style="--d:.16s;margin:16px auto 0;text-align:center">Find the bugs in your own home.</p>
     <div data-in style="--d:.24s"><span class="ph">[contact]</span> <span class="ph">[link]</span></div>
   </div>
@@ -1233,6 +1381,10 @@ const which = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersect
 slides.forEach(s => { seen.observe(s); which.observe(s); });
 const demoObs = new IntersectionObserver(es => es.forEach(e => { demoOn = e.isIntersecting; if (!demoOn) { setWalk(false); turnKey = 0; releaseCap(); } }), { threshold: .6 });
 demoObs.observe($('demo'));
+// collect slide: the card back flips to an Epic face each time it comes into view
+const mini = $('miniCard');
+if ('IntersectionObserver' in window) new IntersectionObserver(es => es.forEach(e => { if (e.intersectionRatio >= .5) mini.classList.add('rev'); else if (!e.isIntersecting) mini.classList.remove('rev'); }), { threshold: [0, .5] }).observe(mini);
+else mini.classList.add('rev');
 window.addEventListener('keydown', e => {
   if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
   const k = e.key, inGame = demoOn && screen === 'hunt';
