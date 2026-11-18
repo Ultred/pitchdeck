@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Bugshot: bugs hide in your real home. A game pitch with a playable demo.">
+<title>Bugshot Demo</title>
+<!--
+References (feel, not looks): Pokémon GO catch circle + AR+ awareness meter (closing ring, sneak meter); New Pokémon Snap (still moments, shutter beat);
+Animal Crossing tarantula (tell, stop, settle); Monster Hunter Now (fixed shot pips); Peridot (creature reacts to you);
+Pikmin Bloom (gentle walking loop); Pokémon TCG Pocket + Marvel Snap (card flip, light sweep, tier glow);
+Alto's Odyssey / Monument Valley (calm painted parallax, restraint); Ghost of Tsushima standoff (waiting is the tension).
+Rules: C:\bugshot plan/research/catch-resistance.md, boards RadarHome, Hunt, CatchResistance, CatchResult.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f2f1ef; --paper2:#e9e7e4; --plate:#ffffff; --ink:#13213a; --inkDeep:#0b1020; --ink2:#2b3852; --muted:#4f5b70;
+  --hair:rgba(19,33,58,.14); --hairStrong:rgba(19,33,58,.24); --primary:#0b6b57; --primaryPress:#08513f; --hi:#19c9a3;
+  --gold:#c9a24a; --goldLite:#f3d57a; --goldInk:#7d5f14; --onInk:#f2f7f4; --onInkMuted:#b9c3d6; --amber:#f0a830; --red:#e0483a;
+  --glass:rgba(11,16,32,.55); --frame:#d9d6d1; --dew:#2f7fc1;
+  --display:'Bricolage Grotesque',system-ui,sans-serif; --text:Figtree,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --ease:cubic-bezier(.2,.8,.2,1); --pop:cubic-bezier(.2,1.4,.4,1);
+  color-scheme:light;
+}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth;background:var(--paper)}
+html,body{margin:0;color:var(--ink)}
+body{background:var(--paper);overflow-x:hidden;font-family:var(--text);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+*{box-sizing:border-box}
+
+/* ---------- Deck ---------- */
+.slide{position:relative;min-height:100vh;min-height:100dvh;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;justify-content:center;padding:clamp(56px,9vh,96px) 16px;overflow:hidden}
+.wrap{position:relative;width:100%;max-width:1080px;margin:0 auto}
+.kick{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--primary);margin:0 0 14px}
+.h1{margin:0;font-family:var(--display);font-weight:800;font-size:clamp(34px,6.4vw,76px);letter-spacing:-.035em;line-height:.98}
+.lead{margin:18px 0 0;font-size:clamp(16px,1.9vw,21px);font-weight:500;line-height:1.45;color:var(--ink2);max-width:34em}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,72px);align-items:center}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+[data-in].pre{opacity:0;transform:translateY(18px)}
+[data-in].in{opacity:1;transform:none;transition:opacity .6s var(--ease) var(--d,0s),transform .7s var(--ease) var(--d,0s)}
+.navDots{position:fixed;right:18px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;z-index:50}
+.navDots button{width:24px;height:24px;display:flex;align-items:center;justify-content:center}
+.navDots button i{width:7px;height:7px;border-radius:50%;background:var(--hairStrong);transition:transform .2s,background .2s}
+.navDots button[aria-current="true"] i{background:var(--ink);transform:scale(1.35)}
+.counter{position:fixed;left:20px;bottom:16px;z-index:50;font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--muted);font-variant-numeric:tabular-nums;background:rgba(242,241,239,.85);padding:6px 9px;border-radius:9px}
+@media (max-width:760px){.navDots,.counter{display:none}}
+/* cover */
+.cover{background:var(--paper)}
+.cover .art{position:absolute;inset:0;background:url(art/scene-home-patch-noon.webp) 60% 70%/cover no-repeat;-webkit-mask-image:linear-gradient(180deg,#0000 0,#0003 30%,#000 65%);mask-image:linear-gradient(180deg,#0000 0,#0003 30%,#000 65%)}
+.cover .wrap{text-align:center;margin-top:-8vh}
+.brand{font-family:var(--display);font-weight:800;font-size:clamp(64px,15vw,184px);letter-spacing:-.05em;line-height:.9;margin:0}
+.brand .hx{display:inline-block;width:.32em;height:.36em;margin:0 .02em 0 .04em;vertical-align:.52em}
+.cover .lead{margin:20px auto 28px;text-align:center;max-width:24em}
+.cta{display:inline-flex;height:58px;padding:0 26px;border-radius:16px;background:var(--primary);color:#fff;font-size:17px;font-weight:700;align-items:center;gap:10px;text-decoration:none;box-shadow:0 10px 26px rgba(19,33,58,.2);transition:transform .14s ease-out,background .14s}
+.cta:active{transform:scale(.97);background:var(--primaryPress)}
+.coverBug{position:absolute;filter:drop-shadow(0 12px 10px rgba(30,36,20,.3));pointer-events:none}
+.scroll{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.04em}
+/* fantasy */
+.fantasy{background:#0b1020;color:var(--onInk)}
+.fantasy .art{position:absolute;inset:0;background:url(art/scene-home-patch-dusk.webp) center 65%/cover no-repeat;opacity:.9}
+.fantasy .art::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,16,32,.88) 0%,rgba(11,16,32,.55) 45%,rgba(11,16,32,.05) 80%)}
+.fantasy .lead{color:var(--onInkMuted)}
+.fantasy .kick{color:var(--goldLite)}
+.glow{position:absolute;width:10px;height:10px;border-radius:50%;background:#ffe9a8;box-shadow:0 0 18px 6px rgba(255,220,130,.55);animation:ff 4s ease-in-out infinite alternate}
+@keyframes ff{0%{opacity:.25;transform:translate(0,0)}100%{opacity:1;transform:translate(14px,-10px)}}
+/* how it plays */
+.strip{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(10px,1.6vw,22px);margin-top:36px}
+.shot{text-align:center}
+.shot .ph{aspect-ratio:390/844;border-radius:22px;overflow:hidden;background:var(--paper2);box-shadow:0 14px 34px rgba(19,33,58,.2),0 0 0 5px #1a2236;margin:0 auto}
+.shot img{width:100%;height:100%;object-fit:cover;display:block}
+.shot b{display:block;margin-top:14px;font-family:var(--display);font-weight:800;font-size:clamp(15px,1.6vw,20px);letter-spacing:-.02em}
+.shot span{display:block;margin-top:4px;font-size:13px;font-weight:500;color:var(--muted)}
+@media (max-width:760px){.strip{grid-template-columns:repeat(5,64%);overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 16px 18px;margin:28px -16px 0;gap:16px}.shot{scroll-snap-align:center}}
+/* catch skill */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px}
+.step{padding:18px 16px;border-top:1px solid var(--hairStrong)}
+.step svg{display:block;margin-bottom:12px}
+.step b{display:block;font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:-.02em}
+.step span{display:block;margin-top:4px;font-size:14px;line-height:1.4;color:var(--ink2)}
+@media (max-width:760px){.steps{grid-template-columns:1fr 1fr}}
+.bars{margin-top:30px;display:grid;gap:10px;max-width:640px}
+.bar{display:grid;grid-template-columns:96px 1fr 64px;align-items:center;gap:12px;font-size:13px;font-weight:600}
+.bar i{display:block;height:10px;border-radius:5px;background:var(--b)}
+.bar em{font-style:normal;color:var(--muted);font-variant-numeric:tabular-nums;text-align:right}
+.note{margin-top:12px;font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--muted)}
+/* collect */
+.pair{display:grid;grid-template-columns:1.25fr 1fr;gap:20px;align-items:center}
+@media (max-width:760px){.pair{grid-template-columns:1fr;gap:28px}.pair .miniBack{width:170px}}
+.grid12{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.tileB{aspect-ratio:1;border-radius:14px;background:var(--plate);display:flex;align-items:center;justify-content:center;position:relative;padding:8px}
+.tileB img{width:82%;height:82%;object-fit:contain}
+.tileB.un{background:var(--paper2)}
+.tileB.un img{filter:brightness(0) opacity(.2)}
+.tileB.c{box-shadow:inset 0 0 0 2.5px var(--tier)}
+.tileB small{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--muted)}
+.miniBack{width:min(260px,70vw);aspect-ratio:268/408;margin:0 auto;border-radius:22px;padding:6px;background:linear-gradient(135deg,#3a4866,#1b2742,#4a3f7a,#1b2742,#3a4866,#141d33);background-size:300% 300%;animation:irid 6s linear infinite;box-shadow:0 22px 50px rgba(11,16,32,.35);transform:rotate(-4deg)}
+.miniBack .bi{position:relative;width:100%;height:100%;border-radius:17px;overflow:hidden;background:radial-gradient(circle at 50% 48%,#1a2442 0%,#0b1020 72%)}
+.miniBack svg{position:absolute;inset:0;width:100%;height:100%}
+.miniBack .wm{position:absolute;left:0;right:0;bottom:12%;text-align:center;font-family:var(--display);font-weight:800;font-size:14px;letter-spacing:.32em;padding-left:.32em;color:rgba(255,255,255,.82)}
+/* battle */
+.battle{background:#14190f;color:var(--onInk)}
+.battle .art{position:absolute;inset:0;background:url(art/scene-arena-forest.webp) center/cover no-repeat}
+.battle .art::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,16,32,.75),rgba(11,16,32,.2) 45%,rgba(11,16,32,.65))}
+.battle .lead{color:var(--onInkMuted)}
+.battle .kick{color:var(--goldLite)}
+.arena{position:relative;height:clamp(220px,34vh,340px);margin-top:28px}
+.arena img{position:absolute;bottom:0;object-fit:contain;filter:drop-shadow(0 14px 10px rgba(0,0,0,.45))}
+.vs{position:absolute;left:50%;bottom:40%;transform:translateX(-50%);font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:.1em;color:var(--goldLite)}
+/* privacy */
+.medalBig{width:min(380px,80vw);aspect-ratio:1;border-radius:50%;padding:9px;margin:0 auto;background:conic-gradient(from 20deg,#b8913d,#fff0b0,#c9a24a,#8a6a1f,#e8c66a,#b8913d);box-shadow:0 22px 50px rgba(19,33,58,.25)}
+.medalBig .in{position:relative;width:100%;height:100%;border-radius:50%;overflow:hidden;background:#fbfaf8 url(art/scene-patch-map.webp) center/cover}
+.medalBig .in::after{content:'';position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,rgba(25,201,163,0) 0 300deg,rgba(25,201,163,.25) 358deg,rgba(25,201,163,0) 360deg);animation:spin 5s linear infinite}
+.list{list-style:none;margin:26px 0 0;padding:0}
+.list li{display:flex;gap:14px;align-items:baseline;padding:14px 0;border-top:1px solid var(--hair);font-size:clamp(15px,1.6vw,18px);font-weight:500;line-height:1.4}
+.list li b{font-weight:700;min-width:7.5em;flex:none}
+@media (max-width:520px){.list li{flex-direction:column;gap:2px}}
+/* numbers */
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:34px}
+.num{padding:20px 18px;border-top:1px solid var(--hairStrong)}
+.num strong{display:block;font-family:var(--display);font-weight:800;font-size:clamp(38px,5vw,60px);letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.num span{display:block;margin-top:8px;font-size:14px;line-height:1.4;color:var(--ink2)}
+@media (max-width:760px){.nums{grid-template-columns:1fr 1fr}}
+/* money */
+.price{display:grid;grid-template-columns:1.35fr 1fr;grid-template-rows:auto auto;gap:16px;margin-top:30px}
+@media (max-width:760px){.price{grid-template-columns:1fr}}
+.pcard{position:relative;min-width:0;padding:22px;border-radius:20px;background:var(--plate);box-shadow:inset 0 0 0 1px var(--hair);display:flex;gap:18px;align-items:center}
+.pcard .label{display:block;margin-bottom:8px}
+.pcard strong{display:block;font-family:var(--display);font-weight:800;font-size:clamp(22px,2.4vw,30px);letter-spacing:-.03em;line-height:1.05}
+.pcard p{margin:8px 0 0;font-size:14px;line-height:1.45;color:var(--ink2)}
+.pcard .pa{flex:none;width:88px;height:88px;border-radius:50%;background:var(--paper);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pcard .pa img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+.pcard.pro{grid-row:span 2;flex-direction:column;align-items:stretch;gap:0;padding:26px;background:var(--inkDeep);color:var(--onInk);box-shadow:inset 0 0 0 1px rgba(201,162,74,.65),0 24px 50px rgba(11,16,32,.22);overflow:hidden}
+.pcard.pro::before{content:'';position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(243,213,122,.22),rgba(243,213,122,0) 70%);pointer-events:none}
+.pcard.pro .label{color:var(--goldLite)}
+.proHead{display:flex;align-items:center;gap:18px}
+.proHead .pa{width:104px;height:104px;background:#f6f1e6;box-shadow:0 0 0 3px rgba(201,162,74,.7)}
+.proPrice{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.proPrice strong{font-size:clamp(34px,4vw,48px)}
+.proPrice span{font-size:15px;font-weight:600;color:var(--onInkMuted)}
+.proPrice + .proPrice{margin-top:4px}
+.trial{display:inline-block;margin-top:12px;padding:5px 10px;border-radius:999px;background:rgba(243,213,122,.16);color:var(--goldLite);font-size:12px;font-weight:700;letter-spacing:.04em}
+.perks{list-style:none;margin:22px 0 0;padding:18px 0 0;border-top:1px solid rgba(242,247,244,.14);display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+@media (max-width:520px){.perks{grid-template-columns:1fr}}
+.perks li{display:flex;align-items:center;gap:10px;min-width:0;font-size:14px;line-height:1.3;color:var(--onInk)}
+.perks li i{flex:none;width:40px;height:40px;border-radius:50%;background:#f6f1e6;overflow:hidden;display:flex}
+.perks li i img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+.perks li b{display:block;font-weight:700}
+.perks li span{display:block;font-size:12px;color:var(--onInkMuted)}
+.freeBar{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center;justify-content:center;margin-top:18px;padding:16px 20px;border-radius:16px;border:1px dashed var(--hairStrong)}
+.freeBar b{font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:-.01em}
+.freeBar span{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--ink2)}
+.freeBar svg{color:var(--primary)}
+/* demo */
+.demoS{padding:24px 16px;align-items:center;background:var(--frame)}
+.demoS .top{text-align:center;margin-bottom:14px}
+.demoS .top b{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.02em}
+.demoS .top span{display:block;margin-top:4px;font-size:13px;font-weight:600;color:var(--muted)}
+/* roadmap */
+.road{list-style:none;margin:34px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:0;counter-reset:r}
+.road li{position:relative;padding:28px 14px 0 0;border-top:2px solid var(--hairStrong)}
+.road li::before{content:'';position:absolute;top:-7px;left:0;width:12px;height:12px;border-radius:50%;background:var(--paper);box-shadow:inset 0 0 0 2px var(--muted)}
+.road li.now{border-top-color:var(--primary)}
+.road li.now::before{background:var(--primary);box-shadow:0 0 0 4px rgba(11,107,87,.18)}
+.road b{display:block;font-family:var(--display);font-weight:800;font-size:clamp(17px,1.8vw,22px);letter-spacing:-.02em}
+.road span{display:block;margin-top:6px;font-size:14px;line-height:1.4;color:var(--ink2)}
+.road em{display:inline-block;margin-top:8px;font-style:normal;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--primary)}
+@media (max-width:760px){.road{grid-template-columns:1fr}.road li{border-top:0;border-left:2px solid var(--hairStrong);padding:0 0 22px 22px}.road li::before{left:-7px;top:2px}.road li.now{border-left-color:var(--primary)}}
+.close{text-align:center}
+.close .ph{display:inline-block;margin-top:24px;font-size:15px;font-weight:600;color:var(--muted);border:1px dashed var(--hairStrong);border-radius:12px;padding:10px 16px}
+button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+:focus-visible{outline:3px solid var(--primary);outline-offset:3px;border-radius:12px}
+.phone{position:relative;width:390px;height:calc(100vh - 110px);height:calc(100dvh - 110px);max-height:844px;min-height:560px;border-radius:44px;overflow:hidden;background:var(--paper);box-shadow:0 30px 80px rgba(19,33,58,.28),0 0 0 10px #1a2236,0 0 0 11px #2c3550;isolation:isolate}
+@media (max-width:520px){.demoS{padding:0}.demoS .top{margin:0;height:56px;display:flex;flex-direction:column;justify-content:center}.phone{width:100vw;height:calc(100vh - 56px);height:calc(100dvh - 56px);max-height:none;min-height:0;border-radius:0;box-shadow:none}}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.press{transition:transform .12s ease-out,opacity .12s ease-out}
+.press:active{transform:scale(.96)}
+.label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.meta{font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--muted);font-variant-numeric:tabular-nums}
+.btnP{height:56px;border-radius:16px;background:var(--primary);color:#fff;font-size:17px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 8px 24px rgba(19,33,58,.18);transition:transform .12s ease-out,background .12s}
+.btnP:active{transform:scale(.97);background:var(--primaryPress)}
+.link{height:40px;color:var(--muted);font-size:14px;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- Home ---------- */
+#home{background:var(--paper)}
+.hTop{position:absolute;left:0;right:0;top:44px;text-align:center}
+.hTop h1{margin:0;font-family:var(--display);font-weight:800;font-size:28px;letter-spacing:-.025em;line-height:1.05}
+.hTop .meta{margin-top:8px}
+.snd{position:absolute;right:16px;top:36px;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink2)}
+.hScene{position:absolute;left:0;right:0;top:118px;height:300px;background:url(art/scene-home-patch-noon.webp) 50% 60%/cover no-repeat;-webkit-mask-image:linear-gradient(#0000,#000 22%,#000 72%,#0000);mask-image:linear-gradient(#0000,#000 22%,#000 72%,#0000)}
+.medal{position:absolute;left:50%;top:150px;width:236px;height:236px;margin-left:-118px;border-radius:50%;padding:7px;background:conic-gradient(from 20deg,#b8913d,#fff0b0,#c9a24a,#8a6a1f,#e8c66a,#b8913d);box-shadow:0 16px 36px rgba(19,33,58,.28)}
+.medal .in{position:relative;width:100%;height:100%;border-radius:50%;overflow:hidden;background:#fbfaf8 url(art/scene-patch-map.webp) center/cover;box-shadow:inset 0 0 0 1px rgba(19,33,58,.25),inset 0 0 30px rgba(19,33,58,.18)}
+.medal .rings{position:absolute;inset:0}
+.medal .sweep{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,rgba(25,201,163,0) 0deg,rgba(25,201,163,0) 300deg,rgba(25,201,163,.28) 358deg,rgba(25,201,163,0) 360deg);animation:spin 4.5s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.blip{position:absolute;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;background:rgba(251,250,248,.92);box-shadow:0 0 0 1.5px rgba(19,33,58,.55),0 3px 8px rgba(19,33,58,.2);display:flex;align-items:center;justify-content:center}
+.blip img{width:26px;height:26px;object-fit:contain;filter:brightness(0) opacity(.82)}
+.blip.caught{box-shadow:0 0 0 2px var(--tier),0 3px 8px rgba(19,33,58,.2)}
+.blip.caught img{filter:none}
+.blip b{position:absolute;top:36px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:700;color:var(--ink);background:rgba(251,250,248,.9);border-radius:6px;padding:2px 5px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.blip .hx{position:absolute;right:-7px;top:-7px}
+.you{position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 2px #fbfaf8,0 0 0 3.5px var(--gold);display:flex;align-items:center;justify-content:center}
+.hNums{position:absolute;left:24px;right:24px;display:flex;justify-content:center;gap:0;text-align:center}
+.hNums div{flex:1;padding:4px 0}
+.hNums div+div{border-left:1px solid var(--hair)}
+.hNums strong{display:block;font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+.botw{position:absolute;left:24px;right:24px;height:64px;display:flex;align-items:center;gap:12px;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);padding:0 8px}
+.botw .pt{position:relative;width:44px;height:44px;border-radius:50%;border:1.4px dashed rgba(19,33,58,.45);display:flex;align-items:center;justify-content:center;flex:none}
+.botw .pt img{width:34px;height:34px;object-fit:contain;opacity:.55}
+.botw b{display:block;font-size:15px;font-weight:700;line-height:1.3}
+.start{position:absolute;left:24px;right:24px;height:72px;border-radius:20px;background:var(--primary);color:#fff;display:flex;align-items:center;box-shadow:0 10px 28px rgba(19,33,58,.22);transition:transform .14s ease-out,background .14s}
+.start:active{transform:scale(.97);background:var(--primaryPress)}
+.start .lens{width:56px;height:56px;margin-left:8px;border-radius:50%;background:#fbfaf8 url(art/scene-sweep-lens.webp) center/122% no-repeat;box-shadow:inset 0 0 0 1.5px var(--gold)}
+.start span{flex:1;text-align:center;padding-right:56px;font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:-.015em}
+
+/* ---------- Hunt ---------- */
+#hunt{background:#dfe6d6;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none}
+.world{position:absolute;inset:-12px;will-change:transform}
+.pano{position:absolute;left:0;top:0;height:100%;will-change:transform}
+.tile{position:absolute;top:0;height:100%;overflow:hidden}
+.tile img{position:absolute;max-width:none;pointer-events:none}
+.tile.flip{transform:scaleX(-1)}
+.sky{position:absolute;left:0;right:0;top:0;height:42%;background:linear-gradient(#f4f2ec,rgba(244,242,236,0));pointer-events:none}
+.bugs{position:absolute;inset:0}
+.bug{position:absolute;left:0;top:0;width:200px;height:200px;transform-origin:50% 100%;will-change:transform;pointer-events:none}
+.bug .sh{position:absolute;left:18%;right:18%;bottom:-5%;height:16%;border-radius:50%;background:radial-gradient(closest-side,rgba(36,40,20,.42),rgba(36,40,20,0))}
+.bug img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 100%;transform-origin:50% 90%;filter:drop-shadow(0 6px 5px rgba(30,36,20,.28))}
+.bug.paper img{mix-blend-mode:multiply;filter:none}
+.mood{position:absolute;left:0;top:0;width:30px;height:24px;pointer-events:none;opacity:0;transition:opacity .2s}
+.ghex{position:absolute;left:0;top:0;pointer-events:none;filter:drop-shadow(0 1px 2px rgba(11,16,32,.45))}
+.fg{position:absolute;left:0;right:0;bottom:-10px;height:26%;pointer-events:none;filter:blur(1.6px);will-change:transform}
+.fg svg{position:absolute;bottom:0;left:0;height:100%}
+.leak{position:absolute;inset:-20%;pointer-events:none;background:radial-gradient(40% 32% at 18% 8%,rgba(255,220,160,.55),rgba(255,220,160,0) 70%),radial-gradient(30% 24% at 92% 18%,rgba(255,240,210,.35),rgba(255,240,210,0) 70%);mix-blend-mode:screen;animation:leak 11s ease-in-out infinite alternate}
+@keyframes leak{to{transform:translate3d(4%,3%,0);opacity:.75}}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 70% at var(--vx,50%) var(--vy,55%),rgba(11,16,32,0) 55%,rgba(11,16,32,var(--va,.18)) 100%);transition:--va .3s}
+.ringSvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;filter:drop-shadow(0 0 2px rgba(11,16,32,.55))}
+.hud{position:absolute;inset:0;pointer-events:none}
+.hud>*{pointer-events:auto}
+.plateBtn{position:absolute;width:44px;height:44px;border-radius:50%;background:var(--plate);box-shadow:inset 0 0 0 1px var(--hairStrong),0 4px 12px rgba(11,16,32,.24);display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.dexPlate{position:absolute;height:44px;padding:0 12px;border-radius:12px;background:var(--plate);box-shadow:inset 0 0 0 1px var(--hairStrong),0 4px 12px rgba(11,16,32,.24);display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;pointer-events:none}
+.mini{position:absolute;width:112px;height:112px;border-radius:50%;padding:4px;background:conic-gradient(from 20deg,#b8913d,#fff0b0,#c9a24a,#8a6a1f,#e8c66a,#b8913d);box-shadow:0 6px 16px rgba(11,16,32,.3);pointer-events:none;transition:opacity .25s,transform .25s var(--ease)}
+.mini .in{position:relative;width:100%;height:100%;border-radius:50%;overflow:hidden;background:#fbfaf8}
+.mini .map{position:absolute;inset:-20%;background:url(art/scene-patch-map.webp) center/cover;opacity:.75}
+.mini .cone{position:absolute;inset:0;background:conic-gradient(from -28deg,rgba(201,162,74,.38) 0deg 56deg,rgba(201,162,74,0) 56deg)}
+.mb{position:absolute;width:16px;height:16px;margin:-8px;border-radius:50%;background:#fbfaf8;box-shadow:0 0 0 1px rgba(19,33,58,.6);overflow:hidden}
+.mb img{position:absolute;inset:1px;width:14px;height:14px;object-fit:contain;filter:brightness(0) opacity(.8)}
+.mb.t{box-shadow:0 0 0 2px var(--gold),0 0 0 4px rgba(201,162,74,.25)}
+.mb.caught{box-shadow:0 0 0 1.5px var(--tier)}
+.mb.caught img{filter:none}
+.mb.g::after{content:'';position:absolute;inset:0}
+.guide{position:absolute;left:50%;height:40px;padding:0 14px 0 10px;border-radius:12px;background:var(--plate);box-shadow:inset 0 0 0 1px var(--hairStrong),0 6px 16px rgba(11,16,32,.22);display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;white-space:nowrap;transform:translateX(-50%);pointer-events:none;transition:opacity .25s;font-variant-numeric:tabular-nums}
+.guide svg{transition:transform .12s linear}
+.guide .gp{width:26px;height:26px;border-radius:50%;background:#fbfaf8;box-shadow:0 0 0 1px rgba(19,33,58,.5);overflow:hidden;position:relative}
+.guide .gp img{position:absolute;inset:2px;width:22px;height:22px;object-fit:contain;filter:brightness(0) opacity(.8)}
+.guide .gp.caught img{filter:none}
+.word{position:absolute;left:16px;right:16px;text-align:center;font-size:15px;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(11,16,32,.75),0 0 12px rgba(11,16,32,.4);pointer-events:none;transition:opacity .2s,transform .2s var(--ease);font-variant-numeric:tabular-nums}
+.cap{position:absolute;left:50%;width:76px;height:76px;margin-left:-38px;border-radius:50%;transition:transform .16s var(--ease),opacity .2s,box-shadow .3s;touch-action:none}
+.cap .f{position:absolute;inset:0;border-radius:50%;background:rgba(255,255,255,.94);box-shadow:0 8px 22px rgba(11,16,32,.35)}
+.cap .r{position:absolute;inset:5px;border-radius:50%;border:1.5px solid var(--gold)}
+.cap svg{position:absolute;inset:0}
+.cap.dim{opacity:.55}
+.cap.lit .pulse{position:absolute;inset:-7px;border-radius:50%;box-shadow:0 0 0 1.5px rgba(243,213,122,.95);animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(.96);opacity:.9}50%{transform:scale(1.06);opacity:.35}}
+.cap.shutter .f{background:#fff}
+.cap.shutter .iris{opacity:1}
+.cap .iris{opacity:0;transition:opacity .2s}
+.cap.calm{box-shadow:0 0 0 6px rgba(243,213,122,.22),0 0 24px rgba(243,213,122,.45)}
+.cap.down{transform:scale(.92)}
+.walk{position:absolute;width:64px;height:64px;border-radius:50%;background:var(--glass);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18),0 6px 16px rgba(11,16,32,.25);display:flex;align-items:center;justify-content:center;color:#fff;transition:transform .14s var(--ease),opacity .2s;touch-action:none;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.walk.down{transform:scale(.92);background:rgba(11,107,87,.85)}
+.dots{position:absolute;left:0;right:0;display:flex;justify-content:center;gap:8px;pointer-events:none}
+.dots i{width:8px;height:8px;border-radius:50%;border:1.4px solid #fff;box-shadow:0 0 3px rgba(11,16,32,.6);transition:background .2s}
+.dots i.on{background:#fff}
+.flash{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle at var(--fx,50%) var(--fy,60%),#fff 0,rgba(255,255,255,.9) 35%,rgba(255,252,240,.6) 100%)}
+.flash.go{animation:flash .9s ease-out both}
+@keyframes flash{0%{opacity:0}8%{opacity:1}30%{opacity:.85}100%{opacity:0}}
+.frozen .world{filter:saturate(.9) contrast(1.04)}
+.snapCap{position:absolute;left:0;right:0;text-align:center;pointer-events:none;opacity:0}
+.snapCap h2{margin:0;font-family:var(--display);font-weight:800;font-size:40px;letter-spacing:-.03em;line-height:1;color:var(--ink);text-shadow:0 1px 0 rgba(255,255,255,.6)}
+.snapCap.go{animation:titleIn .45s .25s var(--pop) both}
+.pin{position:absolute;left:24px;top:24px;opacity:0;pointer-events:none}
+.pin.go{animation:pinIn .35s .2s var(--pop) both}
+@keyframes pinIn{from{opacity:0;transform:translate(-14px,-14px) scale(1.4)}to{opacity:1;transform:none}}
+.sheet{position:absolute;left:0;right:0;bottom:0;border-radius:22px 22px 0 0;background:var(--paper);box-shadow:0 -10px 30px rgba(11,16,32,.3);padding:24px 24px 30px;text-align:center;transform:translateY(105%);transition:transform .32s var(--ease);z-index:20}
+.sheet.on{transform:none}
+.sheet h2{margin:0;font-family:var(--display);font-weight:800;font-size:28px;letter-spacing:-.025em;line-height:1.05}
+.sheet p{margin:8px 0 16px;font-size:15px;font-weight:500;line-height:1.45;color:var(--ink2)}
+.sheet .btnP{width:100%}
+.sheet .ad{font-size:12px;font-weight:600;opacity:.75;margin-left:2px}
+.adPlay{position:absolute;inset:0;background:rgba(11,16,32,.88);display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--onInkMuted);z-index:30;font-size:13px;font-weight:600;letter-spacing:.04em}
+.adPlay.on{display:flex}
+.adPlay i{display:block;width:140px;height:3px;border-radius:2px;background:rgba(255,255,255,.18);overflow:hidden}
+.adPlay i::after{content:'';display:block;height:100%;background:var(--onInk);transform-origin:left;animation:adbar 1.4s linear both}
+@keyframes adbar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.tut{position:absolute;left:16px;right:16px;padding:14px 14px 14px 16px;border-radius:14px;background:var(--inkDeep);color:var(--onInk);box-shadow:inset 0 0 0 1px rgba(201,162,74,.5),0 10px 30px rgba(11,16,32,.35);display:none;align-items:center;gap:12px;z-index:25;font-size:14px;font-weight:600;line-height:1.35}
+.tut.on{display:flex;animation:fadeUp .32s var(--ease) both}
+.tut span{flex:1}
+.tut button{height:40px;padding:0 14px;border-radius:12px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex:none}
+
+/* ---------- Result ---------- */
+#result{background:var(--paper);overflow:hidden}
+.spot{position:absolute;left:50%;top:44%;width:640px;height:640px;margin:-320px;border-radius:50%;background:radial-gradient(circle,var(--spot,rgba(158,164,174,.25)) 0%,rgba(0,0,0,0) 62%);opacity:0;transition:opacity .8s .3s}
+#result.rev .spot{opacity:1}
+.rTop{position:absolute;left:0;right:0;text-align:center}
+.rTitle{margin:0;font-family:var(--display);font-weight:800;font-size:40px;letter-spacing:-.03em;line-height:1;opacity:0}
+.rSub{margin-top:10px;opacity:0}
+#result.rev .rTitle{animation:titleIn .45s .55s var(--pop) both}
+#result.rev .rSub{animation:fadeUp .32s .7s var(--ease) both}
+@keyframes titleIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes cardUp{from{opacity:0;transform:translateY(40px) scale(.94)}to{opacity:1;transform:none}}
+.cardWrap{position:absolute;left:50%;top:0;width:280px;height:420px;margin-left:-140px;transform-origin:50% 0;perspective:1400px}
+.cardIn{position:relative;width:100%;height:100%;cursor:pointer;animation:cardUp .5s var(--ease) both}
+.flip{position:relative;width:100%;height:100%;transform-style:preserve-3d;transform:rotateY(180deg)}
+.face,.back{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:24px}
+.back{transform:rotateY(180deg);overflow:hidden;padding:6px;background:linear-gradient(135deg,#3a4866,#1b2742,#4a3f7a,#1b2742,#3a4866,#141d33);background-size:300% 300%;animation:irid 6s linear infinite;box-shadow:0 18px 40px rgba(11,16,32,.35)}
+@keyframes irid{to{background-position:300% 300%}}
+.back .bi{position:relative;width:100%;height:100%;border-radius:19px;overflow:hidden;background:radial-gradient(circle at 50% 48%,#1a2442 0%,#0b1020 72%)}
+.back svg{position:absolute;inset:0;width:100%;height:100%}
+.back .wm{position:absolute;left:0;right:0;bottom:46px;text-align:center;font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:.32em;padding-left:.32em;color:rgba(255,255,255,.82)}
+.face{padding:7px;background:var(--tierF);box-shadow:0 18px 40px rgba(19,33,58,.28);overflow:hidden}
+.face .fi{position:relative;width:100%;height:100%;border-radius:18px;background:var(--plate);overflow:hidden;display:flex;flex-direction:column}
+.photo{position:relative;height:57%;background:#dfe6d6 url(art/scene-home-patch-noon.webp) no-repeat;background-size:auto 170%;overflow:hidden}
+.photo img{position:absolute;left:50%;bottom:11%;width:70%;height:76%;transform:translateX(-50%);object-fit:contain;object-position:50% 100%;filter:drop-shadow(0 8px 6px rgba(30,36,20,.3))}
+.photo img.paper{mix-blend-mode:multiply;filter:none;width:80%;height:86%;bottom:4%}
+.photo .psh{position:absolute;left:28%;right:28%;bottom:8%;height:8%;border-radius:50%;background:radial-gradient(closest-side,rgba(36,40,20,.38),rgba(36,40,20,0))}
+.photo .no{position:absolute;right:10px;top:10px;font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--ink);background:rgba(255,255,255,.82);padding:4px 7px;border-radius:8px;font-variant-numeric:tabular-nums}
+.info{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 14px 10px;text-align:center}
+.info h3{margin:0;font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:-.025em;line-height:1.05}
+.info .lat{font-style:italic;font-weight:500;font-size:14px;color:var(--ink2);margin-top:4px}
+.stats{display:flex;width:100%;margin-top:12px;border-top:1px solid var(--hair);padding-top:10px}
+.stats div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.stats div+div{border-left:1px solid var(--hair)}
+.stats strong{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
+.sweepL{position:absolute;inset:0;border-radius:24px;pointer-events:none;overflow:hidden}
+.sweepL::after{content:'';position:absolute;top:-20%;bottom:-20%;width:40%;left:-60%;background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.55),rgba(255,255,255,0));transform:skewX(-12deg)}
+#result.rev .sweepL::after{animation:sweep .9s .75s ease-out both}
+@keyframes sweep{from{left:-60%}to{left:130%}}
+#result.rev .flip{animation:flipIn .7s var(--ease) both}
+@keyframes flipIn{0%{transform:rotateY(180deg) scale(1)}50%{transform:rotateY(90deg) scale(1.06)}100%{transform:rotateY(0) scale(1)}}
+#result.rev.rm .flip{animation:none;transform:none}
+#result.rev.rm .back{display:none}
+#result.rev.rm .face{animation:fade .25s ease-out both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.hint{position:absolute;left:0;right:0;text-align:center;font-size:14px;font-weight:600;color:var(--muted);animation:breath 1.8s ease-in-out infinite}
+@keyframes breath{0%,100%{opacity:1}50%{opacity:.45}}
+#result.rev .hint,#result.rev .rBackTop{display:none}
+.rAfter{position:absolute;left:16px;right:16px;bottom:24px;opacity:0;pointer-events:none}
+#result.rev .rAfter{pointer-events:auto}
+#result.rev .rAfter .a1{animation:fadeUp .32s .9s var(--ease) both}
+#result.rev .rAfter .a2{animation:fadeUp .32s 1s var(--ease) both}
+#result.rev .rAfter{opacity:1}
+.rAfter .a1,.rAfter .a2{opacity:0}
+.newLine{text-align:center;font-size:15px;font-weight:700;margin-bottom:10px}
+.gains{height:52px;border-radius:14px;background:var(--plate);box-shadow:inset 0 0 0 1px var(--hair);display:flex;align-items:center;margin-bottom:14px}
+.gains div{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;height:28px}
+.gains div+div{border-left:1px solid var(--hair)}
+.gains img{width:30px;height:30px;mix-blend-mode:multiply;margin:-4px -2px}
+.gains strong{font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.gains span{font-size:12px;font-weight:600;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .medal .sweep,.leak{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="navDots" id="navDots" aria-label="Slides"></nav>
+<div class="counter" id="counter" aria-hidden="true">01 / 12</div>
+
+<section class="slide cover" id="s-cover" aria-label="Bugshot">
+  <div class="art" aria-hidden="true"></div>
+  <img class="coverBug" src="art/cut/ladybird.webp" alt="" style="right:12%;bottom:12%;width:clamp(70px,9vw,130px);transform:rotate(-8deg)">
+  <img class="coverBug" src="art/cut/swallowtail.webp" alt="" style="left:9%;bottom:30%;width:clamp(80px,11vw,160px);transform:rotate(10deg)">
+  <img class="coverBug" src="art/cut/ant.webp" alt="" style="left:38%;bottom:7%;width:clamp(44px,5vw,70px);transform:rotate(18deg)">
+  <div class="wrap">
+    <h1 class="brand" data-in>Bugshot</h1>
+    <p class="lead" data-in style="--d:.12s">Bugs hide in your real home. Find them through your camera, catch them with one good shot.</p>
+    <a class="cta" href="#demo" data-in style="--d:.24s"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5 L18.5 12 L8 18.5 Z" fill="currentColor"/></svg>Play the demo</a>
+  </div>
+  <div class="scroll" aria-hidden="true">Scroll</div>
+</section>
+
+<section class="slide fantasy" aria-label="The fantasy">
+  <div class="art" aria-hidden="true"></div>
+  <span class="glow" style="left:62%;top:38%"></span><span class="glow" style="left:78%;top:52%;animation-delay:-1.5s"></span><span class="glow" style="left:70%;top:24%;animation-delay:-2.6s"></span>
+  <div class="wrap">
+    <p class="kick" data-in>The fantasy</p>
+    <h2 class="h1" data-in style="--d:.08s;max-width:9em">Your backyard is a field guide.</h2>
+    <p class="lead" data-in style="--d:.16s;max-width:24em">Every room and garden hides painted bugs. Sneak up, wait for the still moment, take the shot. The bug becomes your card.</p>
+  </div>
+</section>
+
+<section class="slide" aria-label="How it plays">
+  <div class="wrap">
+    <p class="kick" data-in>How it plays</p>
+    <h2 class="h1" data-in style="--d:.08s">One loop, a few minutes.</h2>
+    <div class="strip">
+      <div class="shot" data-in style="--d:.1s"><div class="ph"><img src="art/shot-home.webp" alt="Home: your patch on a radar" loading="lazy"></div><b>Patch</b><span>Radar shows who's near</span></div>
+      <div class="shot" data-in style="--d:.18s"><div class="ph"><img src="art/shot-sweep.webp" alt="Sweep: turn and follow the arrow" loading="lazy"></div><b>Sweep</b><span>Turn, follow the arrow</span></div>
+      <div class="shot" data-in style="--d:.26s"><div class="ph"><img src="art/shot-hunt.webp" alt="Hunt: walk up slowly" loading="lazy"></div><b>Sneak</b><span>Walk up slowly</span></div>
+      <div class="shot" data-in style="--d:.34s"><div class="ph"><img src="art/shot-catch.webp" alt="Catch: focus, then snap on the gold arc" loading="lazy"></div><b>Snap</b><span>Focus, hit the still moment</span></div>
+      <div class="shot" data-in style="--d:.42s"><div class="ph"><img src="art/shot-card.webp" alt="Card: tap to reveal" loading="lazy"></div><b>Reveal</b><span>Flip the card</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" aria-label="The catch is skill">
+  <div class="wrap">
+    <p class="kick" data-in>The catch</p>
+    <h2 class="h1" data-in style="--d:.08s">A photo, not a dice roll.</h2>
+    <div class="steps">
+      <div class="step" data-in style="--d:.1s"><svg width="40" height="32" viewBox="0 0 30 24" aria-hidden="true"><path d="M4 18 L9 6 M13 16 L16 3 M22 18 L26 7" fill="none" stroke="#f0a830" stroke-width="2.6" stroke-linecap="round"/></svg><b>Sneak</b><span>Move fast and it bolts.</span></div>
+      <div class="step" data-in style="--d:.18s"><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16" fill="none" stroke="#13213a" stroke-opacity=".3" stroke-width="1.5"/><circle cx="20" cy="20" r="16" fill="none" stroke="#13213a" stroke-width="3" stroke-dasharray="70 101" stroke-linecap="round" transform="rotate(-90 20 20)"/></svg><b>Focus</b><span>Hold it in the ring.</span></div>
+      <div class="step" data-in style="--d:.26s"><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14" fill="none" stroke="#13213a" stroke-opacity=".35" stroke-width="1.5"/><path d="M12 9.5 A14 14 0 0 1 28 9.5" fill="none" stroke="#c9a24a" stroke-width="4" stroke-linecap="round"/><circle cx="20" cy="20" r="18.5" fill="none" stroke="#13213a" stroke-width="1"/></svg><b>Still moment</b><span>Snap as the ring meets the gold.</span></div>
+      <div class="step" data-in style="--d:.34s"><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="#fff" stroke="#c9a24a" stroke-width="1.5"/><circle cx="20" cy="20" r="5" fill="#0b6b57"/></svg><b>Three shots</b><span>Miss and it dodges. Then it's gone.</span></div>
+    </div>
+    <div class="bars" data-in style="--d:.4s" role="img" aria-label="Snap window by tier: Common 200 ms, Uncommon 160, Rare 130, Epic 110, Legendary 90">
+      <div class="bar"><span>Common</span><i style="--b:#9ea4ae;width:100%"></i><em>200 ms</em></div>
+      <div class="bar"><span>Uncommon</span><i style="--b:#2fae7c;width:80%"></i><em>160 ms</em></div>
+      <div class="bar"><span>Rare</span><i style="--b:#3b7bea;width:65%"></i><em>130 ms</em></div>
+      <div class="bar"><span>Epic</span><i style="--b:#7b3ff2;width:55%"></i><em>110 ms</em></div>
+      <div class="bar"><span>Legendary</span><i style="--b:#c9a24a;width:45%"></i><em>90 ms</em></div>
+    </div>
+    <p class="note">Snap window per tier, design target. Rarer bugs also spook faster and fake their stills.</p>
+  </div>
+</section>
+
+<section class="slide" aria-label="Collect">
+  <div class="wrap two">
+    <div>
+      <p class="kick" data-in>Collect</p>
+      <h2 class="h1" data-in style="--d:.08s">48 families. Rarity stays a secret.</h2>
+      <p class="lead" data-in style="--d:.16s">You never know how rare a bug is until it's yours. Every catch lands face down. Tap to flip.</p>
+    </div>
+    <div class="pair" data-in style="--d:.2s">
+      <div class="grid12" id="dexGrid"></div>
+      <div class="miniBack"><div class="bi"><svg class="backArt" viewBox="0 0 268 408" aria-hidden="true"></svg><div class="wm">BUGSHOT</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide battle" aria-label="Battles">
+  <div class="art" aria-hidden="true"></div>
+  <div class="wrap">
+    <p class="kick" data-in>Battles</p>
+    <h2 class="h1" data-in style="--d:.08s;max-width:11em">Your catches fight back.</h2>
+    <p class="lead" data-in style="--d:.16s">3v3 against the AI. Epic and Legendary bugs are Guardians: beat them first to earn the shot.</p>
+    <div class="arena" data-in style="--d:.24s" aria-hidden="true">
+      <img src="art/cut/ladybird.webp" alt="" style="left:2%;width:15%;max-width:150px">
+      <img src="art/cut/mantis.webp" alt="" style="left:15%;width:19%;max-width:190px">
+      <img src="art/cut/ant.webp" alt="" style="left:31%;width:12%;max-width:120px">
+      <span class="vs">VS</span>
+      <span style="position:absolute;right:4%;bottom:0;width:34%;max-width:340px"><img src="art/cut/jewel_beetle.webp" alt="" style="position:relative;display:block;width:100%"><svg width="30" height="34" viewBox="0 0 20 22" style="position:absolute;left:50%;top:-40px;transform:translateX(-50%);filter:drop-shadow(0 2px 4px rgba(0,0,0,.4))"><path d="M10 1 L18.5 6 V16 L10 21 L1.5 16 V6 Z" fill="#c9a24a" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg></span>
+    </div>
+  </div>
+</section>
+
+<section class="slide" aria-label="AR at home">
+  <div class="wrap two">
+    <div>
+      <p class="kick" data-in>Your patch</p>
+      <h2 class="h1" data-in style="--d:.08s">The room you're in. Nothing else.</h2>
+      <ul class="list" data-in style="--d:.16s">
+        <li><b>No location</b><span>No GPS, no location permission, no stored place.</span></li>
+        <li><b>Real surfaces</b><span>Bugs sit on your floors and walls (ARCore / ARKit).</span></li>
+        <li><b>Any phone</b><span>No AR? Bugs hold in view by gyro and steps.</span></li>
+        <li><b>Stays here</b><span>Room map and snaps never leave the phone.</span></li>
+      </ul>
+    </div>
+    <div data-in style="--d:.2s"><div class="medalBig"><div class="in"></div></div></div>
+  </div>
+</section>
+
+<section class="slide" aria-label="Daily loop">
+  <div class="wrap">
+    <p class="kick" data-in>Every day</p>
+    <h2 class="h1" data-in style="--d:.08s">A few minutes, a few times a day.</h2>
+    <div class="nums">
+      <div class="num" data-in style="--d:.1s"><strong>6</strong><span>bugs in your patch, +1 every 20 min</span></div>
+      <div class="num" data-in style="--d:.16s"><strong>24</strong><span>sightings a day (Pro 32)</span></div>
+      <div class="num" data-in style="--d:.22s"><strong>4</strong><span>time bands: rare bugs keep hours</span></div>
+      <div class="num" data-in style="--d:.28s"><strong>1</strong><span>free Moth lamp: draws one bug to you</span></div>
+      <div class="num" data-in style="--d:.34s"><strong>Dusk</strong><span>shiny window, 17:00 to 20:00</span></div>
+      <div class="num" data-in style="--d:.4s"><strong>Week</strong><span>Bug of the week: more of one family</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" aria-label="Business model">
+  <div class="wrap">
+    <p class="kick" data-in>Business model</p>
+    <h2 class="h1" data-in style="--d:.08s">Free to catch. Pro to go further.</h2>
+    <div class="price">
+      <div class="pcard pro" data-in style="--d:.1s">
+        <div class="proHead"><span class="pa"><img src="art/pro-kit.webp" alt=""></span>
+          <div><span class="label">Bugshot Pro</span>
+            <div class="proPrice"><strong>$4.99</strong><span>a month</span></div>
+            <div class="proPrice"><strong>$29.99</strong><span>a year</span></div>
+            <span class="trial">7-day free trial on yearly</span></div></div>
+        <ul class="perks">
+          <li><i><img src="art/perk-catches.webp" alt=""></i><div><b>Bigger patch</b><span>8 bugs out, 32 a day</span></div></li>
+          <li><i><img src="art/item-sun-lamp.webp" alt=""></i><div><b>2 Moth lamps</b><span>every day</span></div></li>
+          <li><i><img src="art/perk-nectar.webp" alt=""></i><div><b>5 Nectar</b><span>a day, to level cards</span></div></li>
+          <li><i><img src="art/perk-shards.webp" alt=""></i><div><b>×2 Shards</b><span>on every catch</span></div></li>
+          <li><i><img src="art/perk-rewards.webp" alt=""></i><div><b>No-ad rewards</b><span>skip the video</span></div></li>
+          <li><i><img src="art/perk-looks.webp" alt=""></i><div><b>Pro Looks</b><span>frames and card backs</span></div></li>
+        </ul>
+      </div>
+      <div class="pcard" data-in style="--d:.18s"><span class="pa"><img src="art/item-sun-lamp.webp" alt=""></span><div><span class="label">Rewarded ads</span><strong>Two, both optional</strong><p>One more try on a fleeing bug. One Moth lamp a day.</p></div></div>
+      <div class="pcard" data-in style="--d:.26s"><span class="pa"><img src="art/perk-looks.webp" alt=""></span><div><span class="label">One-time</span><strong>Looks + Supporter set</strong><p>Cosmetics only. Field packs are earned with Dew, never sold.</p></div></div>
+    </div>
+    <div class="freeBar" data-in style="--d:.32s"><b>Always free</b>
+      <span><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Catching</span>
+      <span><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>The Dex</span>
+      <span><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Battles</span>
+      <span><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Packs, earned with Dew</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide demoS" id="demo" aria-label="Play the demo">
+  <div class="top"><b>Play it</b><span>Drag to turn · hold ▲ to walk · snap on the gold</span></div>
+<div class="phone" id="phone">
+  <!-- Home -->
+  <section class="screen on" id="home" aria-label="Your patch">
+    <div class="hTop"><h1>Your patch</h1><div class="meta" id="hDex">Dex 2 / 48</div></div>
+    <button class="snd press" id="snd" aria-label="Sound on" aria-pressed="true"></button>
+    <div class="hScene" aria-hidden="true"></div>
+    <div class="medal" id="medal" role="img" aria-label="Radar">
+      <div class="in"><div class="sweep"></div><svg class="rings" viewBox="0 0 222 222" aria-hidden="true"><circle cx="111" cy="111" r="40" fill="none" stroke="rgba(19,33,58,.18)"/><circle cx="111" cy="111" r="78" fill="none" stroke="rgba(19,33,58,.14)" stroke-dasharray="3 4"/></svg><div id="hBlips"></div><div class="you"><svg width="10" height="10" viewBox="0 0 16 16"><path d="M8 1.5 L13 13.5 L8 10.6 L3 13.5 Z" fill="#c9a24a"/></svg></div></div>
+    </div>
+    <div class="hNums" id="hNums"></div>
+    <div class="botw" id="botw"><span class="pt"><img alt="" src="art/cut/swallowtail.webp"></span><div><b>Bug of the week</b><span class="meta">Swallowtail, 2× Shards and Dew</span></div></div>
+    <button class="start" id="startBtn"><i class="lens" aria-hidden="true"></i><span>Start sweep</span></button>
+  </section>
+
+  <!-- Hunt -->
+  <section class="screen" id="hunt" aria-label="Hunt">
+    <div class="world" id="world">
+      <div class="pano" id="pano"></div>
+      <div class="sky"></div>
+      <div class="bugs" id="bugs"></div>
+      <div class="fg" id="fg" aria-hidden="true"></div>
+    </div>
+    <div class="leak" aria-hidden="true"></div>
+    <div class="vig" id="vig"></div>
+    <svg class="ringSvg" id="ring" aria-hidden="true"></svg>
+    <div class="flash" id="flash"></div>
+    <svg class="pin" id="pin" width="56" height="56" viewBox="0 0 64 64" aria-hidden="true"><defs><radialGradient id="brass" cx="35%" cy="35%"><stop offset="0" stop-color="#fff0b0"/><stop offset=".6" stop-color="#c9a24a"/><stop offset="1" stop-color="#8a6a1f"/></radialGradient></defs><path d="M32 32 L48 48" stroke="#9aa3b2" stroke-width="2.4" stroke-linecap="round"/><circle cx="32" cy="32" r="11.5" fill="url(#brass)" stroke="#13213a" stroke-width="1.5"/><circle cx="28.4" cy="28.4" r="3.2" fill="#fff" opacity=".75"/></svg>
+    <div class="snapCap" id="snapCap" role="status"><h2>Caught</h2></div>
+    <div class="hud" id="hud">
+      <button class="plateBtn press" id="exitBtn" aria-label="End the sweep"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M6 6 L18 18 M18 6 L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+      <div class="dexPlate" id="dexPlate"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h7a2 2 0 0 1 2 2V20a2 2 0 0 0-2-2H4z M20 4.5h-5a2 2 0 0 0-2 2V20a2 2 0 0 1 2-2h5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span id="dexTxt">2 / 48</span></div>
+      <div class="mini" id="mini" role="img" aria-label="Radar"><div class="in"><div class="map" id="miniMap"></div><div class="cone"></div><div id="miniB"></div><div class="you" style="width:14px;height:14px;margin:-7px;box-shadow:0 0 0 1.5px #fbfaf8,0 0 0 2.5px #c9a24a"></div></div></div>
+      <div class="guide" id="guide" role="status"><svg id="gArrow" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 L19 19 L12 15 L5 19 Z" fill="#13213a"/></svg><span class="gp" id="gPort"><img alt="" src="art/cut/ant.webp"></span><span id="gTxt"></span></div>
+      <div class="word" id="word" role="status" aria-live="polite"></div>
+      <button class="cap" id="cap" aria-label="Capture"><span class="pulse"></span><span class="f"></span><span class="r"></span>
+        <svg class="ret" viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="38" r="9" fill="none" stroke="#13213a" stroke-width="1.6"/><path d="M38 20 V27 M38 49 V56 M20 38 H27 M49 38 H56" stroke="#13213a" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <svg class="iris" viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="38" r="22" fill="none" stroke="#13213a" stroke-width="1.4" opacity=".8"/><circle cx="38" cy="38" r="5" fill="#0b6b57"/></svg>
+      </button>
+      <div class="dots" id="dots" aria-label="Shots"></div>
+      <button class="walk" id="walk" aria-label="Walk (hold)"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M12 5 L19 15 H5 Z" fill="currentColor"/></svg></button>
+    </div>
+    <div class="tut" id="tut" role="dialog" aria-label="How to play"><span>Turn: drag · Walk: hold ▲ · Catch: tap Capture</span><button id="tutOk">Got it</button></div>
+    <div class="sheet" id="sheet" role="dialog" aria-label="Out of shots">
+      <h2>Out of shots</h2><p>One more try, or let it go.</p>
+      <button class="btnP" id="adBtn"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5 L18.5 12 L8 18.5 Z" fill="currentColor"/></svg>One more try <span class="ad">(ad)</span></button>
+      <button class="link" id="letGo">Let it go</button>
+    </div>
+    <div class="adPlay" id="adPlay" aria-live="polite">AD PLAYS HERE<i></i></div>
+  </section>
+
+  <!-- Result -->
+  <section class="screen" id="result" aria-label="Catch result">
+    <div class="spot" id="spot"></div>
+    <div class="rTop rBackTop meta" id="rBackTop"></div>
+    <div class="rTop" id="rTop"><h2 class="rTitle" id="rTitle"></h2><div class="rSub meta" id="rSub"></div></div>
+    <div class="cardWrap" id="cardWrap">
+      <div class="cardIn" id="cardIn" role="button" tabindex="0" aria-label="Reveal your card">
+        <div class="flip" id="flip">
+          <div class="face" id="face"><div class="fi">
+            <div class="photo" id="photo"><span class="psh"></span><img id="cImg" alt="" src="art/cut/ant.webp"><span class="no" id="cNo"></span></div>
+            <div class="info"><h3 id="cName"></h3><div class="lat" id="cLat"></div>
+              <div class="stats"><div><span class="label">HP</span><strong id="cHp"></strong></div><div><span class="label">ATK</span><strong id="cAtk"></strong></div></div>
+            </div></div><div class="sweepL"></div></div>
+          <div class="back" aria-hidden="true"><div class="bi"><svg id="backSvg" viewBox="0 0 268 408"></svg><div class="wm">BUGSHOT</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="hint" id="hint">Tap the card to reveal</div>
+    <div class="rAfter" id="rAfter">
+      <div class="a1"><div class="newLine" id="newLine">New in your Dex</div>
+        <div class="gains" role="list" aria-label="Catch rewards">
+          <div role="listitem"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="#e9dfc5" stroke-width="3"/><circle cx="12" cy="12" r="9" fill="none" stroke="#c9a24a" stroke-width="3" stroke-dasharray="40 57" stroke-linecap="round" transform="rotate(-90 12 12)"/></svg><strong id="gXp" style="color:var(--goldInk)">+0</strong><span>XP</span></div>
+          <div role="listitem"><img src="art/perk-shards.webp" alt=""><strong id="gSh">+0</strong><span>Shards</span></div>
+          <div role="listitem"><img src="art/item-dew-drop.webp" alt=""><strong id="gDew" style="color:var(--dew)">+0</strong><span>Dew</span></div>
+        </div></div>
+      <button class="btnP a2" id="contBtn" style="width:100%">Continue</button>
+    </div>
+  </section>
+</div>
+</section>
+
+<section class="slide" aria-label="Roadmap">
+  <div class="wrap">
+    <p class="kick" data-in>Roadmap</p>
+    <h2 class="h1" data-in style="--d:.08s">Boards first, then the real camera.</h2>
+    <ol class="road">
+      <li class="now" data-in style="--d:.1s"><b>Boards and feel</b><span>Loop boards approved, first camera catch measured on a cheap phone.</span><em>Now</em></li>
+      <li data-in style="--d:.16s"><b>Core loop</b><span>Radar from turning and steps, AR room scan, the catch by tier.</span></li>
+      <li data-in style="--d:.22s"><b>Spawns and collect</b><span>Time bands, shiny at dusk, Moth lamp, Dex and cards.</span></li>
+      <li data-in style="--d:.28s"><b>Battles</b><span>3v3 against the AI, Guardian fights, card levels.</span></li>
+      <li data-in style="--d:.34s"><b>Launch</b><span>Pro and ads, art and sound, closed test, Play Store.</span></li>
+    </ol>
+  </div>
+</section>
+
+<section class="slide close" aria-label="Thank you">
+  <div class="wrap">
+    <img src="art/cut/jewel_beetle.webp" alt="" data-in style="width:clamp(110px,14vw,170px);filter:drop-shadow(0 16px 12px rgba(19,33,58,.22))">
+    <h2 class="brand" data-in style="--d:.08s;margin-top:10px">Bugshot</h2>
+    <p class="lead" data-in style="--d:.16s;margin:16px auto 0;text-align:center">Find the bugs in your own home.</p>
+    <div data-in style="--d:.24s"><span class="ph">[contact]</span> <span class="ph">[link]</span></div>
+  </div>
+</section>
+
+<script>
+(() => {
+'use strict';
+// one-line switch: true = transparent cut-outs in art/cut, false = paper portraits blended with multiply
+const CUT = true;
+const artSrc = k => CUT ? 'art/cut/' + k + '.webp' : 'art/fam-' + k + '.webp';
+
+const $ = id => document.getElementById(id);
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+let mq = null; try { mq = matchMedia('(prefers-reduced-motion: reduce)'); } catch (e) {}
+let reduced = !!(mq && mq.matches);
+if (mq && mq.addEventListener) mq.addEventListener('change', e => { reduced = e.matches; });
+
+// families in the demo patch; tiers stay hidden until caught
+const FAM = {
+  ant:          { name: 'Ant', latin: 'Formicidae', tier: 'common', habit: 'crawler', no: '021', hp: 22, atk: 30 },
+  ladybird:     { name: 'Ladybird', latin: 'Coccinellidae', tier: 'uncommon', habit: 'shell', no: '002', hp: 27, atk: 32 },
+  moth:         { name: 'Moth', latin: 'Erebidae and kin', tier: 'common', habit: 'flyer', no: '011', hp: 24, atk: 26 },
+  firefly:      { name: 'Firefly', latin: 'Lampyridae', tier: 'uncommon', habit: 'flyer', no: '015', hp: 25, atk: 24 },
+  swallowtail:  { name: 'Swallowtail', latin: 'Papilionidae', tier: 'rare', habit: 'flyer', no: '017', hp: 32, atk: 27 },
+  jewel_beetle: { name: 'Jewel beetle', latin: 'Buprestidae', tier: 'epic', habit: 'shell', no: '008', hp: 27, atk: 32 },
+  scarab:       { name: 'Scarab', latin: 'Scarabaeidae', tier: 'common', habit: 'shell', no: '005', hp: 30, atk: 28 },
+  dragonfly:    { name: 'Dragonfly', latin: 'Anisoptera', tier: 'uncommon', habit: 'flyer', no: '019', hp: 26, atk: 38 },
+  orb_weaver:   { name: 'Orb weaver', latin: 'Araneidae', tier: 'common', habit: 'hunter', no: '040', hp: 28, atk: 33 },
+  stag_beetle:  { name: 'Stag beetle', latin: 'Lucanidae', tier: 'rare', habit: 'shell', no: '006', hp: 38, atk: 41 },
+  stick_insect: { name: 'Stick insect', latin: 'Phasmatodea', tier: 'rare', habit: 'crawler', no: '033', hp: 36, atk: 22 },
+  mantis:       { name: 'Mantis', latin: 'Mantidae', tier: 'epic', habit: 'hunter', no: '031', hp: 34, atk: 46 }
+};
+// catch-resistance.md 3.1; windows scaled x1.6 for mouse and touch
+const T = {
+  common:   { walk: .9, turn: 90, fill: 2.5, drain: .30, flush: .4, ring: 1.0, hold: .8, calm: 2.0, gap: [1, 2],     feint: 0,  win: 200, dodge: .12 },
+  uncommon: { walk: .7, turn: 70, fill: 2.0, drain: .25, flush: .6, ring: .9,  hold: 1.0, calm: 1.6, gap: [1.5, 2.5], feint: 0,  win: 160, dodge: .14 },
+  rare:     { walk: .5, turn: 50, fill: 1.5, drain: .20, flush: .8, ring: .78, hold: 1.3, calm: 1.3, gap: [2, 3],     feint: .1, win: 130, dodge: .16 },
+  epic:     { walk: .4, turn: 40, fill: 1.1, drain: .15, flush: 1.0, ring: .65, hold: 1.7, calm: 1.0, gap: [2.5, 3.5], feint: .2, win: 110, dodge: .18 }
+};
+const WIN_SCALE = 1.6, GUARD_WIN = .7, RANGE = 1.8;
+const HABIT_DODGE = { shell: -.05, crawler: -.03, hunter: .03, flyer: .05 };
+const TIER = {
+  common:   { label: 'Common', odds: '3 in 5', ink: '#13213a', spot: 'rgba(158,164,174,.30)', frame: 'linear-gradient(135deg,#eef0f3,#b4b9c2,#f5f6f8,#9ea4ae)', metal: '#9ea4ae', sh: 3 },
+  uncommon: { label: 'Uncommon', odds: '1 in 4', ink: '#166b4a', spot: 'rgba(47,174,124,.32)', frame: 'linear-gradient(135deg,#a5f0cf,#2fae7c,#c8f7e2,#1d8a60)', metal: '#2fae7c', sh: 4 },
+  rare:     { label: 'Rare', odds: '1 in 9', ink: '#2952c9', spot: 'rgba(59,123,234,.34)', frame: 'linear-gradient(135deg,#bcdcff,#3b7bea,#d8eaff,#2952c9)', metal: '#3b7bea', sh: 6 },
+  epic:     { label: 'Epic', odds: '1 in 34', ink: '#4f22b0', spot: 'rgba(123,63,242,.38)', frame: 'linear-gradient(120deg,#7b3ff2,#19c9a3,#3e8bff,#c04ff2,#7b3ff2)', metal: '#7b3ff2', sh: 10 }
+};
+const HEX = '<svg width="16" height="18" viewBox="0 0 20 22"><path d="M10 1 L18.5 6 V16 L10 21 L1.5 16 V6 Z" fill="#c9a24a" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+
+// Dex: two families seeded so the first catch reads 3 / 48
+let dex = store.get('bugshot-demo-dex', null);
+if (!Array.isArray(dex)) dex = ['grasshopper', 'hoverfly'];
+let catches = store.get('bugshot-demo-catches', 0) | 0;
+const saveDex = () => { store.set('bugshot-demo-dex', dex); store.set('bugshot-demo-catches', catches); };
+const caught = k => dex.indexOf(k) >= 0;
+
+// ---------- sound (created on the first click only) ----------
+let ac = null, soundOn = store.get('bugshot-demo-sound', true) !== false;
+function audio() { if (!soundOn) return null; try { if (!ac) { const A = window.AudioContext || window.webkitAudioContext; if (!A) return null; ac = new A(); } if (ac.state === 'suspended') ac.resume(); } catch (e) { return null; } return ac; }
+function blip(freq, dur, type, vol, slide) { const a = audio(); if (!a) return; const t = a.currentTime, o = a.createOscillator(), g = a.createGain(); o.type = type || 'sine'; o.frequency.setValueAtTime(freq, t); if (slide) o.frequency.exponentialRampToValueAtTime(slide, t + dur); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol || .08, t + .008); g.gain.exponentialRampToValueAtTime(.0001, t + dur); o.connect(g).connect(a.destination); o.start(t); o.stop(t + dur + .02); }
+function noise(dur, vol, hp) { const a = audio(); if (!a) return; const t = a.currentTime, n = Math.floor(a.sampleRate * dur), buf = a.createBuffer(1, n, a.sampleRate), d = buf.getChannelData(0); for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 3); const s = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain(); f.type = 'highpass'; f.frequency.value = hp || 1800; g.gain.value = vol || .2; s.buffer = buf; s.connect(f).connect(g).connect(a.destination); s.start(t); }
+const sfx = {
+  shutter() { noise(.05, .32, 2400); setTimeout(() => noise(.07, .22, 1200), 70); },
+  tick() { blip(1800, .04, 'square', .025); },
+  miss() { blip(420, .16, 'triangle', .05, 260); },
+  bolt() { noise(.25, .07, 700); },
+  flip() { noise(.18, .06, 3000); },
+  chime(tier) { const base = { common: 660, uncommon: 740, rare: 830, epic: 880 }[tier] || 660; blip(base, .5, 'sine', .07); setTimeout(() => blip(base * 1.5, .6, 'sine', .05), 90); if (tier === 'rare' || tier === 'epic') setTimeout(() => blip(base * 2, .7, 'sine', .04), 180); },
+  tap() { blip(900, .03, 'sine', .03); }
+};
+const SND_ON = '<svg width="22" height="22" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6 M18 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+const SND_OFF = '<svg width="22" height="22" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M16 9.5l5 5 M21 9.5l-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+function drawSnd() { $('snd').innerHTML = soundOn ? SND_ON : SND_OFF; $('snd').setAttribute('aria-pressed', soundOn ? 'true' : 'false'); $('snd').setAttribute('aria-label', soundOn ? 'Sound on' : 'Sound off'); }
+$('snd').addEventListener('click', () => { soundOn = !soundOn; store.set('bugshot-demo-sound', soundOn); drawSnd(); if (soundOn) sfx.tap(); });
+drawSnd();
+
+// ---------- world ----------
+const P = { x: 0, y: 0, h: 0 };
+let bugs = [], uid = 0;
+const wrap = a => ((a % 360) + 540) % 360 - 180;
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const rnd = (a, b) => a + Math.random() * (b - a);
+const ease = t => 1 - Math.pow(1 - clamp(t, 0, 1), 3);
+function rel(b) { const dx = b.x - P.x, dy = b.y - P.y; return { d: Math.hypot(dx, dy), r: wrap(Math.atan2(dx, dy) * 180 / Math.PI - P.h) }; }
+function placeAt(d, brg) { const a = brg * Math.PI / 180; return { x: P.x + d * Math.sin(a), y: P.y + d * Math.cos(a) }; }
+
+function spawn(key, d, brg) {
+  const f = FAM[key], p = placeAt(d, P.h + brg);
+  const b = { id: ++uid, key, f, tier: f.tier, guardian: f.tier === 'epic', x: p.x, y: p.y, gauge: 0, bolts: 0, lost: 0, adUsed: false, alive: true, ph: Math.random() * 7, anim: null, hop: 0, fade: 1, blur: -1 };
+  const el = document.createElement('div'); el.className = 'bug' + (CUT ? '' : ' paper');
+  el.innerHTML = '<span class="sh"></span><img alt="" src="' + artSrc(key) + '">';
+  b.el = el; b.img = el.lastChild;
+  const mood = document.createElement('div'); mood.className = 'mood'; mood.innerHTML = '<svg width="30" height="24" viewBox="0 0 30 24"><path d="M4 18 L9 6 M13 16 L16 3 M22 18 L26 7" fill="none" stroke-width="2.6" stroke-linecap="round"/></svg>';
+  b.mood = mood; b.moodPath = mood.querySelector('path');
+  bugsEl.appendChild(el); bugsEl.appendChild(mood);
+  if (b.guardian) { const g = document.createElement('div'); g.className = 'ghex'; g.innerHTML = HEX; b.hex = g; bugsEl.appendChild(g); }
+  bugs.push(b); return b;
+}
+function removeBug(b) { b.alive = false; b.el.remove(); b.mood.remove(); if (b.hex) b.hex.remove(); bugs = bugs.filter(x => x !== b); }
+function respawnSoon() {
+  setTimeout(() => {
+    const live = bugs.map(b => b.key), keys = Object.keys(FAM).filter(k => live.indexOf(k) < 0);
+    const fresh = keys.filter(k => !caught(k)), pool = fresh.length ? fresh : keys;
+    if (!pool.length || bugs.length >= 6) return;
+    spawn(pool[Math.floor(Math.random() * pool.length)], rnd(4, 9), rnd(-180, 180));
+  }, 5000);
+}
+
+// ---------- panorama ----------
+const bugsEl = $('bugs'), pano = $('pano'), world = $('world'), fg = $('fg');
+const CROP = { sx: 70, sy: 170, sw: 860, sh: 600 }; // the lawn, beds and fence of the noon patch
+let W = 390, H = 844, tileW = 1250, pairW = 2500, ppd = 7;
+function layout() {
+  const r = $('phone').getBoundingClientRect(); W = r.width; H = r.height;
+  const th = H + 24, k = th / CROP.sh; tileW = CROP.sw * k; pairW = tileW * 2; ppd = pairW / 360;
+  pano.innerHTML = '';
+  for (let i = 0; i < 4; i++) {
+    const t = document.createElement('div'); t.className = 'tile' + (i % 2 ? ' flip' : '');
+    t.style.left = (i * tileW - (i ? i * .5 : 0)) + 'px'; t.style.width = (tileW + 1) + 'px';
+    const im = document.createElement('img'); im.src = 'art/scene-home-patch-noon.webp'; im.alt = '';
+    im.style.width = (1200 * k) + 'px'; im.style.height = (805 * k) + 'px'; im.style.left = (-CROP.sx * k) + 'px'; im.style.top = (-CROP.sy * k) + 'px';
+    t.appendChild(im); pano.appendChild(t);
+  }
+  pano.style.width = (pairW * 2) + 'px';
+  // near grass, drawn once per size, wider than the view so it can wrap
+  const gw = Math.round(W * 1.5), gh = Math.round(H * .26); let path = '';
+  let seed = 7; const sr = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  for (let x = 0; x < gw; x += 5 + sr() * 7) { const h = gh * (.35 + sr() * .65), lean = (sr() - .5) * 40, w = 2 + sr() * 4; path += 'M' + (x - w).toFixed(1) + ' ' + gh + ' Q' + (x + lean * .4).toFixed(1) + ' ' + (gh - h * .6).toFixed(1) + ' ' + (x + lean).toFixed(1) + ' ' + (gh - h).toFixed(1) + ' Q' + (x + lean * .4 + w * .6).toFixed(1) + ' ' + (gh - h * .5).toFixed(1) + ' ' + (x + w).toFixed(1) + ' ' + gh + 'Z'; }
+  const svg = '<svg width="' + gw + '" height="' + gh + '" viewBox="0 0 ' + gw + ' ' + gh + '" style="left:{L}px"><path d="' + path + '" fill="#5d7f4a" fill-opacity=".55"/></svg>';
+  fg.innerHTML = svg.replace('{L}', 0) + svg.replace('{L}', gw);
+  fg.dataset.w = gw;
+  placeHud();
+  fitResult();
+}
+function placeHud() {
+  const top = 16 + (W < 521 ? 20 : 12);
+  $('exitBtn').style.left = '16px'; $('exitBtn').style.top = top + 'px';
+  $('dexPlate').style.left = '68px'; $('dexPlate').style.top = top + 'px';
+  const m = $('mini'); m.style.right = '14px'; m.style.top = (top - 6) + 'px';
+  $('guide').style.top = (top + 118) + 'px';
+  $('cap').style.bottom = '44px';
+  $('dots').style.bottom = '26px';
+  $('word').style.bottom = '138px';
+  const wk = $('walk'); wk.style.right = '24px'; wk.style.bottom = '50px';
+  $('tut').style.top = (top + 168) + 'px';
+  $('snapCap').style.top = (H * .2) + 'px';
+}
+const ground = d => { const hy = H * .5, k = Math.min(1, .85 / Math.max(d, .1)); return hy + (H * .96 - hy) * k; };
+const sizeAt = d => clamp(H * .26 / d, 18, H * .32);
+
+// ---------- input ----------
+const keys = {};
+let walking = false, walkT = 0, speed = 0, turnKey = 0, turnKeyT = 0, turnRate = 0, lastH = 0, bob = 0;
+let drag = null;
+const huntEl = $('hunt');
+huntEl.addEventListener('pointerdown', e => {
+  if (screen !== 'hunt' || e.target.closest('button,.sheet,.tut')) return;
+  drag = { id: e.pointerId, x: e.clientX }; try { huntEl.setPointerCapture(e.pointerId); } catch (er) {}
+});
+huntEl.addEventListener('pointermove', e => { if (!drag || e.pointerId !== drag.id || mode === 'snap') return; const dx = e.clientX - drag.x; drag.x = e.clientX; P.h -= dx / ppd; });
+const endDrag = e => { if (drag && e.pointerId === drag.id) drag = null; };
+huntEl.addEventListener('pointerup', endDrag); huntEl.addEventListener('pointercancel', endDrag);
+
+const walkBtn = $('walk');
+function setWalk(v) { walking = v && mode === 'roam'; walkBtn.classList.toggle('down', walking); if (!walking) walkT = 0; }
+walkBtn.addEventListener('pointerdown', e => { e.preventDefault(); try { walkBtn.setPointerCapture(e.pointerId); } catch (er) {} setWalk(true); });
+['pointerup', 'pointercancel', 'lostpointercapture'].forEach(n => walkBtn.addEventListener(n, () => setWalk(false)));
+walkBtn.addEventListener('contextmenu', e => e.preventDefault());
+
+const capBtn = $('cap');
+let capDown = false;
+capBtn.addEventListener('pointerdown', e => { e.preventDefault(); try { capBtn.setPointerCapture(e.pointerId); } catch (er) {} pressCap(); });
+['pointerup', 'pointercancel', 'lostpointercapture'].forEach(n => capBtn.addEventListener(n, releaseCap));
+capBtn.addEventListener('click', e => { if (e.detail === 0) { pressCap(); setTimeout(releaseCap, 30); } }); // keyboard activation
+capBtn.addEventListener('contextmenu', e => e.preventDefault());
+
+let demoOn = false;
+window.addEventListener('keydown', e => {
+  if (!demoOn) return;
+  if (screen === 'result' && revealed && e.key === 'Enter' && document.activeElement === document.body) { $('contBtn').click(); return; }
+  if (screen !== 'hunt' || sheetOn || tutOn) return;
+  const k = e.key;
+  if (k === 'ArrowLeft' || k === 'a' || k === 'A') { turnKey = -1; e.preventDefault(); }
+  else if (k === 'ArrowRight' || k === 'd' || k === 'D') { turnKey = 1; e.preventDefault(); }
+  else if (k === 'ArrowUp' || k === 'w' || k === 'W') { if (!e.repeat) setWalk(true); e.preventDefault(); }
+  else if (k === ' ' && document.activeElement !== capBtn) { if (!e.repeat) pressCap(); e.preventDefault(); }
+  else if (k === 'Escape') { if (mode === 'catch') endCatch(); else goHome(); }
+});
+window.addEventListener('keyup', e => {
+  const k = e.key;
+  if (!demoOn) { turnKey = 0; return; }
+  if ((k === 'ArrowLeft' || k === 'a' || k === 'A') && turnKey < 0) turnKey = 0;
+  if ((k === 'ArrowRight' || k === 'd' || k === 'D') && turnKey > 0) turnKey = 0;
+  if (k === 'ArrowUp' || k === 'w' || k === 'W') setWalk(false);
+  if (k === ' ') releaseCap();
+});
+window.addEventListener('blur', () => { setWalk(false); turnKey = 0; releaseCap(); });
+
+// ---------- hunt state ----------
+let screen = 'home', mode = 'roam', C = null, sheetOn = false, tutOn = false, wordT = 0, wordTxt = '', candidate = null;
+function say(t, secs) { wordTxt = t; wordT = secs || 1.2; }
+
+function pressCap() {
+  capDown = true; capBtn.classList.add('down');
+  if (mode === 'roam') {
+    if (candidate && candidate.inRange) { sfx.tap(); startCatch(candidate.b); }
+    else if (candidate) say('Closer · ' + Math.max(1, Math.round(candidate.d)) + ' m', 1.2);
+  } else if (mode === 'catch') {
+    if (C.locked) shoot(); else C.holding = true;
+  }
+}
+function releaseCap() { capDown = false; capBtn.classList.remove('down'); if (C) C.holding = false; }
+
+function startCatch(b) {
+  const tc = T[b.tier];
+  C = { b, tc, lock: 0, locked: false, holding: false, phase: 'active', t: 0, dur: rnd(tc.gap[0], tc.gap[1]) * .6, feint: false, cross: 0,
+        shots: Math.max(1, 3 - b.lost), winMul: 1, shot: false };
+  mode = 'catch'; setWalk(false); capDown = false; capBtn.classList.remove('down');
+  huntEl.classList.add('catching');
+  say('Hold to focus', 1.6); drawDots();
+}
+function endCatch() { mode = 'roam'; C = null; huntEl.classList.remove('catching'); $('ring').innerHTML = ''; drawDots(); }
+function drawDots() {
+  const d = $('dots');
+  if (mode !== 'catch' || !C) { d.innerHTML = ''; d.setAttribute('aria-label', ''); return; }
+  const total = Math.max(3 - C.b.lost, C.shots), used = total - C.shots; let h = '';
+  for (let i = 0; i < Math.max(total, 3); i++) h += '<i class="' + (i < C.shots ? 'on' : '') + '"></i>';
+  d.innerHTML = h; d.setAttribute('aria-label', C.shots + ' shots left');
+}
+function winMs() { return C.tc.win * WIN_SCALE * C.winMul * (C.b.guardian ? GUARD_WIN : 1); }
+function holdS() { return C.tc.hold + (C.b.guardian ? .2 : 0); }
+function shoot() {
+  if (C.shot) return;
+  sfx.shutter();
+  if (C.phase !== 'calm') return miss('Not still');
+  if (C.feint) return miss('Feint');
+  const dt = (C.t - C.cross) * 1000, w = winMs();
+  if (Math.abs(dt) > w / 2) return miss(dt < 0 ? 'Early' : 'Late');
+  const dodge = C.tc.dodge + (HABIT_DODGE[C.b.f.habit] || 0) + .3 * C.b.gauge;
+  if (Math.random() < dodge) return miss('Dodged');
+  success(Math.abs(dt) <= w * .15);
+}
+function miss(w) {
+  C.shot = true; C.shots--; C.winMul *= 1.15; drawDots(); sfx.miss();
+  C.b.hop = performance.now(); say(w === 'Not still' || w === 'Feint' ? w : w + ', missed', 1.2);
+  C.phase = 'active'; C.t = 0; C.dur = rnd(C.tc.gap[0], C.tc.gap[1]);
+  if (C.shots <= 0) {
+    if (C.b.adUsed) { const b = C.b; endCatch(); flee(b, 'It got away'); }
+    else setTimeout(() => { if (mode === 'catch' && C && C.shots <= 0) openSheet(); }, 450);
+  }
+}
+function openSheet() { sheetOn = true; $('sheet').classList.add('on'); setTimeout(() => $('adBtn').focus(), 330); }
+function closeSheet() { sheetOn = false; $('sheet').classList.remove('on'); }
+$('adBtn').addEventListener('click', () => {
+  closeSheet(); $('adPlay').classList.add('on');
+  setTimeout(() => { $('adPlay').classList.remove('on'); if (C) { C.b.adUsed = true; C.shots = 1; C.winMul = C.winMul; drawDots(); say('One more try', 1.4); capBtn.focus({ preventScroll: true }); } }, 1400);
+});
+$('letGo').addEventListener('click', () => { closeSheet(); if (C) { const b = C.b; endCatch(); flee(b, 'Let it go'); } });
+
+function bolt(b) {
+  b.bolts++; sfx.bolt();
+  if (b.tier !== 'common' && b.tier !== 'uncommon') b.lost++;
+  if (C && C.b === b) endCatch();
+  if (((b.tier === 'epic') && b.bolts >= 2) || b.lost >= 3) return flee(b, 'It got away');
+  const r = rel(b), nd = clamp(r.d + rnd(1, 3), 2, 11), to = placeAt(nd, P.h + r.r + rnd(-35, 35));
+  b.anim = { t0: performance.now(), dur: 650, fx: b.x, fy: b.y, tx: to.x, ty: to.y, flee: false };
+  b.gauge = .25; say(b.lost ? 'It bolted · 1 shot lost' : 'It bolted', 1.6);
+}
+function flee(b, w) {
+  const r = rel(b), to = placeAt(r.d + 6, P.h + r.r + rnd(-30, 30));
+  b.anim = { t0: performance.now(), dur: 800, fx: b.x, fy: b.y, tx: to.x, ty: to.y, flee: true };
+  say(w || 'It got away', 1.8); respawnSoon();
+}
+
+// ---------- snap ----------
+let snapB = null, snapPerfect = false;
+function success(perfect) {
+  const b = C.b; C.shot = true; mode = 'snap'; snapB = b; snapPerfect = perfect;
+  const r = b.el.getBoundingClientRect(), pr = $('phone').getBoundingClientRect();
+  const fl = $('flash'); fl.style.setProperty('--fx', (r.left + r.width / 2 - pr.left) + 'px'); fl.style.setProperty('--fy', (r.top + r.height / 2 - pr.top) + 'px');
+  fl.classList.remove('go'); void fl.offsetWidth; fl.classList.add('go');
+  huntEl.classList.add('frozen'); $('ring').innerHTML = '';
+  $('pin').classList.add('go'); $('snapCap').classList.add('go');
+  say('', 0);
+  setTimeout(() => showResult(b, perfect), reduced ? 700 : 1300);
+}
+
+// ---------- loop ----------
+let last = 0, raf = 0, tNow = 0;
+function frame(ts) {
+  raf = requestAnimationFrame(frame);
+  const dt = Math.min(.05, last ? (ts - last) / 1000 : 0); last = ts; tNow = ts / 1000;
+  if (screen !== 'hunt' || !demoOn) { last = 0; return; }
+  if (mode !== 'snap' && !sheetOn) update(dt);
+  render(dt);
+}
+function update(dt) {
+  // turning by keys ramps from gentle to fast, so a long hold spooks
+  if (turnKey) { turnKeyT += dt; P.h += turnKey * Math.min(120, 26 + 70 * turnKeyT) * dt; } else turnKeyT = 0;
+  const dh = Math.abs(wrap(P.h - lastH)); lastH = P.h;
+  turnRate += ((dt ? dh / dt : 0) - turnRate) * Math.min(1, dt / .15);
+  // walking: the longer you hold, the faster you go
+  if (walking) { walkT += dt; speed = Math.min(1.4, .3 + .55 * walkT); } else speed = Math.max(0, speed - dt * 4);
+  if (speed > 0) {
+    const a = P.h * Math.PI / 180, nx = P.x + Math.sin(a) * speed * dt, ny = P.y + Math.cos(a) * speed * dt;
+    const blocked = bugs.some(b => !b.anim && Math.hypot(b.x - nx, b.y - ny) < .55 && Math.hypot(b.x - nx, b.y - ny) < Math.hypot(b.x - P.x, b.y - P.y));
+    if (!blocked) { P.x = nx; P.y = ny; bob += speed * dt * 11; } else speed = 0;
+  }
+  // spook gauge per bug
+  let pushing = false;
+  for (const b of bugs.slice()) {
+    if (b.anim) continue;
+    const r = rel(b), tc = T[b.tier];
+    const near = r.d < 6, overW = speed > tc.walk, overT = turnRate > tc.turn && Math.abs(r.r) < 70;
+    if (near && r.d < tc.flush) b.gauge += dt / (tc.fill * .5);
+    else if (near && (overW || overT)) { b.gauge += dt / tc.fill; pushing = true; }
+    else b.gauge -= tc.drain * dt;
+    b.gauge = clamp(b.gauge, 0, 1);
+    if (b.gauge >= 1) bolt(b);
+  }
+  if (pushing && wordT <= 0) say('Slow down', .5);
+  // catch rhythm: active, then a still moment (or a fake one)
+  if (mode === 'catch' && C) {
+    const b = C.b, sx = screenX(b), R = ringR(b), centred = Math.abs(sx - W / 2) < R * .75;
+    if (!C.locked) {
+      if (C.holding && centred) C.lock += dt / holdS(); else C.lock = Math.max(0, C.lock - dt * 1.2);
+      if (C.lock >= 1) { C.lock = 1; C.locked = true; C.holding = false; sfx.tick(); say('Wait for it to stop', 1.4); }
+      else if (C.holding && !centred && wordT <= 0) say('Centre it', .6);
+    } else if (Math.abs(sx - W / 2) > R * 1.6) { C.locked = false; C.lock = .4; say('Centre it', 1); }
+    C.t += dt;
+    if (C.t >= C.dur) {
+      if (C.phase === 'active') { C.phase = 'calm'; C.t = 0; C.dur = C.tc.calm; C.feint = Math.random() < C.tc.feint; C.cross = C.dur * .55; C.shot = false; }
+      else { C.phase = 'active'; C.t = 0; C.dur = rnd(C.tc.gap[0], C.tc.gap[1]); C.shot = false; }
+    }
+  }
+  if (wordT > 0) wordT -= dt;
+}
+function screenX(b) { const r = rel(b); return W / 2 + r.r * ppd; }
+function ringR(b) { const r = rel(b); return Math.max(sizeAt(r.d) * .5, 46) * T[b.tier].ring * 1.15; }
+
+function render(dt) {
+  const t = tNow, still = reduced;
+  const sx = still ? 0 : Math.sin(t * .6) * 2.2 + Math.sin(t * 1.7) * .8, sy = still ? 0 : Math.cos(t * .5) * 1.6 + Math.sin(bob) * 3.2 * Math.min(1, speed);
+  const rot = still ? 0 : Math.sin(t * .4) * .25, zoom = 1 + .035 * Math.min(1, speed);
+  world.style.transform = 'translate3d(' + sx.toFixed(2) + 'px,' + sy.toFixed(2) + 'px,0) rotate(' + rot.toFixed(3) + 'deg) scale(' + zoom.toFixed(4) + ')';
+  world.style.transformOrigin = '50% 62%';
+  const off = ((P.h / 360 * pairW - (W + 24) / 2) % pairW + pairW) % pairW;
+  pano.style.transform = 'translate3d(' + (-off).toFixed(1) + 'px,0,0)';
+  const gw = +fg.dataset.w || 600, goff = ((P.h * ppd * 1.6) % gw + gw) % gw;
+  fg.style.transform = 'translate3d(' + (-goff).toFixed(1) + 'px,0,0) scale(' + (1 + .08 * Math.min(1, speed)).toFixed(3) + ')';
+  fg.style.width = (gw * 2) + 'px';
+
+  const now = performance.now(), half = (W / 2) / ppd + 10;
+  candidate = null;
+  for (const b of bugs.slice()) {
+    if (b.anim) {
+      const k = clamp((now - b.anim.t0) / b.anim.dur, 0, 1), e = ease(k);
+      b.x = b.anim.fx + (b.anim.tx - b.anim.fx) * e; b.y = b.anim.fy + (b.anim.ty - b.anim.fy) * e;
+      b.fade = b.anim.flee ? 1 - k : 1;
+      if (k >= 1) { if (b.anim.flee) { removeBug(b); continue; } b.anim = null; }
+    }
+    const r = rel(b), vis = Math.abs(r.r) < half + 20;
+    if (!vis) { b.el.style.visibility = 'hidden'; b.mood.style.opacity = 0; if (b.hex) b.hex.style.visibility = 'hidden'; continue; }
+    b.el.style.visibility = 'visible'; if (b.hex) b.hex.style.visibility = 'visible';
+    let x = W / 2 + 12 + r.r * ppd, y = ground(r.d) + 12; const s = sizeAt(r.d), k = s / 200;
+    // idle life: active bugs fidget, calm ones hold still
+    let wob = 0, flap = 1, jx = 0, jy = 0;
+    const calmNow = mode === 'catch' && C && C.b === b && C.phase === 'calm';
+    if (!still && !calmNow) {
+      const act = mode === 'catch' && C && C.b === b ? 1.8 : 1;
+      if (b.f.habit === 'flyer') { const burst = Math.sin(t * .9 + b.ph) > .7 ? 1 : 0; flap = 1 - burst * .12 * Math.abs(Math.sin(t * 22)); wob = Math.sin(t * 1.1 + b.ph) * 2 * act; }
+      else if (b.f.habit === 'crawler') { wob = Math.sin(t * 2.3 + b.ph) * 4 * act; jx = Math.sin(t * .8 + b.ph) * 6 * act; }
+      else { wob = Math.sin(t * 1.4 + b.ph) * 2.5 * act; jx = Math.sin(t * .5 + b.ph) * 3 * act; }
+    }
+    if (b.hop) { const hk = (now - b.hop) / 450; if (hk >= 1) b.hop = 0; else { jy -= Math.sin(hk * Math.PI) * s * .25; jx += Math.sin(hk * Math.PI) * s * .2; } }
+    if (b.anim && !reduced) { const k2 = (now - b.anim.t0) / b.anim.dur; jy -= Math.sin(clamp(k2, 0, 1) * Math.PI) * s * .12; }
+    x += jx * k * 2; y += jy;
+    b.el.style.transform = 'translate3d(' + (x - 100).toFixed(1) + 'px,' + (y - 200).toFixed(1) + 'px,0) scale(' + k.toFixed(4) + ')';
+    b.el.style.zIndex = String(Math.round(1000 - r.d * 50));
+    b.el.style.opacity = b.fade.toFixed(2);
+    b.img.style.transform = 'rotate(' + wob.toFixed(2) + 'deg) scaleX(' + flap.toFixed(3) + ')';
+    const bl = Math.round(clamp((r.d - 3.5) * .45, 0, 2.2) * 4) / 4;
+    if (bl !== b.blur) { b.blur = bl; b.img.style.filter = (CUT ? 'drop-shadow(0 6px 5px rgba(30,36,20,.28)) ' : '') + (bl ? 'blur(' + bl + 'px)' : ''); if (!CUT && !bl) b.img.style.filter = 'none'; }
+    // mood ticks: one, two, three as the gauge climbs; red while bolting
+    const g = b.anim && !b.anim.flee ? 1 : b.gauge;
+    const n = g > .8 ? 3 : g > .5 ? 2 : g > .12 ? 1 : 0;
+    b.mood.style.opacity = n ? 1 : 0;
+    if (n) {
+      b.moodPath.setAttribute('d', ['M4 18 L9 6', 'M4 18 L9 6 M13 16 L16 3', 'M4 18 L9 6 M13 16 L16 3 M22 18 L26 7'][n - 1]);
+      b.moodPath.setAttribute('stroke', b.anim ? 'var(--red)' : 'var(--amber)');
+      b.mood.style.transform = 'translate3d(' + (x + s * .22).toFixed(1) + 'px,' + (y - s * .95 - 10).toFixed(1) + 'px,0)';
+      b.mood.style.zIndex = '1001';
+    }
+    if (b.hex) { b.hex.style.transform = 'translate3d(' + (x - 8).toFixed(1) + 'px,' + (y - s * .92 - 26).toFixed(1) + 'px,0)'; b.hex.style.zIndex = '1001'; }
+    if (!b.anim && Math.abs(r.r) < half * .8 && (!candidate || r.d < candidate.d)) candidate = { b, d: r.d, inRange: r.d <= RANGE, x, y, s };
+  }
+  renderHud();
+  if (mode === 'catch' && C) renderRing();
+}
+
+function renderHud() {
+  const catching = mode !== 'roam';
+  $('hud').style.opacity = mode === 'snap' ? 0 : 1;
+  $('mini').style.opacity = catching ? 0 : 1; $('mini').style.transform = catching ? 'scale(.85)' : 'none';
+  $('dexPlate').style.opacity = catching ? 0 : 1;
+  // mini radar, heading-up
+  let h = '';
+  const near = bugs.filter(b => !b.anim || !b.anim.flee).map(b => ({ b, r: rel(b) })).sort((a, z) => a.r.d - z.r.d);
+  const target = near[0];
+  for (const o of near) {
+    const rr = 10 + Math.min(o.r.d, 15) * 2.8, a = o.r.r * Math.PI / 180, x = 52 + rr * Math.sin(a), y = 52 - rr * Math.cos(a);
+    const c = caught(o.b.key);
+    h += '<span class="mb' + (o === target ? ' t' : '') + (c ? ' caught' : '') + '" style="left:' + x.toFixed(1) + 'px;top:' + y.toFixed(1) + 'px;' + (c ? '--tier:' + TIER[o.b.tier].metal : '') + '"><img alt="" src="' + artSrc(o.b.key) + '"></span>';
+  }
+  const mb = $('miniB'); if (mb._h !== h) { mb.innerHTML = h; mb._h = h; }
+  $('miniMap').style.transform = 'rotate(' + (-P.h).toFixed(1) + 'deg)';
+  $('mini').setAttribute('aria-label', 'Radar, ' + near.length + ' bugs nearby');
+  // guide plate
+  const gd = $('guide');
+  if (!catching && target) {
+    gd.style.opacity = 1;
+    const d = target.r.d, r = target.r.r, ad = Math.abs(r);
+    const where = ad < 20 ? 'ahead' : ad > 140 ? 'behind you' : r < 0 ? 'to your left' : 'to your right';
+    const txt = Math.max(1, Math.round(d)) + ' m · ' + where;
+    if ($('gTxt').textContent !== txt) $('gTxt').textContent = txt;
+    $('gArrow').style.transform = 'rotate(' + r.toFixed(0) + 'deg)';
+    const gp = $('gPort'), im = gp.firstChild; const src = artSrc(target.b.key);
+    if (im.getAttribute('src') !== src) im.setAttribute('src', src);
+    gp.classList.toggle('caught', caught(target.b.key));
+  } else gd.style.opacity = 0;
+  if (!bugs.length && !catching && wordT <= 0) say('Quiet patch · new bug soon', .5);
+  // capture / shutter
+  const cap = $('cap');
+  if (mode === 'roam') {
+    cap.style.display = candidate ? '' : 'none';
+    cap.classList.toggle('lit', !!(candidate && candidate.inRange)); cap.classList.toggle('dim', !!(candidate && !candidate.inRange));
+    cap.classList.remove('shutter', 'calm'); cap.setAttribute('aria-label', 'Capture');
+    if (candidate && !candidate.inRange && wordT <= 0) { wordTxt = 'Closer · ' + Math.max(1, Math.round(candidate.d)) + ' m'; }
+    else if (wordT <= 0) wordTxt = '';
+    $('walk').style.opacity = 1; $('walk').style.pointerEvents = '';
+  } else if (mode === 'catch') {
+    cap.style.display = ''; cap.classList.remove('lit', 'dim'); cap.classList.add('shutter');
+    cap.classList.toggle('calm', C.locked && C.phase === 'calm' && !C.feint);
+    cap.setAttribute('aria-label', C.locked ? 'Shutter' : 'Hold to focus');
+    if (wordT <= 0) wordTxt = !C.locked ? (C.holding ? 'Focusing' : 'Hold to focus') : '';
+    $('walk').style.opacity = 0; $('walk').style.pointerEvents = 'none';
+  } else { cap.style.display = 'none'; $('walk').style.opacity = 0; }
+  const w = $('word'); if (w.textContent !== wordTxt) w.textContent = wordTxt; w.style.opacity = wordTxt ? 1 : 0;
+  const v = $('vig');
+  if (mode === 'catch' && candidate !== undefined && C) { v.style.setProperty('--va', '.42'); }
+  else v.style.setProperty('--va', '.16');
+}
+function renderRing() {
+  const b = C.b, r = rel(b), s = sizeAt(r.d);
+  const cx = W / 2 + 12 + r.r * ppd - 12, cy = ground(r.d) - s * .42;
+  const R0 = ringR(b), R = R0 * (1 + .35 * (1 - ease(C.lock)));
+  const circ = 2 * Math.PI * R;
+  let h = '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + R.toFixed(1) + '" fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="1.3"/>';
+  if (C.lock > 0) h += '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + R.toFixed(1) + '" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="' + (circ * C.lock).toFixed(1) + ' ' + circ.toFixed(1) + '" transform="rotate(-90 ' + cx.toFixed(1) + ' ' + cy.toFixed(1) + ')"/>';
+  if (C.locked && C.phase === 'calm' && !C.feint && !C.shot) {
+    // the gold arc: shorter for harder bugs; the thin ring closes onto it at a steady speed
+    const ang = clamp(winMs() / 320 * 64, 22, 90) * Math.PI / 180, a0 = -Math.PI / 2 - ang / 2, a1 = -Math.PI / 2 + ang / 2;
+    const p0 = [cx + R * Math.cos(a0), cy + R * Math.sin(a0)], p1 = [cx + R * Math.cos(a1), cy + R * Math.sin(a1)];
+    const fadeIn = clamp(C.t / .15, 0, 1);
+    h += '<path d="M' + p0[0].toFixed(1) + ' ' + p0[1].toFixed(1) + ' A' + R.toFixed(1) + ' ' + R.toFixed(1) + ' 0 0 1 ' + p1[0].toFixed(1) + ' ' + p1[1].toFixed(1) + '" fill="none" stroke="#f3d57a" stroke-opacity="' + fadeIn.toFixed(2) + '" stroke-width="4.5" stroke-linecap="round"/>';
+    const rc = R * (1 + 1.25 * (C.cross - C.t) / C.cross);
+    const op = rc < R ? clamp(rc / R * 1.6 - .6, 0, 1) : 1;
+    if (rc > 4) h += '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + rc.toFixed(1) + '" fill="none" stroke="#fff" stroke-opacity="' + (.9 * op).toFixed(2) + '" stroke-width="1.2"/>';
+  }
+  if (b.guardian) h += '<g transform="translate(' + (cx + R * .72).toFixed(1) + ' ' + (cy - R * .72 - 10).toFixed(1) + ')"><path d="M10 1 L18.5 6 V16 L10 21 L1.5 16 V6 Z" transform="scale(.8)" fill="#c9a24a" stroke="#fff" stroke-width="1.6"/></g>';
+  $('ring').innerHTML = h;
+  const v = $('vig'); v.style.setProperty('--vx', (cx / W * 100).toFixed(1) + '%'); v.style.setProperty('--vy', (cy / H * 100).toFixed(1) + '%');
+}
+
+// ---------- screens ----------
+function show(id) { ['home', 'hunt', 'result'].forEach(s => $(s).classList.toggle('on', s === id)); screen = id; }
+function goHome() { closeSheet(); if (mode === 'catch') endCatch(); setWalk(false); drawHome(); show('home'); $('startBtn').focus({ preventScroll: true }); }
+function drawHome() {
+  $('hDex').textContent = 'Dex ' + dex.length + ' / 48';
+  const list = bugs.filter(b => !b.anim || !b.anim.flee).map(b => ({ b, r: rel(b) })).sort((a, z) => a.r.d - z.r.d).slice(0, 4);
+  let h = '';
+  for (const o of list) {
+    const rr = 18 + Math.min(o.r.d, 11) * 7.6, a = o.r.r * Math.PI / 180, x = 111 + rr * Math.sin(a), y = 111 - rr * Math.cos(a), c = caught(o.b.key);
+    h += '<span class="blip' + (c ? ' caught' : '') + '" style="left:' + x.toFixed(1) + 'px;top:' + y.toFixed(1) + 'px;' + (c ? '--tier:' + TIER[o.b.tier].metal : '') + '"><img alt="" src="' + artSrc(o.b.key) + '"><b>' + Math.max(1, Math.round(o.r.d)) + ' m</b>' + (o.b.guardian ? '<span class="hx">' + HEX + '</span>' : '') + '</span>';
+  }
+  $('hBlips').innerHTML = h;
+  $('medal').setAttribute('aria-label', 'Radar, ' + list.length + ' bugs nearby' + (list.length ? ', nearest ' + Math.round(list[0].r.d) + ' metres' : ''));
+  const g = bugs.some(b => b.guardian);
+  $('hNums').innerHTML = '<div><span class="label">Nearby</span><strong>' + bugs.length + '</strong></div><div><span class="label">Nearest</span><strong>' + (list.length ? Math.max(1, Math.round(list[0].r.d)) + ' m' : '–') + '</strong></div><div><span class="label">Guardian</span><strong>' + (g ? '1' : '0') + '</strong></div>';
+  $('dexTxt').textContent = dex.length + ' / 48';
+  layoutHome();
+}
+function layoutHome() {
+  // the medallion sits on the painted patch; numbers and the button keep to the bottom
+  const tight = H < 700, extra = clamp(H - 720, 0, 140), mk = 1 + extra / 700, mt = (tight ? 128 : 150) + extra * .3;
+  $('medal').style.top = mt + 'px'; $('medal').style.transform = 'scale(' + mk.toFixed(3) + ')'; $('medal').style.transformOrigin = '50% 0';
+  document.querySelector('.hScene').style.top = ((tight ? 96 : 118) + extra * .3) + 'px';
+  $('hNums').style.top = (mt + 236 * mk + 30) + 'px';
+  $('startBtn').style.bottom = (tight ? 28 : 44) + 'px';
+  $('botw').style.bottom = (tight ? 116 : 140) + 'px';
+  $('botw').style.display = H < 640 ? 'none' : '';
+}
+function startSweep() {
+  sfx.tap(); show('hunt'); last = 0;
+  if (!store.get('bugshot-demo-tut', false)) { tutOn = true; $('tut').classList.add('on'); setTimeout(() => $('tutOk').focus({ preventScroll: true }), 50); }
+  else capBtn.focus({ preventScroll: true });
+}
+$('startBtn').addEventListener('click', startSweep);
+$('exitBtn').addEventListener('click', () => { if (mode === 'catch') endCatch(); else goHome(); });
+$('tutOk').addEventListener('click', () => { tutOn = false; $('tut').classList.remove('on'); store.set('bugshot-demo-tut', true); });
+
+// ---------- result ----------
+let revealed = false, resB = null;
+function fitResult() {
+  const s = Math.min(1, (H - 300) / 420, (W - 48) / 280), cw = $('cardWrap');
+  cw.style.transform = 'scale(' + s.toFixed(3) + ')';
+  const top = H < 700 ? 84 : 108; cw.style.top = top + 'px';
+  $('rTop').style.top = (H < 700 ? 22 : 36) + 'px';
+  $('rBackTop').style.top = (H < 700 ? 40 : 56) + 'px';
+  $('hint').style.top = (top + 420 * s + 24) + 'px';
+}
+function backSvg(target) {
+  const cx = 134, cy = 196; let s = '<defs><pattern id="hc" width="38.1" height="66" patternUnits="userSpaceOnUse"><path d="M19 0 L38.1 11 V33 L19 44 L0 33 V11 Z M19 44 V66" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="1.2"/></pattern><radialGradient id="hm" cx="50%" cy="48%" r="60%"><stop offset=".42" stop-color="#000"/><stop offset=".9" stop-color="#fff"/></radialGradient><mask id="mk"><rect width="268" height="408" fill="url(#hm)"/></mask></defs>';
+  s += '<rect width="268" height="408" fill="url(#hc)" mask="url(#mk)"/><rect x="10" y="10" width="248" height="388" rx="12" fill="none" stroke="rgba(255,255,255,.14)"/>';
+  s += '<circle cx="' + cx + '" cy="' + cy + '" r="86" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"/>';
+  for (let i = 0; i < 24; i++) { const a = i * 15 * Math.PI / 180, L = i % 6 === 0, r2 = L ? 73 : 79; s += '<line x1="' + (cx + 86 * Math.cos(a)).toFixed(1) + '" y1="' + (cy + 86 * Math.sin(a)).toFixed(1) + '" x2="' + (cx + r2 * Math.cos(a)).toFixed(1) + '" y2="' + (cy + r2 * Math.sin(a)).toFixed(1) + '" stroke="rgba(255,255,255,.3)" stroke-width="' + (L ? 3 : 1.5) + '" stroke-linecap="round"/>'; }
+  const hex = (x, y) => [0, 1, 2, 3, 4, 5].map(k => { const a = (-90 + 60 * k) * Math.PI / 180; return (x + 27 * Math.cos(a)).toFixed(1) + ',' + (y + 27 * Math.sin(a)).toFixed(1); }).join(' ');
+  [null, 180, 0, 240, 60, 300, 120].forEach(d => { const x = d === null ? cx : cx + 47 * Math.cos(d * Math.PI / 180), y = d === null ? cy : cy + 47 * Math.sin(d * Math.PI / 180); s += '<polygon points="' + hex(x, y) + '" fill="rgba(255,255,255,' + (d === null ? .1 : .05) + ')" stroke="rgba(255,255,255,.24)" stroke-width="2"/>'; });
+  target.innerHTML = s;
+}
+backSvg($('backSvg'));
+document.querySelectorAll('.backArt').forEach(backSvg);
+function showResult(b, perfect) {
+  resB = b; const f = b.f, tr = TIER[b.tier], isNew = !caught(b.key);
+  catches++;
+  if (isNew) dex.push(b.key);
+  saveDex(); $('dexTxt').textContent = dex.length + ' / 48';
+  removeBug(b); respawnSoon();
+  mode = 'roam'; C = null; huntEl.classList.remove('catching', 'frozen');
+  $('pin').classList.remove('go'); $('snapCap').classList.remove('go'); $('flash').classList.remove('go');
+  const res = $('result'); res.classList.remove('rev'); res.classList.toggle('rm', reduced); revealed = false;
+  res.style.setProperty('--spot', tr.spot);
+  $('face').style.setProperty('--tierF', tr.frame);
+  $('rTitle').textContent = tr.label + ' catch'; $('rTitle').style.color = tr.ink;
+  $('rSub').textContent = tr.label + ', 1 in ' + tr.odds.replace(/^\d+ in /, '') ;
+  if (b.tier === 'common') $('rSub').textContent = 'Common, 3 in 5';
+  if (b.guardian) $('rSub').textContent += ', Guardian';
+  const d = new Date(), hh = d.getHours() % 12 || 12, mm = String(d.getMinutes()).padStart(2, '0');
+  $('rBackTop').textContent = 'Catch ' + catches + ', ' + hh + ':' + mm + (d.getHours() < 12 ? ' am' : ' pm');
+  const img = $('cImg'); img.src = artSrc(b.key); img.className = CUT ? '' : 'paper';
+  $('photo').style.backgroundPosition = (((P.h % 360) + 360) % 360 / 3.6).toFixed(0) + '% 78%';
+  $('cName').textContent = f.name; $('cLat').textContent = f.latin; $('cNo').textContent = 'No. ' + f.no;
+  $('cHp').textContent = f.hp; $('cAtk').textContent = f.atk;
+  $('newLine').textContent = isNew ? 'New in your Dex · ' + dex.length + ' / 48' : 'Dex ' + dex.length + ' / 48';
+  res.dataset.xp = isNew ? 100 : 25; res.dataset.sh = tr.sh + (perfect ? 1 : 0); res.dataset.dew = 10;
+  $('gXp').textContent = '+0'; $('gSh').textContent = '+0'; $('gDew').textContent = '+0';
+  $('cardIn').setAttribute('aria-label', 'Reveal your card');
+  show('result'); fitResult();
+  const ci = $('cardIn'); ci.style.animation = 'none'; void ci.offsetWidth; ci.style.animation = '';
+  setTimeout(() => ci.focus({ preventScroll: true }), 60);
+}
+function countUp(el, to, delay) {
+  if (reduced) { el.textContent = '+' + to; return; }
+  setTimeout(() => { const t0 = performance.now(); const step = () => { const k = clamp((performance.now() - t0) / 400, 0, 1), v = Math.round(to * (1 - Math.pow(1 - k, 3))); el.textContent = '+' + v; if (k < 1) requestAnimationFrame(step); }; step(); }, delay);
+}
+function reveal() {
+  if (revealed || screen !== 'result') return; revealed = true;
+  const res = $('result'); res.classList.toggle('rm', reduced); res.classList.add('rev');
+  sfx.flip(); setTimeout(() => sfx.chime(resB.tier), reduced ? 0 : 420);
+  $('cardIn').setAttribute('aria-label', resB.f.name + ', ' + TIER[resB.tier].label);
+  countUp($('gXp'), +res.dataset.xp, reduced ? 0 : 950); countUp($('gSh'), +res.dataset.sh, reduced ? 0 : 1000); countUp($('gDew'), +res.dataset.dew, reduced ? 0 : 1050);
+  setTimeout(() => $('contBtn').focus({ preventScroll: true }), reduced ? 50 : 1100);
+}
+$('cardIn').addEventListener('click', reveal);
+$('cardIn').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); reveal(); } });
+$('contBtn').addEventListener('click', () => { if (!revealed) return; show('hunt'); last = 0; capBtn.focus({ preventScroll: true }); });
+
+// ---------- boot ----------
+document.addEventListener('pointerdown', () => { if (soundOn) audio(); }, { once: true });
+spawn('ant', 3.6, -14);
+spawn('ladybird', 6.2, -92);
+spawn('moth', 7, 138);
+spawn('firefly', 8.4, 58);
+spawn('swallowtail', 9.5, -158);
+spawn('jewel_beetle', 5.2, 100);
+layout();
+drawHome();
+window.addEventListener('resize', () => { layout(); if (screen === 'home') drawHome(); });
+raf = requestAnimationFrame(frame);
+
+// ---------- deck ----------
+const slides = Array.from(document.querySelectorAll('.slide'));
+const dotsNav = $('navDots'), counter = $('counter');
+let cur = 0;
+slides.forEach((s, i) => { const b = document.createElement('button'); b.setAttribute('aria-label', 'Slide ' + (i + 1) + ': ' + (s.getAttribute('aria-label') || '')); b.innerHTML = '<i></i>'; b.addEventListener('click', () => go(i)); dotsNav.appendChild(b); });
+function mark(i) { cur = i; counter.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0'); dotsNav.querySelectorAll('button').forEach((b, k) => b.setAttribute('aria-current', k === i ? 'true' : 'false')); }
+function go(i) { i = clamp(i, 0, slides.length - 1); slides[i].scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' }); mark(i); }
+// entrance motion: content is visible at rest; only with JS and motion allowed does it wait for its slide
+const ins = Array.from(document.querySelectorAll('[data-in]'));
+if (!reduced && 'IntersectionObserver' in window) ins.forEach(el => el.classList.add('pre'));
+const seen = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.querySelectorAll('[data-in]').forEach(el => el.classList.add('in')); } }), { threshold: .3 });
+const which = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) mark(slides.indexOf(e.target)); }), { threshold: .55 });
+slides.forEach(s => { seen.observe(s); which.observe(s); });
+const demoObs = new IntersectionObserver(es => es.forEach(e => { demoOn = e.isIntersecting; if (!demoOn) { setWalk(false); turnKey = 0; releaseCap(); } }), { threshold: .6 });
+demoObs.observe($('demo'));
+window.addEventListener('keydown', e => {
+  if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
+  const k = e.key, inGame = demoOn && screen === 'hunt';
+  const onCtl = document.activeElement && document.activeElement.closest && document.activeElement.closest('button,a,[role=button]');
+  if (k === 'PageDown' || (!inGame && (k === 'ArrowDown' || (k === ' ' && !onCtl)))) { e.preventDefault(); go(cur + 1); }
+  else if (k === 'PageUp' || (!inGame && k === 'ArrowUp')) { e.preventDefault(); go(cur - 1); }
+  else if (!inGame && k === 'Home') { e.preventDefault(); go(0); }
+  else if (!inGame && k === 'End') { e.preventDefault(); go(slides.length - 1); }
+});
+// the Dex sample on the Collect slide: four caught in their tier metal, the rest as silhouettes
+const sample = [['ant', 1], ['ladybird', 1], ['moth', 0], ['firefly', 0], ['swallowtail', 1], ['scarab', 0], ['dragonfly', 0], ['orb_weaver', 0], ['jewel_beetle', 1], ['stag_beetle', 0], ['stick_insect', 0], ['mantis', 0]];
+$('dexGrid').innerHTML = sample.map(([k, c]) => '<div class="tileB ' + (c ? 'c' : 'un') + '" style="--tier:' + TIER[FAM[k].tier].metal + '"><img alt="' + (c ? FAM[k].name : 'Not caught yet') + '" src="' + artSrc(k) + '">' + (c ? '' : '<small>?</small>') + '</div>').join('');
+mark(0);
+})();
+</script>
+
+</body>
+</html>
