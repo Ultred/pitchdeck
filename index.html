@@ -189,7 +189,7 @@ body{background:var(--paper);overflow-x:hidden;font-family:var(--text);-webkit-f
   .bHp b,.bAtk b{font-size:17px}
 }
 @media (prefers-reduced-motion:reduce){
-  .live .bar i,.live .ft,.live .orbit,.live .closing,.live .goldR,.live .pip,.live .atk img,.live .foe img,.live .foe .fxSlash,.live .dmg,.live .intent,.live .boss .hp i,.live .atkHp i,.live .dnow,.live .endBug img,.live .endBrand img,.live .endBrand::after,.live .studio small{animation:none!important}
+  .live .bar i,.live .ft,.live .orbit,.live .closing,.live .goldR,.live .pip,.live .atk img,.live .tgt img,.live .banner,.live .foe img,.live .foe .fxSlash,.live .dmg,.live .intent,.live .boss .hp i,.live .atkHp i,.live .dnow,.live .endBug img,.live .endBrand img,.live .endBrand::after,.live .studio small{animation:none!important}
   .flipC.rev .mflip,.flipC.rev .mcard,.flipC.rev .mcard::before{animation:none!important}
   .mface{transform:none;opacity:0;transition:opacity .25s ease-out!important}
   .mflip .miniBack{transition:opacity .25s ease-out!important}
@@ -230,20 +230,23 @@ body{background:var(--paper);overflow-x:hidden;font-family:var(--text);-webkit-f
 .boss .hp{margin-top:9px;height:14px;border-radius:7px;box-shadow:inset 0 0 0 2px var(--goldInk)}
 .boss .hp i{background:linear-gradient(180deg,#e3c477,var(--gold) 55%,#ad8636);box-shadow:inset 0 0 0 2px var(--goldInk);border-radius:7px 0 0 7px}
 .vsB{grid-column:4;grid-row:1;align-self:center;justify-self:center;margin-top:40px;filter:drop-shadow(0 6px 12px rgba(0,0,0,.4))}
-/* the battle loop: Mantis lunges and slashes the Guardian, the Guardian's bar drops; Ram is telegraphed, the beetle charges, Mantis takes it */
+/* the battle loop: Ant lunges and slashes the Guardian ("Strong!"), the Guardian's bar drops; Ram on the Mantis is telegraphed, the beetle charges, Mantis takes it */
 .fxSlash,.dmg{position:absolute;pointer-events:none;opacity:0}
 .fxSlash{left:34%;top:34%;width:40%;height:auto;filter:drop-shadow(0 0 6px rgba(255,255,255,.7))}
-.dmg{font-family:var(--display);font-weight:800;font-size:clamp(28px,3.4vw,44px);letter-spacing:-.03em;line-height:1;color:#fff;-webkit-text-stroke:5px #13213a;paint-order:stroke fill}
+.dmg{font-family:var(--display);font-weight:800;font-size:clamp(22px,2.6vw,34px);white-space:nowrap;letter-spacing:-.03em;line-height:1;color:#fff;-webkit-text-stroke:5px #13213a;paint-order:stroke fill}
 .foe .dmg{left:60%;top:30%}
-.atk .dmg{left:30%;top:-10%}
+.tgt .dmg{left:8%;top:-10%}
+.foe .dmg{left:56%;top:46%}
 .live .atk img{animation:lunge 6s var(--ease) infinite}
-@keyframes lunge{0%,10%{transform:none}16%,21%{transform:translate(70%,-18%) rotate(6deg)}27%,52%{transform:none}57%{transform:translateX(-6px)}59%{transform:translateX(6px)}61%{transform:translateX(-4px)}63%,100%{transform:none}}
+@keyframes lunge{0%,10%{transform:scaleX(-1)}16%,21%{transform:translate(150%,-18%) rotate(6deg) scaleX(-1)}27%,100%{transform:scaleX(-1)}}
+.live .tgt img{animation:takeHit 6s ease-out infinite}
+@keyframes takeHit{0%,56%{transform:scaleX(-1)}57%{transform:translateX(-6px) scaleX(-1)}59%{transform:translateX(6px) scaleX(-1)}61%{transform:translateX(-4px) scaleX(-1)}63%,100%{transform:scaleX(-1)}}
 .live .foe img{animation:foeHit 6s ease-out infinite}
 @keyframes foeHit{0%,16%{transform:none}18%{transform:translateX(10px)}20%{transform:translateX(-8px)}22%{transform:translateX(5px)}24%,46%{transform:none}54%{transform:translateX(-34%) rotate(-4deg)}62%,100%{transform:none}}
 .live .foe .fxSlash{animation:slash 6s ease-out infinite}
 @keyframes slash{0%,16%{opacity:0;transform:scale(.6) rotate(-10deg)}18%{opacity:1;transform:scale(1.1) rotate(0)}26%{opacity:0;transform:scale(1.2)}100%{opacity:0}}
 .live .foe .dmg{animation:dmgUp 6s ease-out infinite}
-.live .atk .dmg{animation:dmgUp2 6s ease-out infinite}
+.live .tgt .dmg{animation:dmgUp2 6s ease-out infinite}
 @keyframes dmgUp{0%,17%{opacity:0;transform:translateY(10px) scale(.8)}20%{opacity:1;transform:none}34%{opacity:0;transform:translateY(-34px)}100%{opacity:0}}
 @keyframes dmgUp2{0%,56%{opacity:0;transform:translateY(10px) scale(.8)}59%{opacity:1;transform:none}72%{opacity:0;transform:translateY(-34px)}100%{opacity:0}}
 .live .intent{animation:warn 6s ease-in-out infinite}
@@ -256,9 +259,27 @@ body{background:var(--paper);overflow-x:hidden;font-family:var(--text);-webkit-f
 .intent{position:absolute;left:24%;top:0;display:flex;align-items:center;gap:8px;height:40px;padding:0 10px 0 7px;border-radius:10px;background:var(--paper);color:var(--ink);border:1px solid var(--ink);box-shadow:0 4px 12px rgba(11,16,32,.3);white-space:nowrap}
 .intent svg{flex:none;display:block}
 .intent span{font-size:14px;font-weight:700}
-.intent strong{font-family:var(--display);font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.intent strong{font-family:var(--display);font-size:18px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.intent .ar{flex:none;display:block}
 .intent::before{content:'';position:absolute;left:30px;top:100%;width:1px;height:58px;background:var(--paper)}
 .intent::after{content:'';position:absolute;left:27px;top:calc(100% + 56px);width:7px;height:7px;border-radius:50%;background:var(--paper);box-shadow:0 0 0 1.5px var(--ink)}
+/* combos */
+.cgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:34px}
+.combo{position:relative;min-width:0;padding:18px 16px 18px;border-radius:20px;background:var(--plate);box-shadow:inset 0 0 0 1px var(--hair),0 10px 24px rgba(19,33,58,.06);display:flex;flex-direction:column;align-items:center;text-align:center}
+.seq{display:flex;align-items:center;justify-content:center;gap:4px;width:100%}
+.cb{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;flex:1}
+.cb img{display:block;width:100%;max-width:96px;height:64px;object-fit:contain}
+.cb:last-child img{transform:scaleX(-1)}
+.cb small{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.mk{flex:none;position:relative;margin-bottom:18px;padding:4px 9px 4px 8px;border-radius:999px;background:var(--inkDeep);color:var(--goldLite);font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.mk::after{content:'';position:absolute;left:50%;top:100%;margin-left:-4px;border:4px solid transparent;border-top-color:var(--inkDeep)}
+.banner{display:block;margin-top:14px;padding:8px 14px 9px;border-radius:10px;background:var(--inkDeep);color:var(--goldLite);font-family:var(--display);font-weight:800;font-size:clamp(17px,1.7vw,22px);letter-spacing:.02em;line-height:1;text-transform:uppercase;white-space:nowrap;transform:rotate(-3deg);box-shadow:inset 0 0 0 1.5px rgba(201,162,74,.7),0 8px 18px rgba(11,16,32,.22)}
+.live .banner{animation:punch 4.8s var(--pop) infinite;animation-delay:calc(var(--k) * 1.2s + .5s)}
+@keyframes punch{0%{transform:rotate(-3deg) scale(1)}6%{transform:rotate(-6deg) scale(1.28)}12%{transform:rotate(-3deg) scale(.96)}18%,100%{transform:rotate(-3deg) scale(1)}}
+.combo p{margin:12px 0 0;font-size:14px;line-height:1.4;color:var(--ink2)}
+.cnote{margin:26px 0 0;font-size:clamp(16px,1.7vw,19px);font-weight:600;line-height:1.4;color:var(--ink)}
+@media (max-width:960px){.cgrid{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.cgrid{gap:10px;margin-top:22px}.combo{padding:12px 10px}.cb img{height:46px}.combo p{font-size:12.5px;margin-top:8px}.banner{font-size:15px;padding:6px 10px 7px;margin-top:10px}.mk{font-size:9.5px;padding:3px 6px;margin-bottom:16px}.cb small{font-size:9.5px}}
 @media (max-width:760px){
   .arena{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto auto auto auto auto;column-gap:10px;row-gap:10px;margin-top:24px}
   .stand{height:76px}
@@ -287,7 +308,7 @@ body{background:var(--paper);overflow-x:hidden;font-family:var(--text);-webkit-f
 .dayTop span{font-size:13px;font-weight:600;color:var(--muted)}
 .track{position:relative;display:flex;height:44px;border-radius:12px;overflow:hidden}
 .band{position:relative;display:flex;align-items:center;padding-left:12px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;overflow:hidden}
-.band.m{flex:5;background:#eef2e6;color:#4e6b1e}.band.n{flex:6;background:#f7efd9;color:#7d5f14}
+.band.n{flex:11;background:#f7efd9;color:#7d5f14}
 .band.d{flex:3;background:linear-gradient(90deg,#f3d57a,#e2a85c);color:#4a2e06}.band.x{flex:10;background:#1b2742;color:#c9d1e6}
 .sess{position:absolute;top:-8px;width:2px;height:60px;background:var(--ink);border-radius:1px}
 .sess::after{content:'';position:absolute;left:-6px;top:-6px;width:14px;height:14px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 3px var(--plate)}
@@ -305,9 +326,11 @@ body{background:var(--paper);overflow-x:hidden;font-family:var(--text);-webkit-f
 .dtile span{display:block;margin-top:4px;font-size:14px;line-height:1.35;color:var(--ink2)}
 .dtile.gold{box-shadow:inset 0 0 0 1.5px var(--gold),0 10px 24px rgba(201,162,74,.18)}
 @media (max-width:860px){.dtiles{grid-template-columns:1fr 1fr}}
-@media (max-width:520px){.dtiles{grid-template-columns:1fr}.band{font-size:10px;padding-left:6px}}
+@media (max-width:520px){.dtiles{grid-template-columns:1fr}.band{font-size:10px;padding-left:6px}.band .bs{display:none}}
 /* money */
-.price{display:grid;grid-template-columns:1.35fr 1fr;grid-template-rows:auto auto;gap:16px;margin-top:30px}
+.price{display:grid;grid-template-columns:1.35fr 1fr;grid-template-rows:auto auto;gap:16px;margin-top:24px}
+.lead.fair{max-width:46em;font-size:clamp(15px,1.5vw,18px);margin-top:14px}
+.lead.fair b{color:var(--ink);font-weight:700}
 @media (max-width:760px){.price{grid-template-columns:1fr}}
 .pcard{position:relative;min-width:0;padding:22px;border-radius:20px;background:var(--plate);box-shadow:inset 0 0 0 1px var(--hair);display:flex;gap:18px;align-items:center}
 .pcard .label{display:block;margin-bottom:8px}
@@ -336,6 +359,37 @@ body{background:var(--paper);overflow-x:hidden;font-family:var(--text);-webkit-f
 .freeBar b{font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:-.01em}
 .freeBar span{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--ink2)}
 .freeBar svg{color:var(--primary)}
+/* why now */
+.comps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:34px}
+.comp{min-width:0;padding:22px 22px 18px;border-radius:20px;background:var(--plate);box-shadow:inset 0 0 0 1px var(--hair),0 10px 24px rgba(19,33,58,.06);display:flex;flex-direction:column}
+.comp strong{display:block;margin-top:10px;font-family:var(--display);font-weight:800;font-size:clamp(40px,5vw,64px);letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.comp p{margin:10px 0 0;font-size:15px;line-height:1.45;color:var(--ink2)}
+.comp small{display:block;margin-top:auto;padding-top:14px;font-size:12px;font-weight:600;line-height:1.35;color:var(--muted)}
+@media (max-width:760px){.comps{grid-template-columns:1fr;gap:10px;margin-top:22px}.comp{padding:14px 16px}.comp strong{font-size:36px;margin-top:4px}.comp p{font-size:14px;margin-top:6px}.comp small{padding-top:8px;font-size:11px}}
+/* why bugshot wins */
+.vs{margin-top:30px;border-radius:20px;background:var(--plate);box-shadow:inset 0 0 0 1px var(--hair);overflow:hidden}
+.vrow{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.25fr);align-items:stretch}
+.vrow>*{padding:13px 16px;font-size:15px;line-height:1.35;border-top:1px solid var(--hair);color:var(--ink2);display:flex;align-items:center}
+.vrow b{font-weight:700;color:var(--ink)}
+.vhead>*{border-top:0;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.vrow .us{background:var(--inkDeep);color:var(--onInk);font-weight:600;border-top-color:rgba(242,247,244,.12)}
+.vhead .us img{display:block;height:34px;width:auto;transform:rotate(-4deg)}
+@media (max-width:760px){.vrow{grid-template-columns:minmax(0,.8fr) minmax(0,.8fr) minmax(0,.8fr) minmax(0,1.1fr)}.vrow>*{padding:9px 7px;font-size:11.5px}.vhead>*{font-size:9px;letter-spacing:.06em}.vhead .us img{height:22px}}
+/* what's built */
+.built{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,56px);margin-top:30px;align-items:start}
+@media (max-width:860px){.built{grid-template-columns:1fr;gap:22px}}
+.blist{list-style:none;margin:0;padding:0}
+.blist li{display:flex;gap:14px;align-items:flex-start;padding:13px 0;border-top:1px solid var(--hair)}
+.blist i{flex:none;width:28px;height:28px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.blist b{display:block;font-size:16px;font-weight:700}
+.blist span{display:block;margin-top:2px;font-size:14px;line-height:1.4;color:var(--ink2)}
+.bots{padding:22px;border-radius:20px;background:var(--inkDeep);color:var(--onInk);box-shadow:inset 0 0 0 1px rgba(201,162,74,.5)}
+.bots h3{margin:0;font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:-.02em}
+.btiles{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;margin-top:16px}
+.btiles strong{display:block;font-family:var(--display);font-weight:800;font-size:clamp(34px,3.8vw,48px);letter-spacing:-.04em;line-height:1;color:var(--goldLite);font-variant-numeric:tabular-nums}
+.btiles span{display:block;margin-top:4px;font-size:13.5px;line-height:1.35;color:var(--onInkMuted)}
+.bots .note{margin-top:16px;color:var(--onInkMuted);letter-spacing:.02em}
+@media (max-width:520px){.blist li{padding:9px 0}.blist span{font-size:13px}.bots{padding:16px}.btiles{gap:12px 14px;margin-top:12px}.btiles strong{font-size:30px}.btiles span{font-size:12px}}
 /* demo */
 .demoS{padding:24px 16px;align-items:center;background:var(--frame)}
 .demoS .top{text-align:center;margin-bottom:14px}
@@ -343,14 +397,25 @@ body{background:var(--paper);overflow-x:hidden;font-family:var(--text);-webkit-f
 .demoS .top span{display:block;margin-top:4px;font-size:13px;font-weight:600;color:var(--muted)}
 /* roadmap */
 .road{list-style:none;margin:34px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:0;counter-reset:r}
-.road li{position:relative;padding:28px 14px 0 0;border-top:2px solid var(--hairStrong)}
-.road li::before{content:'';position:absolute;top:-7px;left:0;width:12px;height:12px;border-radius:50%;background:var(--paper);box-shadow:inset 0 0 0 2px var(--muted)}
-.road li.now{border-top-color:var(--primary)}
-.road li.now::before{background:var(--primary);box-shadow:0 0 0 4px rgba(11,107,87,.18)}
+.road>li{position:relative;padding:28px 14px 0 0;border-top:2px solid var(--hairStrong)}
+.road>li::before{content:'';position:absolute;top:-7px;left:0;width:12px;height:12px;border-radius:50%;background:var(--paper);box-shadow:inset 0 0 0 2px var(--muted)}
+.road>li.now{border-top-color:var(--primary)}
+.road>li.now::before{background:var(--primary);box-shadow:0 0 0 4px rgba(11,107,87,.18)}
 .road b{display:block;font-family:var(--display);font-weight:800;font-size:clamp(17px,1.8vw,22px);letter-spacing:-.02em}
 .road span{display:block;margin-top:6px;font-size:14px;line-height:1.4;color:var(--ink2)}
 .road em{display:inline-block;margin-top:8px;font-style:normal;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--primary)}
-@media (max-width:760px){.road{grid-template-columns:1fr}.road li{border-top:0;border-left:2px solid var(--hairStrong);padding:0 0 22px 22px}.road li::before{left:-7px;top:2px}.road li.now{border-left-color:var(--primary)}}
+.road3{grid-template-columns:repeat(3,1fr)}
+.road3>li{padding-right:28px}
+.road3 em{display:block;margin:0 0 8px}
+.road3 ul{list-style:none;margin:12px 0 0;padding:0}
+.road3 ul li{position:relative;padding:5px 0 5px 22px;font-size:15px;line-height:1.35;color:var(--ink2)}
+.road3 ul li::before{content:'';position:absolute;left:2px;top:12px;width:8px;height:8px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--muted)}
+.road3 li.done{border-top-color:var(--ink)}
+.road3 li.done::before{background:var(--ink);box-shadow:none}
+.road3 li.done em{color:var(--ink)}
+.road3 li.done ul li::before{background:var(--ink);box-shadow:none;width:14px;height:14px;left:0;top:8px;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' fill='none' stroke='%23000' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' fill='none' stroke='%23000' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat}
+.road3 li.now ul li::before{box-shadow:inset 0 0 0 1.5px var(--primary)}
+@media (max-width:760px){.road,.road3{grid-template-columns:1fr}.road3 ul li{padding-top:3px;padding-bottom:3px}.road>li{border-top:0;border-left:2px solid var(--hairStrong);padding:0 0 22px 22px}.road>li::before{left:-7px;top:2px}.road>li.now{border-left-color:var(--primary)}}
 .close{text-align:center}
 .close .ph{display:inline-block;margin-top:24px;font-size:15px;font-weight:600;color:var(--muted);border:1px dashed var(--hairStrong);border-radius:12px;padding:10px 16px}
 .studio{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:36px}
@@ -400,13 +465,8 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 .blip img{width:26px;height:26px;object-fit:contain;filter:brightness(0) opacity(.82)}
 .blip.caught{box-shadow:0 0 0 2px var(--tier),0 3px 8px rgba(19,33,58,.2)}
 .blip.caught img{filter:none}
-.blip b{position:absolute;top:36px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:700;color:var(--ink);background:rgba(251,250,248,.9);border-radius:6px;padding:2px 5px;white-space:nowrap;font-variant-numeric:tabular-nums}
 .blip .hx{position:absolute;right:-7px;top:-7px}
 .you{position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 2px #fbfaf8,0 0 0 3.5px var(--gold);display:flex;align-items:center;justify-content:center}
-.hNums{position:absolute;left:24px;right:24px;display:flex;justify-content:center;gap:0;text-align:center}
-.hNums div{flex:1;padding:4px 0}
-.hNums div+div{border-left:1px solid var(--hair)}
-.hNums strong{display:block;font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
 .botw{position:absolute;left:24px;right:24px;height:64px;display:flex;align-items:center;gap:12px;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);padding:0 8px}
 .botw .pt{position:relative;width:44px;height:44px;border-radius:50%;border:1.4px dashed rgba(19,33,58,.45);display:flex;align-items:center;justify-content:center;flex:none}
 .botw .pt img{width:34px;height:34px;object-fit:contain;opacity:.55}
@@ -451,11 +511,6 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 .mb.caught{box-shadow:0 0 0 1.5px var(--tier)}
 .mb.caught img{filter:none}
 .mb.g::after{content:'';position:absolute;inset:0}
-.guide{position:absolute;left:50%;height:40px;padding:0 14px 0 10px;border-radius:12px;background:var(--plate);box-shadow:inset 0 0 0 1px var(--hairStrong),0 6px 16px rgba(11,16,32,.22);display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;white-space:nowrap;transform:translateX(-50%);pointer-events:none;transition:opacity .25s;font-variant-numeric:tabular-nums}
-.guide svg{transition:transform .12s linear}
-.guide .gp{width:26px;height:26px;border-radius:50%;background:#fbfaf8;box-shadow:0 0 0 1px rgba(19,33,58,.5);overflow:hidden;position:relative}
-.guide .gp img{position:absolute;inset:2px;width:22px;height:22px;object-fit:contain;filter:brightness(0) opacity(.8)}
-.guide .gp.caught img{filter:none}
 .word{position:absolute;left:16px;right:16px;text-align:center;font-size:15px;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(11,16,32,.75),0 0 12px rgba(11,16,32,.4);pointer-events:none;transition:opacity .2s,transform .2s var(--ease);font-variant-numeric:tabular-nums}
 .cap{position:absolute;left:50%;width:76px;height:76px;margin-left:-38px;border-radius:50%;transition:transform .16s var(--ease),opacity .2s,box-shadow .3s;touch-action:none}
 .cap .f{position:absolute;inset:0;border-radius:50%;background:rgba(255,255,255,.94);box-shadow:0 8px 22px rgba(11,16,32,.35)}
@@ -477,13 +532,6 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 .flash{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle at var(--fx,50%) var(--fy,60%),#fff 0,rgba(255,255,255,.9) 35%,rgba(255,252,240,.6) 100%)}
 .flash.go{animation:flash .9s ease-out both}
 @keyframes flash{0%{opacity:0}8%{opacity:1}30%{opacity:.85}100%{opacity:0}}
-.frozen .world{filter:saturate(.9) contrast(1.04)}
-.snapCap{position:absolute;left:0;right:0;text-align:center;pointer-events:none;opacity:0}
-.snapCap h2{margin:0;font-family:var(--display);font-weight:800;font-size:40px;letter-spacing:-.03em;line-height:1;color:var(--ink);text-shadow:0 1px 0 rgba(255,255,255,.6)}
-.snapCap.go{animation:titleIn .45s .25s var(--pop) both}
-.pin{position:absolute;left:24px;top:24px;opacity:0;pointer-events:none}
-.pin.go{animation:pinIn .35s .2s var(--pop) both}
-@keyframes pinIn{from{opacity:0;transform:translate(-14px,-14px) scale(1.4)}to{opacity:1;transform:none}}
 .sheet{position:absolute;left:0;right:0;bottom:0;border-radius:22px 22px 0 0;background:var(--paper);box-shadow:0 -10px 30px rgba(11,16,32,.3);padding:24px 24px 30px;text-align:center;transform:translateY(105%);transition:transform .32s var(--ease);z-index:20}
 .sheet.on{transform:none}
 .sheet h2{margin:0;font-family:var(--display);font-weight:800;font-size:28px;letter-spacing:-.025em;line-height:1.05}
@@ -522,19 +570,6 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 .back svg{position:absolute;inset:0;width:100%;height:100%}
 .back .wm{position:absolute;left:0;right:0;bottom:46px;text-align:center;font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:.32em;padding-left:.32em;color:rgba(255,255,255,.82)}
 .face{padding:7px;background:var(--tierF);box-shadow:0 18px 40px rgba(19,33,58,.28);overflow:hidden}
-.face .fi{position:relative;width:100%;height:100%;border-radius:18px;background:var(--plate);overflow:hidden;display:flex;flex-direction:column}
-.photo{position:relative;height:57%;background:#dfe6d6 url(art/scene-home-patch-noon.webp) no-repeat;background-size:auto 170%;overflow:hidden}
-.photo img{position:absolute;left:50%;bottom:11%;width:70%;height:76%;transform:translateX(-50%);object-fit:contain;object-position:50% 100%;filter:drop-shadow(0 8px 6px rgba(30,36,20,.3))}
-.photo img.paper{mix-blend-mode:multiply;filter:none;width:80%;height:86%;bottom:4%}
-.photo .psh{position:absolute;left:28%;right:28%;bottom:8%;height:8%;border-radius:50%;background:radial-gradient(closest-side,rgba(36,40,20,.38),rgba(36,40,20,0))}
-.photo .no{position:absolute;right:10px;top:10px;font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--ink);background:rgba(255,255,255,.82);padding:4px 7px;border-radius:8px;font-variant-numeric:tabular-nums}
-.info{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 14px 10px;text-align:center}
-.info h3{margin:0;font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:-.025em;line-height:1.05}
-.info .lat{font-style:italic;font-weight:500;font-size:14px;color:var(--ink2);margin-top:4px}
-.stats{display:flex;width:100%;margin-top:12px;border-top:1px solid var(--hair);padding-top:10px}
-.stats div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
-.stats div+div{border-left:1px solid var(--hair)}
-.stats strong{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
 .sweepL{position:absolute;inset:0;border-radius:24px;pointer-events:none;overflow:hidden}
 .sweepL::after{content:'';position:absolute;top:-20%;bottom:-20%;width:40%;left:-60%;background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.55),rgba(255,255,255,0));transform:skewX(-12deg)}
 #result.rev .sweepL::after{animation:sweep .9s .75s ease-out both}
@@ -561,6 +596,97 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 .gains img{width:30px;height:30px;mix-blend-mode:multiply;margin:-4px -2px}
 .gains strong{font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .gains span{font-size:12px;font-weight:600;color:var(--muted)}
+
+/* ---------- demo, matched to the app loop (2026-11-20) ---------- */
+.hBar{position:absolute;left:16px;top:36px;display:flex;gap:8px}
+.hPl{height:36px;padding:0 11px;border-radius:12px;background:var(--plate);box-shadow:inset 0 0 0 1px var(--hair);display:flex;align-items:center;gap:5px;font-variant-numeric:tabular-nums}
+.hPl b{font-size:15px;font-weight:700}
+.hPl small{font-size:11px;font-weight:600;color:var(--muted)}
+.hLab{color:var(--goldInk);font-size:13px}
+.medal .in{background:#fbfaf8}
+.medal .in::before{content:'';position:absolute;inset:0;background:url(art/scene-patch-map.webp) center/cover;opacity:.5;mix-blend-mode:multiply}
+.medal .sweep{background:conic-gradient(from 0deg,rgba(201,162,74,0) 0deg,rgba(201,162,74,0) 290deg,rgba(201,162,74,.14) 340deg,rgba(201,162,74,.4) 359deg,rgba(201,162,74,0) 360deg);animation:spin 4s linear infinite}
+.nMark{position:absolute;left:0;top:0;width:16px;height:16px;margin:-8px;font-size:11px;font-weight:800;line-height:16px;text-align:center;color:#8a6a1f}
+#hBlips{position:absolute;inset:0;pointer-events:none}
+.blip{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;padding:2px;background:rgba(19,33,58,.22);box-shadow:0 3px 0 rgba(19,33,58,.14);display:block;animation:blipIn .32s var(--pop) both}
+.blip i{display:flex;width:100%;height:100%;border-radius:50%;background:#fbfaf8;align-items:center;justify-content:center;overflow:hidden}
+.blip img{width:19px;height:19px;object-fit:contain;filter:brightness(0) invert(.75)}
+.blip.caught{background:var(--tierF)}
+.blip.caught img{filter:none}
+.blip .hx{position:absolute;right:-8px;top:-8px}
+@keyframes blipIn{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+.dtag{position:absolute;height:20px;margin:-10px 0 0;padding:0 6px;border-radius:6px;background:#fff;box-shadow:inset 0 0 0 1px rgba(201,162,74,.7);font-size:11px;font-weight:700;line-height:20px;white-space:nowrap;transform:translateX(-50%);font-variant-numeric:tabular-nums}
+.hub{position:absolute;left:24px;right:24px;height:64px;border-radius:16px;background:var(--plate);box-shadow:inset 0 0 0 1px var(--hair);display:flex;align-items:center}
+.hub div{flex:1;text-align:center}
+.hub div+div{border-left:1px solid var(--hair)}
+.hub strong{display:block;margin-top:2px;font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+.hub strong small{font-size:16px;color:var(--muted)}
+.hStatus{position:absolute;left:24px;right:24px;margin:0;text-align:center;font-size:14px;font-weight:700;color:var(--goldInk)}
+.start>span{display:flex;flex-direction:column;align-items:center}
+.start b{font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:-.015em;line-height:1.05}
+.start small{font-family:var(--text);font-size:13px;font-weight:600;opacity:.85}
+.start small:empty{display:none}
+.start.lamp .lens{background:#fbfaf8 url(art/item-sun-lamp.webp) center/86% no-repeat}
+.start.lamp b{font-size:22px}
+.botw .label{display:block}
+.botw .pt img{filter:brightness(0) invert(.75);opacity:1}
+.dexPlate{flex-direction:row}
+.dexPlate b{font-size:14px;font-weight:700}
+.dexPlate small{font-size:11px;font-weight:600;color:var(--muted)}
+.mb img{filter:brightness(0) invert(.75)}
+.mb.caught{background:#fbfaf8;box-shadow:0 0 0 2px var(--tier)}
+.edge{position:absolute;top:40%;width:64px;height:96px;background:var(--paper);box-shadow:0 6px 16px rgba(11,16,32,.22);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:12px;font-weight:700;pointer-events:none;transition:opacity .2s;font-variant-numeric:tabular-nums}
+.edge.l{left:0;border-radius:0 16px 16px 0;animation:nudgeL 1.2s ease-in-out infinite}
+.edge.r{right:0;border-radius:16px 0 0 16px;animation:nudgeR 1.2s ease-in-out infinite}
+.edge.r svg{transform:scaleX(-1)}
+@keyframes nudgeL{50%{transform:translateX(-5px)}}
+@keyframes nudgeR{50%{transform:translateX(5px)}}
+.edge .gp{width:30px;height:30px;border-radius:50%;background:#fbfaf8;box-shadow:0 0 0 1px rgba(19,33,58,.4);overflow:hidden;position:relative}
+.edge .gp img{position:absolute;inset:3px;width:24px;height:24px;object-fit:contain;filter:brightness(0) invert(.75)}
+.edge .gp.caught img{filter:none}
+.lampT{position:absolute;left:20px;bottom:48px;width:64px;height:68px;border-radius:16px;background:var(--plate);box-shadow:inset 0 0 0 1px var(--hairStrong),0 4px 12px rgba(11,16,32,.24);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;transition:opacity .2s}
+.lampT img{width:42px;height:42px;mix-blend-mode:multiply}
+.lampT small{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2)}
+.lampT b{position:absolute;right:-6px;top:-6px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--primary);color:#fff;font-size:12px;font-weight:700;line-height:22px;text-align:center}
+.lampT b:empty{display:none}
+.sheet .sArt{display:block;margin:-6px auto 6px;height:auto}
+.sheet .lampArt{border-radius:50%;mix-blend-mode:multiply}
+.sheet .gk{display:inline-flex;align-items:center;gap:6px;color:var(--goldInk);margin-bottom:6px}
+.sheet .meta{margin-top:6px}
+.sheet .meta+p{margin-top:8px}
+.sheet .sNote{margin-top:4px;font-size:11px}
+#lampSheet p{margin-bottom:6px}
+#lampMeta{margin:0 0 16px}
+.sheet .link{display:block;margin:4px auto 0}
+.sheet .btnP svg{flex:none}
+.paperIn{position:absolute;inset:0;background:var(--paper);opacity:0;pointer-events:none;z-index:40}
+.paperIn.go{animation:paperIn .25s linear both}
+@keyframes paperIn{0%,32%{opacity:0}96%,100%{opacity:1}}
+.flash.go{animation:flash2 .25s ease-out both}
+@keyframes flash2{0%{opacity:0}4%,48%{opacity:1}100%{opacity:0}}
+.bug .fw{position:absolute;inset:0;transform-origin:50% 100%;transition:transform .14s ease-out}
+.bug .fw.r{transform:scaleX(-1)}
+.bug .sh{left:auto;right:auto;bottom:auto;border-radius:50%;background:radial-gradient(closest-side,rgba(36,28,16,.42),rgba(36,28,16,0))}
+.bug img{filter:none}
+#face .fi2{position:relative;width:100%;height:100%;border-radius:18px;background:#fff;display:flex;flex-direction:column}
+#face .mph{border-radius:16px 16px 0 0}
+#face .bHp,#face .bAtk{background:var(--tierF);background-size:200% 200%}
+#face .bHp small,#face .bAtk small{color:var(--tierPale)}
+#face .mst svg{color:var(--tierMetal)}
+#face .mfact{border-top-color:var(--hair)}
+#face .lv svg{display:block}
+.cardIn{animation:cardUp2 .5s var(--ease) both}
+@keyframes cardUp2{from{opacity:0;transform:translateY(180px)}to{opacity:1;transform:none}}
+.cardWrap::before{content:'';position:absolute;left:-26%;right:-26%;top:-16%;bottom:-16%;border-radius:50%;background:radial-gradient(closest-side,var(--glow,rgba(158,164,174,.5)),rgba(0,0,0,0));opacity:0;z-index:-1;pointer-events:none}
+#result.charge .cardWrap::before{animation:charge2 var(--cd,.44s) ease-in both}
+#result.rev .cardWrap::before{opacity:.5;transition:opacity .6s}
+@keyframes charge2{0%{opacity:0;transform:scale(.6)}100%{opacity:1;transform:scale(1.05)}}
+#result.charge .cardIn{animation:dipShake var(--cd,.44s) linear both}
+@keyframes dipShake{0%{transform:none}10%{transform:scale(.96)}30%{transform:scale(.96) translateX(-2px) rotate(-.4deg)}40%{transform:scale(.96) translateX(3px) rotate(.6deg)}50%{transform:scale(.96) translateX(-4px) rotate(-.8deg)}60%{transform:scale(.96) translateX(4px) rotate(.8deg)}70%{transform:scale(.96) translateX(-4px) rotate(-.8deg)}80%{transform:scale(.96) translateX(4px) rotate(.8deg)}90%{transform:scale(.97) translateX(-2px) rotate(-.4deg)}100%{transform:scale(1)}}
+#result.rev .flip{animation-duration:var(--fd,.7s)}
+#result.rev .cardIn{animation:none}
+.link:disabled{opacity:.5;cursor:default;text-decoration:none}
+.bug .fw img{left:5%;width:90%}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
   .medal .sweep,.leak{display:none}
@@ -570,7 +696,7 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 <body>
 
 <nav class="navDots" id="navDots" aria-label="Slides"></nav>
-<div class="counter" id="counter" aria-hidden="true">01 / 12</div>
+<div class="counter" id="counter" aria-hidden="true">01 / 16</div>
 
 <section class="slide cover" id="s-cover" aria-label="Bugshot">
   <div class="art" aria-hidden="true"></div>
@@ -596,6 +722,19 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
   </div>
 </section>
 
+<section class="slide" aria-label="Why now">
+  <div class="wrap">
+    <p class="kick" data-in>Why now</p>
+    <h2 class="h1" data-in style="--d:.08s;max-width:13em">Players pay to collect.</h2>
+    <p class="lead" data-in style="--d:.12s">Creatures in the real world, and cards on a phone, are proven money. Bugshot does both at home: no GPS, any weather.</p>
+    <div class="comps">
+      <div class="comp" data-in style="--d:.16s"><span class="label">Pokémon GO</span><strong>$9B+</strong><p>player spending in its lifetime, and about $1B in 2025.</p><small>Sensor Tower, via PocketGamer.biz and mobilegamer.biz</small></div>
+      <div class="comp" data-in style="--d:.22s"><span class="label">Monster Hunter Now</span><strong>~$220M</strong><p>in its first year. Real-world hunting from a known series.</p><small>AppMagic, via PocketGamer.biz</small></div>
+      <div class="comp" data-in style="--d:.28s"><span class="label">Pokémon TCG Pocket</span><strong>$1.3B</strong><p>in its first year, with 150M+ downloads. Collecting cards, no real world.</p><small>AppMagic, Nov 2025</small></div>
+    </div>
+  </div>
+</section>
+
 <section class="slide" aria-label="How it plays">
   <div class="wrap">
     <p class="kick" data-in>How it plays</p>
@@ -616,9 +755,9 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
     <h2 class="h1" data-in style="--d:.08s">A photo, not a dice roll.</h2>
     <div class="steps">
       <div class="step" data-in style="--d:.1s"><span class="ico"><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><g class="ft a"><ellipse cx="14" cy="27" rx="4.2" ry="6" fill="#13213a"/><circle cx="10.5" cy="19" r="1.6" fill="#13213a"/><circle cx="14" cy="18" r="1.6" fill="#13213a"/><circle cx="17.5" cy="19" r="1.6" fill="#13213a"/></g><g class="ft b"><ellipse cx="26" cy="17" rx="4.2" ry="6" fill="#13213a"/><circle cx="22.5" cy="9" r="1.6" fill="#13213a"/><circle cx="26" cy="8" r="1.6" fill="#13213a"/><circle cx="29.5" cy="9" r="1.6" fill="#13213a"/></g></svg></span><b>Sneak</b><span>Move slowly. Rush and it bolts.</span></div>
-      <div class="step" data-in style="--d:.18s"><span class="ico"><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="15" fill="none" stroke="#13213a" stroke-opacity=".25" stroke-width="2"/><g class="orbit"><circle cx="20" cy="20" r="15" fill="none" stroke="#13213a" stroke-width="3" stroke-dasharray="26 68.3" stroke-linecap="round"/></g><ellipse cx="20" cy="20" rx="3.6" ry="5" fill="#0b6b57"/><path d="M17 15 l-3 -3 M23 15 l3 -3" stroke="#0b6b57" stroke-width="1.6" stroke-linecap="round"/></svg></span><b>Focus</b><span>Keep it inside the ring.</span></div>
+      <div class="step" data-in style="--d:.18s"><span class="ico"><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="15" fill="none" stroke="#13213a" stroke-opacity=".25" stroke-width="2"/><g class="orbit"><circle cx="20" cy="20" r="15" fill="none" stroke="#13213a" stroke-width="3" stroke-dasharray="26 68.3" stroke-linecap="round"/></g><ellipse cx="20" cy="20" rx="3.6" ry="5" fill="#0b6b57"/><path d="M17 15 l-3 -3 M23 15 l3 -3" stroke="#0b6b57" stroke-width="1.6" stroke-linecap="round"/></svg></span><b>Focus</b><span>Hold steady to lock it in the ring.</span></div>
       <div class="step" data-in style="--d:.26s"><span class="ico"><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle class="goldR" cx="20" cy="20" r="12" fill="none" stroke="#c9a24a" stroke-width="3"/><circle class="closing" cx="20" cy="20" r="12" fill="none" stroke="#13213a" stroke-width="2"/><circle cx="20" cy="20" r="2.4" fill="#13213a"/></svg></span><b>Still moment</b><span>Snap as the ring meets the gold.</span></div>
-      <div class="step" data-in style="--d:.34s"><span class="ico"><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle class="pip p1" cx="9" cy="20" r="5.5" fill="#fff" stroke="#13213a" stroke-width="2"/><circle class="pip p2" cx="20" cy="20" r="5.5" fill="#fff" stroke="#13213a" stroke-width="2"/><circle class="pip p3" cx="31" cy="20" r="5.5" fill="#fff" stroke="#13213a" stroke-width="2"/></svg></span><b>Three shots</b><span>Miss and it dodges. Then it's gone.</span></div>
+      <div class="step" data-in style="--d:.34s"><span class="ico"><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle class="pip p1" cx="9" cy="20" r="5.5" fill="#fff" stroke="#13213a" stroke-width="2"/><circle class="pip p2" cx="20" cy="20" r="5.5" fill="#fff" stroke="#13213a" stroke-width="2"/><circle class="pip p3" cx="31" cy="20" r="5.5" fill="#fff" stroke="#13213a" stroke-width="2"/></svg></span><b>Three shots</b><span>Each miss costs one. One more for an ad, then it's gone.</span></div>
     </div>
     <div class="snap" data-in style="--d:.4s">
       <div><h3>The still moment gets shorter</h3><p>How long you have to snap, by rarity. Rarer bugs also spook faster and fake their stills.</p></div>
@@ -657,15 +796,15 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
                 <div class="clip"><span class="psh"></span><img src="art/cut/jewel_beetle.webp" alt=""></div>
                 <span class="lv"><svg width="10" height="11" viewBox="0 0 12 13"><path d="M6 0.5 L11.2 3.5 V9.5 L6 12.5 L0.8 9.5 V3.5 Z" fill="#c9a8ff" stroke="#c9a8ff" stroke-width="1.2"/></svg><svg width="10" height="11" viewBox="0 0 12 13"><path d="M6 0.5 L11.2 3.5 V9.5 L6 12.5 L0.8 9.5 V3.5 Z" fill="#c9a8ff" stroke="#c9a8ff" stroke-width="1.2"/></svg><svg width="10" height="11" viewBox="0 0 12 13"><path d="M6 0.5 L11.2 3.5 V9.5 L6 12.5 L0.8 9.5 V3.5 Z" fill="#c9a8ff" stroke="#c9a8ff" stroke-width="1.2"/></svg><svg width="10" height="11" viewBox="0 0 12 13"><path d="M6 0.5 L11.2 3.5 V9.5 L6 12.5 L0.8 9.5 V3.5 Z" fill="#c9a8ff" stroke="#c9a8ff" stroke-width="1.2"/></svg><svg width="10" height="11" viewBox="0 0 12 13"><path d="M6 0.5 L11.2 3.5 V9.5 L6 12.5 L0.8 9.5 V3.5 Z" fill="none" stroke="#c9a8ff" stroke-width="1.2"/></svg></span>
                 <span class="tags"><span class="newP">NEW</span><span class="typeP"><svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="rgba(255,255,255,.22)"/><path d="M5 15.5 C5 10 8 7 12 7 C16 7 19 10 19 15.5 Z M12 7 V15.5" fill="#fff" stroke="#0b0b10" stroke-width="1.2" stroke-linejoin="round"/></svg>SHELL</span></span>
-                <span class="bHp"><span><b>42</b><small>HP</small></span></span>
-                <span class="bAtk"><span><span><b>18</b><small>ATK</small></span></span></span>
+                <span class="bHp"><span><b>27</b><small>HP</small></span></span>
+                <span class="bAtk"><span><span><b>32</b><small>ATK</small></span></span></span>
               </div>
               <div class="minf">
                 <h3>Jewel beetle</h3>
-                <div class="lat">Buprestidae</div>
-                <div class="mst"><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7b3ff2" stroke-width="2.6" stroke-linejoin="round"><path d="M12 3 L20 6 V12 C20 16.5 16.5 19.5 12 21 C7.5 19.5 4 16.5 4 12 V6 Z"/></svg><b>36</b><small>DEF</small></span><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7b3ff2" stroke-width="2.6" stroke-linejoin="round"><path d="M13 2 L4 14 H12 L11 22 L20 10 H12 Z"/></svg><b>24</b><small>SPD</small></span></div>
+                <div class="lat">Buprestidae · Beetle</div>
+                <div class="mst"><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7b3ff2" stroke-width="2.6" stroke-linejoin="round"><path d="M12 3 L20 6 V12 C20 16.5 16.5 19.5 12 21 C7.5 19.5 4 16.5 4 12 V6 Z"/></svg><b>42</b><small>DEF</small></span><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7b3ff2" stroke-width="2.6" stroke-linejoin="round"><path d="M13 2 L4 14 H12 L11 22 L20 10 H12 Z"/></svg><b>27</b><small>SPD</small></span></div>
                 <p class="mfact">“Shine comes from microscopic texture, not pigment.”</p>
-                <div class="mno">No. 008</div>
+                <div class="mno">No. 008 · 20 Nov</div>
               </div>
             </div><div class="sweepL"></div></div>
           </div>
@@ -680,39 +819,54 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
   <div class="wrap">
     <p class="kick" data-in>Battles</p>
     <h2 class="h1" data-in style="--d:.08s;max-width:11em">Your catches fight back.</h2>
-    <p class="lead" data-in style="--d:.16s">3v3 against the AI. Epic and Legendary bugs are Guardians: beat them first to earn the shot.</p>
-    <ul class="facts" data-in style="--d:.2s"><li>3v3</li><li>10 turns</li><li>Focus to spend</li></ul>
-    <div class="arena" data-in style="--d:.24s" role="img" aria-label="Your Ladybird, Mantis and Ant face the Guardian Jewel Beetle, which plans to ram for 18">
+    <p class="lead" data-in style="--d:.16s">Teams of 3 across 5 types. Players learn the matchups; the game never hints in battle. Epic and Legendary bugs have Guardians: beat one to earn the shot.</p>
+    <ul class="facts" data-in style="--d:.2s"><li>3v3</li><li>Strategy, not reflexes</li><li>Combos</li></ul>
+    <div class="arena" data-in style="--d:.24s" role="img" aria-label="Your Ladybird, Ant and Mantis face the Guardian Jewel beetle. The Ant lands a strong hit; the Guardian shows its next move, Ram on the Mantis">
       <div class="ground" aria-hidden="true"></div>
       <div class="ground g2" aria-hidden="true"></div>
       <div class="stand mir" style="grid-column:1"><img src="art/cut/ladybird.webp" alt=""></div>
-      <div class="plate" style="grid-column:1"><span class="row"><b>Ladybird</b><em>38</em></span><span class="hp"><i style="--w:100%"></i></span></div>
-      <div class="stand atk" style="grid-column:2"><img src="art/cut/mantis.webp" alt=""><span class="dmg" aria-hidden="true">−18</span></div>
-      <div class="plate" style="grid-column:2"><span class="row"><b>Mantis</b><em>29</em></span><span class="hp atkHp"><i style="--w:62%"></i></span></div>
-      <div class="stand" style="grid-column:3"><img src="art/cut/ant.webp" alt=""></div>
-      <div class="plate" style="grid-column:3"><span class="row"><b>Ant</b><em>34</em></span><span class="hp"><i style="--w:84%"></i></span></div>
+      <div class="plate" style="grid-column:1"><span class="row"><b>Ladybird</b><em>Shell</em></span><span class="hp"><i style="--w:100%"></i></span></div>
+      <div class="stand mir atk" style="grid-column:2"><img src="art/cut/ant.webp" alt=""></div>
+      <div class="plate" style="grid-column:2"><span class="row"><b>Ant</b><em>Crawler</em></span><span class="hp"><i style="--w:84%"></i></span></div>
+      <div class="stand mir tgt" style="grid-column:3"><img src="art/cut/mantis.webp" alt=""><span class="dmg" aria-hidden="true">Strong!</span></div>
+      <div class="plate" style="grid-column:3"><span class="row"><b>Mantis</b><em>Hunter</em></span><span class="hp atkHp"><i style="--w:62%"></i></span></div>
       <div class="vsB" aria-hidden="true"><svg width="64" height="70" viewBox="0 0 64 70"><defs><linearGradient id="vsG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3d57a"/><stop offset=".55" stop-color="#c9a24a"/><stop offset="1" stop-color="#ad8636"/></linearGradient></defs><path d="M32 3 L59 18.5 V51.5 L32 67 L5 51.5 V18.5 Z" fill="url(#vsG)" stroke="#f2f1ef" stroke-width="2.5" stroke-linejoin="round"/><path d="M32 9.5 L53.5 22 V48 L32 60.5 L10.5 48 V22 Z" fill="none" stroke="#7d5f14" stroke-width="1.2" stroke-linejoin="round" opacity=".7"/><text x="32" y="43" text-anchor="middle" font-family="Bricolage Grotesque, system-ui, sans-serif" font-weight="800" font-size="22" letter-spacing="-.5" fill="#13213a">VS</text></svg></div>
       <div class="foe stand">
-        <div class="intent"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#f3e6cc"/><path d="M13.5 4.5 L7 13.2 H11.2 L10.3 19.5 L17 10.6 H12.8 Z" fill="#13213a"/></svg><span>Ram</span><strong>18</strong></div>
+        <div class="intent"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#f3e6cc"/><path d="M13.5 4.5 L7 13.2 H11.2 L10.3 19.5 L17 10.6 H12.8 Z" fill="#13213a"/></svg><span>Ram</span><svg class="ar" width="16" height="12" viewBox="0 0 16 12" aria-hidden="true"><path d="M1 6 H13 M9 1.5 L14 6 L9 10.5" fill="none" stroke="#13213a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><strong>Mantis</strong></div>
         <img src="art/cut/jewel_beetle.webp" alt="">
         <svg class="fxSlash" viewBox="0 0 100 100" aria-hidden="true"><path d="M18 78 L78 18 M30 86 L86 30 M10 64 L64 10" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/><path d="M18 78 L78 18 M30 86 L86 30 M10 64 L64 10" stroke="#b3302b" stroke-width="3" stroke-linecap="round"/></svg>
-        <span class="dmg" aria-hidden="true">−14</span>
+        <span class="dmg" aria-hidden="true">Strong!</span>
       </div>
-      <div class="plate boss"><span class="row"><svg width="22" height="24" viewBox="0 0 20 22" aria-hidden="true"><path d="M10 1 L18.5 6 V16 L10 21 L1.5 16 V6 Z" fill="#c9a24a" stroke="#13213a" stroke-width="1.4" stroke-linejoin="round"/><path d="M6.5 7.5 L13.5 14.5 M13.5 7.5 L6.5 14.5" stroke="#13213a" stroke-width="1.8" stroke-linecap="round"/></svg><b>Jewel Beetle</b><small>GUARDIAN</small><em>86 / 120</em></span><span class="hp"><i style="--w:72%"></i></span></div>
+      <div class="plate boss"><span class="row"><svg width="22" height="24" viewBox="0 0 20 22" aria-hidden="true"><path d="M10 1 L18.5 6 V16 L10 21 L1.5 16 V6 Z" fill="#c9a24a" stroke="#13213a" stroke-width="1.4" stroke-linejoin="round"/><path d="M6.5 7.5 L13.5 14.5 M13.5 7.5 L6.5 14.5" stroke="#13213a" stroke-width="1.8" stroke-linecap="round"/></svg><b>Jewel beetle</b><small>GUARDIAN</small><em>Shell</em></span><span class="hp"><i style="--w:72%"></i></span></div>
     </div>
   </div>
 </section>
 
-<section class="slide" aria-label="AR at home">
+<section class="slide combos" data-live aria-label="Combos">
+  <div class="wrap">
+    <p class="kick" data-in>Combos</p>
+    <h2 class="h1" data-in style="--d:.08s;max-width:12em">One type sets it up. Another cashes in.</h2>
+    <div class="cgrid">
+      <div class="combo" data-in style="--d:.12s;--k:0"><div class="seq"><span class="cb"><img src="art/cut/wasp.webp" alt="Wasp"><small>Wasp</small></span><span class="mk">Venom</span><span class="cb"><img src="art/cut/mantis.webp" alt="Mantis"><small>Mantis</small></span></div><b class="banner">Venom Break</b><p>Wasp poisons, switch to Mantis: the venom bursts, then Ambush.</p></div>
+      <div class="combo" data-in style="--d:.2s;--k:1"><div class="seq"><span class="cb"><img src="art/cut/horse_fly.webp" alt="Horse fly"><small>Horse fly</small></span><span class="mk">Crack</span><span class="cb"><img src="art/cut/scorpion.webp" alt="Scorpion"><small>Scorpion</small></span></div><b class="banner">Shatter</b><p>Horse fly cracks the shell. Scorpion stings through Guard and shields.</p></div>
+      <div class="combo" data-in style="--d:.28s;--k:2"><div class="seq"><span class="cb"><img src="art/cut/silk_moth.webp" alt="Moon moth"><small>Moon moth</small></span><span class="mk">Daze</span><span class="cb"><img src="art/cut/planthopper.webp" alt="Planthopper"><small>Planthopper</small></span></div><b class="banner">Lights Out</b><p>Moon moth dazes. Planthopper launches, and the foe loses Focus.</p></div>
+      <div class="combo" data-in style="--d:.36s;--k:3"><div class="seq"><span class="cb"><img src="art/cut/scarab.webp" alt="Scarab beetle"><small>Scarab</small></span><span class="mk">Shield</span><span class="cb"><img src="art/cut/blue_butterfly.webp" alt="Blue"><small>Blue</small></span></div><b class="banner">Fortress Drop</b><p>Scarab beetle shields up, hands the shield to Blue, and it shatters through.</p></div>
+    </div>
+    <p class="cnote" data-in style="--d:.44s">A mark from one type, cashed in by another. Mixed teams combo; every combo has a counter.</p>
+    <p class="note" data-in style="--d:.48s">At rank 3 each bug picks a build: Opener (set-up) or Closer (payoff). The combo layer is in testing.</p>
+  </div>
+</section>
+
+<section class="slide" aria-label="Your patch">
   <div class="wrap two">
     <div>
       <p class="kick" data-in>Your patch</p>
       <h2 class="h1" data-in style="--d:.08s">The room you're in. Nothing else.</h2>
       <ul class="list" data-in style="--d:.16s">
         <li><b>No location</b><span>No GPS, no location permission, no stored place.</span></li>
-        <li><b>Real surfaces</b><span>Bugs sit on your floors and walls (ARCore / ARKit).</span></li>
-        <li><b>Any phone</b><span>No AR? Bugs hold in view by gyro and steps.</span></li>
-        <li><b>Stays here</b><span>Room map and snaps never leave the phone.</span></li>
+        <li><b>Your real floor</b><span>Painted bugs stand on your floor in the live camera, held in place by the phone's motion sensors. No AR needed.</span></li>
+        <li><b>Cheap phones</b><span>Runs on cheap Android phones. Tested on a Redmi Note 10.</span></li>
+        <li><b>Stays here</b><span>Photos never leave the phone.</span></li>
       </ul>
     </div>
     <div data-in style="--d:.2s"><div class="medalBig"><div class="in"></div></div></div>
@@ -725,21 +879,36 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
     <h2 class="h1" data-in style="--d:.08s">A few minutes, a few times a day.</h2>
     <div class="day" data-in style="--d:.12s">
       <div class="dayTop"><b>One day in your patch</b><span>Each dot is a 2 to 3 minute sweep</span></div>
-      <div class="track" role="img" aria-label="A day: morning, noon, dusk (the shiny window, 17:00 to 20:00) and night, with four short sweeps">
-        <div class="band m">Morning</div><div class="band n">Noon</div><div class="band d">Dusk · shiny</div><div class="band x">Night</div>
+      <div class="track" role="img" aria-label="A day: day, dusk (the shiny window, 17:00 to 20:00) and night, with four short sweeps">
+        <div class="band n">Day</div><div class="band d">Dusk<span class="bs"> · shiny</span></div><div class="band x">Night</div>
         <span class="dnow" aria-hidden="true"></span>
       </div>
       <div style="position:relative;height:0" aria-hidden="true"><i class="sess" style="left:8.3%;top:-52px"></i><i class="sess" style="left:31%;top:-52px"></i><i class="sess" style="left:52%;top:-52px"></i><i class="sess" style="left:72%;top:-52px"></i></div>
-      <div class="ticks" aria-hidden="true"><span style="left:0;transform:none">06:00</span><span style="left:20.8%">11:00</span><span style="left:45.8%">17:00</span><span style="left:58.3%">20:00</span><span style="right:0;left:auto;transform:none">06:00</span></div>
+      <div class="ticks" aria-hidden="true"><span style="left:0;transform:none">06:00</span><span style="left:45.8%">17:00</span><span style="left:58.3%">20:00</span><span style="right:0;left:auto;transform:none">06:00</span></div>
     </div>
     <div class="dtiles">
-      <div class="dtile" data-in style="--d:.16s"><span class="pic"><img src="art/scene-patch-map.webp" alt=""></span><div><strong>6</strong><span>bugs in your patch, +1 every 20 min</span></div></div>
+      <div class="dtile" data-in style="--d:.16s"><span class="pic"><img src="art/scene-patch-map.webp" alt=""></span><div><strong>6</strong><span>bugs in your patch, +1 every 20 min (Pro 8, every 15)</span></div></div>
       <div class="dtile" data-in style="--d:.2s"><span class="pic"><img src="art/scene-sweep-lens.webp" alt=""></span><div><strong>24</strong><span>sightings a day (Pro 32)</span></div></div>
-      <div class="dtile" data-in style="--d:.24s"><span class="pic"><svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true"><path d="M22 4 A18 18 0 0 1 40 22 L22 22 Z" fill="#eef2e6"/><path d="M40 22 A18 18 0 0 1 22 40 L22 22 Z" fill="#f7efd9"/><path d="M22 40 A18 18 0 0 1 4 22 L22 22 Z" fill="#f3d57a"/><path d="M4 22 A18 18 0 0 1 22 4 L22 22 Z" fill="#1b2742"/><circle cx="22" cy="22" r="18" fill="none" stroke="#13213a" stroke-width="1.5"/></svg></span><div><strong>4</strong><span>time bands: rare bugs keep their hours</span></div></div>
-      <div class="dtile" data-in style="--d:.28s"><span class="pic"><img src="art/item-sun-lamp.webp" alt=""></span><div><strong>1</strong><span>free Moth lamp a day: draws one bug to you</span></div></div>
-      <div class="dtile gold" data-in style="--d:.32s"><span class="pic"><img src="art/scene-home-patch-dusk.webp" alt=""></span><div><strong>Dusk</strong><span>shiny window, 17:00 to 20:00</span></div></div>
+      <div class="dtile" data-in style="--d:.24s"><span class="pic"><svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true"><path d="M22 4 A18 18 0 0 1 26.66 39.39 L22 22 Z" fill="#f7efd9"/><path d="M26.66 39.39 A18 18 0 0 1 13 37.59 L22 22 Z" fill="#f3d57a"/><path d="M13 37.59 A18 18 0 0 1 22 4 L22 22 Z" fill="#1b2742"/><circle cx="22" cy="22" r="18" fill="none" stroke="#13213a" stroke-width="1.5"/></svg></span><div><strong>3</strong><span>time bands: day, dusk, night. Each bug keeps its hours</span></div></div>
+      <div class="dtile" data-in style="--d:.28s"><span class="pic"><img src="art/item-sun-lamp.webp" alt=""></span><div><strong>1</strong><span>free Moth lamp a day (Pro 2): draws the bug you pick to you</span></div></div>
+      <div class="dtile gold" data-in style="--d:.32s"><span class="pic"><img src="art/scene-home-patch-dusk.webp" alt=""></span><div><strong>Dusk</strong><span>shiny window, 17:00 to 20:00, 1 in 100</span></div></div>
       <div class="dtile" data-in style="--d:.36s"><span class="pic"><img class="cut" src="art/cut/moth.webp" alt=""></span><div><strong>Week</strong><span>Bug of the week: more of one family</span></div></div>
     </div>
+  </div>
+</section>
+
+<section class="slide" aria-label="Why Bugshot wins">
+  <div class="wrap">
+    <p class="kick" data-in>Why Bugshot wins</p>
+    <h2 class="h1" data-in style="--d:.08s;max-width:12em">The real world, without leaving home.</h2>
+    <div class="vs" data-in style="--d:.14s" role="table" aria-label="Bugshot against Pokémon GO and Pokémon TCG Pocket">
+      <div class="vrow vhead" role="row"><span role="columnheader"></span><span role="columnheader">Pokémon GO</span><span role="columnheader">TCG Pocket</span><span role="columnheader" class="us"><img src="art/brand/wordmark-a1-badge.svg" alt="Bugshot"></span></div>
+      <div class="vrow" role="row"><b role="rowheader">Where you play</b><span role="cell">Outside. Needs GPS and going out</span><span role="cell">On a screen. No real world</span><span role="cell" class="us">At home, on your real floor. Any weather</span></div>
+      <div class="vrow" role="row"><b role="rowheader">What you collect</b><span role="cell">Pokémon</span><span role="cell">Pokémon cards</span><span role="cell" class="us">48 real insect families, painted</span></div>
+      <div class="vrow" role="row"><b role="rowheader">What you learn</b><span role="cell">Fictional creatures</span><span role="cell">Fictional creatures</span><span role="cell" class="us">Real nature, through play</span></div>
+            <div class="vrow" role="row"><b role="rowheader">The IP</b><span role="cell">Pokémon, licensed</span><span role="cell">Pokémon</span><span role="cell" class="us">Original, owned by the studio</span></div>
+    </div>
+    <p class="cnote" data-in style="--d:.2s">Plus battles that reward strategy, not reflexes: teams of 3, learned matchups, combos.</p>
   </div>
 </section>
 
@@ -747,6 +916,7 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
   <div class="wrap">
     <p class="kick" data-in>Business model</p>
     <h2 class="h1" data-in style="--d:.08s">Free to catch. Pro to go further.</h2>
+    <p class="lead fair" data-in style="--d:.12s"><b>Pro is faster, never stronger.</b> Upgrades take weeks, the grind adds options and prestige, not big stats, and level gaps are capped in Guardian and online fights.</p>
     <div class="price">
       <div class="pcard pro" data-in style="--d:.1s">
         <div class="proHead"><span class="pa"><img src="art/pro-kit.webp" alt=""></span>
@@ -758,7 +928,7 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
           <li><i><img src="art/perk-catches.webp" alt=""></i><div><b>Bigger patch</b><span>8 bugs out, 32 a day</span></div></li>
           <li><i><img src="art/item-sun-lamp.webp" alt=""></i><div><b>2 Moth lamps</b><span>every day</span></div></li>
           <li><i><img src="art/perk-nectar.webp" alt=""></i><div><b>5 Nectar</b><span>a day, to level cards</span></div></li>
-          <li><i><img src="art/perk-shards.webp" alt=""></i><div><b>×2 Shards</b><span>on every catch</span></div></li>
+          <li><i><img src="art/perk-shards.webp" alt=""></i><div><b>×2 Shards</b><span>6 a catch, not 3</span></div></li>
           <li><i><img src="art/perk-rewards.webp" alt=""></i><div><b>No-ad rewards</b><span>skip the video</span></div></li>
           <li><i><img src="art/perk-looks.webp" alt=""></i><div><b>Pro Looks</b><span>frames and card backs</span></div></li>
         </ul>
@@ -780,15 +950,18 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 <div class="phone" id="phone">
   <!-- Home -->
   <section class="screen on" id="home" aria-label="Your patch">
-    <div class="hTop"><h1>Your patch</h1><div class="meta" id="hDex">Dex 2 / 48</div></div>
+    <div class="hBar"><span class="hPl" id="hSeenP"><b id="hSeen">6/24</b><small>today</small></span><span class="hPl"><svg width="16" height="18" viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1 C11 6 14 9 14 12 A6 6 0 0 1 2 12 C2 9 5 6 8 1 Z" fill="#2f9be0"/><ellipse cx="5.6" cy="11.4" rx="1.3" ry="2" fill="#fff" opacity=".85"/></svg><b id="hDew">0</b><small>Dew</small></span></div>
     <button class="snd press" id="snd" aria-label="Sound on" aria-pressed="true"></button>
+    <div class="hTop"><span class="label hLab">Your patch</span></div>
     <div class="hScene" aria-hidden="true"></div>
     <div class="medal" id="medal" role="img" aria-label="Radar">
-      <div class="in"><div class="sweep"></div><svg class="rings" viewBox="0 0 222 222" aria-hidden="true"><circle cx="111" cy="111" r="40" fill="none" stroke="rgba(19,33,58,.18)"/><circle cx="111" cy="111" r="78" fill="none" stroke="rgba(19,33,58,.14)" stroke-dasharray="3 4"/></svg><div id="hBlips"></div><div class="you"><svg width="10" height="10" viewBox="0 0 16 16"><path d="M8 1.5 L13 13.5 L8 10.6 L3 13.5 Z" fill="#c9a24a"/></svg></div></div>
+      <div class="in"><div class="sweep"></div><svg class="rings" id="ticks" viewBox="0 0 222 222" aria-hidden="true"></svg><span class="nMark" id="nMark" aria-hidden="true">N</span><div class="you"><svg width="12" height="12" viewBox="0 0 16 16"><path d="M8 1.5 L13 13.5 L8 10.6 L3 13.5 Z" fill="#c9a24a"/></svg></div></div>
+      <div id="hBlips"></div>
     </div>
-    <div class="hNums" id="hNums"></div>
-    <div class="botw" id="botw"><span class="pt"><img alt="" src="art/cut/swallowtail.webp"></span><div><b>Bug of the week</b><span class="meta">Swallowtail, 2× Shards and Dew</span></div></div>
-    <button class="start" id="startBtn"><i class="lens" aria-hidden="true"></i><span>Start sweep</span></button>
+    <div class="hub" id="hub"><div><span class="label">Out now</span><strong id="hOut">6<small>/6</small></strong></div><div><span class="label">Next +1</span><strong id="hNext">Full</strong></div></div>
+    <p class="hStatus" id="hStatus"></p>
+    <div class="botw" id="botw"><span class="pt"><img alt="" src="art/cut/swallowtail.webp"></span><div><span class="label">Bug of the week</span><b>Swallowtails are out more</b></div></div>
+    <button class="start" id="startBtn"><i class="lens" aria-hidden="true"></i><span><b id="startTxt">Start sweep</b><small id="startSub"></small></span></button>
   </section>
 
   <!-- Hunt -->
@@ -803,26 +976,51 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
     <div class="vig" id="vig"></div>
     <svg class="ringSvg" id="ring" aria-hidden="true"></svg>
     <div class="flash" id="flash"></div>
-    <svg class="pin" id="pin" width="56" height="56" viewBox="0 0 64 64" aria-hidden="true"><defs><radialGradient id="brass" cx="35%" cy="35%"><stop offset="0" stop-color="#fff0b0"/><stop offset=".6" stop-color="#c9a24a"/><stop offset="1" stop-color="#8a6a1f"/></radialGradient></defs><path d="M32 32 L48 48" stroke="#9aa3b2" stroke-width="2.4" stroke-linecap="round"/><circle cx="32" cy="32" r="11.5" fill="url(#brass)" stroke="#13213a" stroke-width="1.5"/><circle cx="28.4" cy="28.4" r="3.2" fill="#fff" opacity=".75"/></svg>
-    <div class="snapCap" id="snapCap" role="status"><h2>Caught</h2></div>
+    <div class="paperIn" id="paperIn"></div>
     <div class="hud" id="hud">
       <button class="plateBtn press" id="exitBtn" aria-label="End the sweep"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M6 6 L18 18 M18 6 L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
-      <div class="dexPlate" id="dexPlate"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h7a2 2 0 0 1 2 2V20a2 2 0 0 0-2-2H4z M20 4.5h-5a2 2 0 0 0-2 2V20a2 2 0 0 1 2-2h5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span id="dexTxt">2 / 48</span></div>
+      <div class="dexPlate" id="dexPlate"><b id="dexTxt">6/24</b><small>today</small></div>
       <div class="mini" id="mini" role="img" aria-label="Radar"><div class="in"><div class="map" id="miniMap"></div><div class="cone"></div><div id="miniB"></div><div class="you" style="width:14px;height:14px;margin:-7px;box-shadow:0 0 0 1.5px #fbfaf8,0 0 0 2.5px #c9a24a"></div></div></div>
-      <div class="guide" id="guide" role="status"><svg id="gArrow" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 L19 19 L12 15 L5 19 Z" fill="#13213a"/></svg><span class="gp" id="gPort"><img alt="" src="art/cut/ant.webp"></span><span id="gTxt"></span></div>
+      <div class="edge" id="guide" role="status"><svg id="gArrow" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4 L7 12 L15 20" fill="none" stroke="#13213a" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="gp" id="gPort"><img alt="" src="art/cut/ant.webp"></span><span id="gTxt"></span></div>
       <div class="word" id="word" role="status" aria-live="polite"></div>
       <button class="cap" id="cap" aria-label="Capture"><span class="pulse"></span><span class="f"></span><span class="r"></span>
         <svg class="ret" viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="38" r="9" fill="none" stroke="#13213a" stroke-width="1.6"/><path d="M38 20 V27 M38 49 V56 M20 38 H27 M49 38 H56" stroke="#13213a" stroke-width="1.6" stroke-linecap="round"/></svg>
         <svg class="iris" viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="38" r="22" fill="none" stroke="#13213a" stroke-width="1.4" opacity=".8"/><circle cx="38" cy="38" r="5" fill="#0b6b57"/></svg>
       </button>
       <div class="dots" id="dots" aria-label="Shots"></div>
+      <button class="lampT press" id="lampBtn" aria-label="Moth lamp"><img src="art/item-sun-lamp.webp" alt=""><small>Lamp</small><b id="lampN">1</b></button>
       <button class="walk" id="walk" aria-label="Walk (hold)"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M12 5 L19 15 H5 Z" fill="currentColor"/></svg></button>
     </div>
-    <div class="tut" id="tut" role="dialog" aria-label="How to play"><span>Turn: drag · Walk: hold ▲ · Catch: tap Capture</span><button id="tutOk">Got it</button></div>
+    <div class="tut" id="tut" role="dialog" aria-label="How to play"><span>Turn: drag · Walk: hold ▲ · Catch: tap Capture, hold it steady, snap on the gold</span><button id="tutOk">Got it</button></div>
     <div class="sheet" id="sheet" role="dialog" aria-label="Out of shots">
-      <h2>Out of shots</h2><p>One more try, or let it go.</p>
-      <button class="btnP" id="adBtn"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5 L18.5 12 L8 18.5 Z" fill="currentColor"/></svg>One more try <span class="ad">(ad)</span></button>
+      <img class="sArt" src="art/sheet/out-of-shots.webp" alt="" width="200" height="127">
+      <h2>Out of shots</h2><p>Watch an ad for one more try.</p>
+      <button class="btnP" id="adBtn"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M3.4 7C3.4 5.78 4.38 4.8 5.6 4.8L18.4 4.8C19.62 4.8 20.6 5.78 20.6 7L20.6 15C20.6 16.22 19.62 17.2 18.4 17.2L5.6 17.2C4.38 17.2 3.4 16.22 3.4 15ZM9 19.1H15A.9.9 0 0 1 15 20.9H9A.9.9 0 0 1 9 19.1ZM10 8.4V13.6C10 13.88 10.2 13.99 10.44 13.86L15.36 11.24C15.6 11.11 15.6 10.89 15.36 10.76L10.44 8.14C10.2 8.01 10 8.12 10 8.4Z"/></svg> Watch an ad</button>
       <button class="link" id="letGo">Let it go</button>
+    </div>
+    <div class="sheet" id="gotSheet" role="dialog" aria-label="It got away">
+      <img class="sArt" src="art/sheet/got-away.webp" alt="" width="210" height="137">
+      <h2>It got away</h2><p id="gotTxt">It spooked. Next time, move slower.</p>
+      <button class="btnP" id="keepBtn">Keep sweeping</button>
+    </div>
+    <div class="sheet" id="grdSheet" role="dialog" aria-label="Guardian">
+      <span class="label gk"><svg width="14" height="16" viewBox="0 0 20 22" aria-hidden="true"><path d="M10 1 L18.5 6 V16 L10 21 L1.5 16 V6 Z" fill="#c9a24a" stroke="#13213a" stroke-width="1.4" stroke-linejoin="round"/><path d="M6.5 7.5 L13.5 14.5 M13.5 7.5 L6.5 14.5" stroke="#13213a" stroke-width="1.8" stroke-linecap="round"/></svg>Guardian</span>
+      <h2 id="grdName">Jewel beetle</h2><div class="meta" id="grdMeta">Epic, Shell</div><p>Beat it to unlock the shot.</p>
+      <button class="btnP" id="battleBtn">Battle</button>
+      <button class="link" id="runBtn">Run</button>
+      <div class="meta sNote">The fight plays in the app. In this demo it counts as won.</div>
+    </div>
+    <div class="sheet" id="unlSheet" role="dialog" aria-label="Shot unlocked">
+      <img class="sArt" src="art/sheet/shot-unlocked.webp" alt="" width="200" height="151">
+      <h2>Shot unlocked</h2><p>Now take its photo.</p>
+      <button class="btnP" id="openCam">Open camera</button>
+    </div>
+    <div class="sheet" id="lampSheet" role="dialog" aria-label="Moth lamp">
+      <img class="sArt lampArt" src="art/item-sun-lamp.webp" alt="" width="110" height="110">
+      <h2>Moth lamp</h2><p>Draws a bug you haven't caught to you.</p><div class="meta" id="lampMeta">Free today · 1 a day, 2 with Pro</div>
+      <button class="btnP" id="lampUse">Use it</button>
+      <button class="link" id="lampDew">Or 60 Dew</button>
+      <button class="link" id="lampNo">Not now</button>
     </div>
     <div class="adPlay" id="adPlay" aria-live="polite">AD PLAYS HERE<i></i></div>
   </section>
@@ -835,18 +1033,29 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
     <div class="cardWrap" id="cardWrap">
       <div class="cardIn" id="cardIn" role="button" tabindex="0" aria-label="Reveal your card">
         <div class="flip" id="flip">
-          <div class="face" id="face"><div class="fi">
-            <div class="photo" id="photo"><span class="psh"></span><img id="cImg" alt="" src="art/cut/ant.webp"><span class="no" id="cNo"></span></div>
-            <div class="info"><h3 id="cName"></h3><div class="lat" id="cLat"></div>
-              <div class="stats"><div><span class="label">HP</span><strong id="cHp"></strong></div><div><span class="label">ATK</span><strong id="cAtk"></strong></div></div>
-            </div></div><div class="sweepL"></div></div>
+          <div class="face" id="face"><div class="fi2">
+            <div class="mph" id="photo">
+              <div class="clip"><span class="psh"></span><img id="cImg" alt="" src="art/cut/ant.webp"></div>
+              <span class="lv" id="cPips"></span>
+              <span class="tags"><span class="newP" id="cNew">NEW</span><span class="typeP" id="cType"></span></span>
+              <span class="bHp"><span><b id="cHp"></b><small>HP</small></span></span>
+              <span class="bAtk"><span><span><b id="cAtk"></b><small>ATK</small></span></span></span>
+            </div>
+            <div class="minf">
+              <h3 id="cName"></h3>
+              <div class="lat" id="cLat"></div>
+              <div class="mst"><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"><path d="M12 3 L20 6 V12 C20 16.5 16.5 19.5 12 21 C7.5 19.5 4 16.5 4 12 V6 Z"/></svg><b id="cDef"></b><small>DEF</small></span><span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"><path d="M13 2 L4 14 H12 L11 22 L20 10 H12 Z"/></svg><b id="cSpd"></b><small>SPD</small></span></div>
+              <p class="mfact" id="cFact"></p>
+              <div class="mno" id="cNo"></div>
+            </div>
+          </div><div class="sweepL"></div></div>
           <div class="back" aria-hidden="true"><div class="bi"><svg id="backSvg" viewBox="0 0 268 408"></svg><div class="wm">BUGSHOT</div></div></div>
         </div>
       </div>
     </div>
     <div class="hint" id="hint">Tap the card to reveal</div>
     <div class="rAfter" id="rAfter">
-      <div class="a1"><div class="newLine" id="newLine">New in your Dex</div>
+      <div class="a1">
         <div class="gains" role="list" aria-label="Catch rewards">
           <div role="listitem"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="#e9dfc5" stroke-width="3"/><circle cx="12" cy="12" r="9" fill="none" stroke="#c9a24a" stroke-width="3" stroke-dasharray="40 57" stroke-linecap="round" transform="rotate(-90 12 12)"/></svg><strong id="gXp" style="color:var(--goldInk)">+0</strong><span>XP</span></div>
           <div role="listitem"><img src="art/perk-shards.webp" alt=""><strong id="gSh">+0</strong><span>Shards</span></div>
@@ -858,16 +1067,39 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 </div>
 </section>
 
+<section class="slide" aria-label="What's built">
+  <div class="wrap">
+    <p class="kick" data-in>What's built</p>
+    <h2 class="h1" data-in style="--d:.08s;max-width:12em">Not a deck. A game you can play.</h2>
+    <div class="built">
+      <ul class="blist" data-in style="--d:.12s">
+        <li><i><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i><div><b>The whole core loop, on Android</b><span>Home radar, Hunt in the camera, Guardian fight, Catch, card reveal, Moth lamp.</span></div></li>
+        <li><i><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i><div><b>48 bug families, painted</b><span>One realistic painted style across the whole Dex.</span></div></li>
+        <li><i><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i><div><b>Bugs on your real floor</b><span>Motion sensors, no AR, no GPS. Runs on a Redmi Note 10.</span></div></li>
+        <li><i><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i><div><b>340+ automated tests, 60+ design boards</b><span>Every rule and number lives in data, checked on each change.</span></div></li>
+      </ul>
+      <div class="bots" data-in style="--d:.2s">
+        <h3>The battle engine, bot-tested</h3>
+        <div class="btiles">
+          <div><strong>73%</strong><span>a planning player beats a button-masher</span></div>
+          <div><strong>73%</strong><span>a prepared team beats an unprepared one</span></div>
+          <div><strong>48%</strong><span>a typical player wins a Guardian on the first try</span></div>
+          <div><strong>~7</strong><span>turns a fight lasts</span></div>
+        </div>
+        <p class="note">From thousands of simulated battles. Real-player numbers come with the closed test.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="slide" aria-label="Roadmap">
   <div class="wrap">
     <p class="kick" data-in>Roadmap</p>
-    <h2 class="h1" data-in style="--d:.08s">Boards first, then the real camera.</h2>
-    <ol class="road">
-      <li class="now" data-in style="--d:.1s"><b>Boards and feel</b><span>Loop boards approved, first camera catch measured on a cheap phone.</span><em>Now</em></li>
-      <li data-in style="--d:.16s"><b>Core loop</b><span>Radar from turning and steps, AR room scan, the catch by tier.</span></li>
-      <li data-in style="--d:.22s"><b>Spawns and collect</b><span>Time bands, shiny at dusk, Moth lamp, Dex and cards.</span></li>
-      <li data-in style="--d:.28s"><b>Battles</b><span>3v3 against the AI, Guardian fights, card levels.</span></li>
-      <li data-in style="--d:.34s"><b>Launch</b><span>Pro and ads, art and sound, closed test, Play Store.</span></li>
+    <h2 class="h1" data-in style="--d:.08s">The loop works. Now the depth.</h2>
+    <ol class="road road3">
+      <li class="done" data-in style="--d:.1s"><em>Done</em><b>A game you can hold</b><ul><li>60+ design boards</li><li>The playable Android loop</li><li>48 painted bugs</li><li>Guardian battles</li><li>The battle engine, bot-tested</li></ul></li>
+      <li class="now" data-in style="--d:.18s"><em>Now</em><b>Strategy and the test</b><ul><li>The combo and strategy layer</li><li>The closed test with real players</li></ul></li>
+      <li data-in style="--d:.26s"><em>Next</em><b>Then launch</b><ul><li>3v3 and the collection</li><li>Pro and ads</li><li>Sound</li><li>Launch on Google Play</li></ul></li>
     </ol>
   </div>
 </section>
@@ -885,9 +1117,8 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 <script>
 (() => {
 'use strict';
-// one-line switch: true = transparent cut-outs in art/cut, false = paper portraits blended with multiply
-const CUT = true;
-const artSrc = k => CUT ? 'art/cut/' + k + '.webp' : 'art/fam-' + k + '.webp';
+// the repainted family cut-outs in art/cut: transparent, facing left, trimmed to the bug
+const artSrc = k => 'art/cut/' + k + '.webp';
 
 const $ = id => document.getElementById(id);
 const store = {
@@ -898,44 +1129,60 @@ let mq = null; try { mq = matchMedia('(prefers-reduced-motion: reduce)'); } catc
 let reduced = !!(mq && mq.matches);
 if (mq && mq.addEventListener) mq.addEventListener('change', e => { reduced = e.matches; });
 
-// families in the demo patch; tiers stay hidden until caught
+// families from the game data (app/src/data: card.json stats [HP, ATK, DEF, SPD], types, rarity.json tiers, dex.json, notes.json facts)
 const FAM = {
-  ant:          { name: 'Ant', latin: 'Formicidae', tier: 'common', habit: 'crawler', no: '021', hp: 22, atk: 30 },
-  ladybird:     { name: 'Ladybird', latin: 'Coccinellidae', tier: 'uncommon', habit: 'shell', no: '002', hp: 27, atk: 32 },
-  moth:         { name: 'Moth', latin: 'Erebidae and kin', tier: 'common', habit: 'flyer', no: '011', hp: 24, atk: 26 },
-  firefly:      { name: 'Firefly', latin: 'Lampyridae', tier: 'uncommon', habit: 'flyer', no: '015', hp: 25, atk: 24 },
-  swallowtail:  { name: 'Swallowtail', latin: 'Papilionidae', tier: 'rare', habit: 'flyer', no: '017', hp: 32, atk: 27 },
-  jewel_beetle: { name: 'Jewel beetle', latin: 'Buprestidae', tier: 'epic', habit: 'shell', no: '008', hp: 27, atk: 32 },
-  scarab:       { name: 'Scarab', latin: 'Scarabaeidae', tier: 'common', habit: 'shell', no: '005', hp: 30, atk: 28 },
-  dragonfly:    { name: 'Dragonfly', latin: 'Anisoptera', tier: 'uncommon', habit: 'flyer', no: '019', hp: 26, atk: 38 },
-  orb_weaver:   { name: 'Orb weaver', latin: 'Araneidae', tier: 'common', habit: 'hunter', no: '040', hp: 28, atk: 33 },
-  stag_beetle:  { name: 'Stag beetle', latin: 'Lucanidae', tier: 'rare', habit: 'shell', no: '006', hp: 38, atk: 41 },
-  stick_insect: { name: 'Stick insect', latin: 'Phasmatodea', tier: 'rare', habit: 'crawler', no: '033', hp: 36, atk: 22 },
-  mantis:       { name: 'Mantis', latin: 'Mantidae', tier: 'epic', habit: 'hunter', no: '031', hp: 34, atk: 46 }
+  ant:          { name: 'Ant', latin: 'Formicidae', group: 'Ant, bee or wasp', tier: 'common', type: 'crawler', no: '021', st: [27, 42, 27, 32], fact: 'Only queens and males have wings; workers never do.' },
+  ladybird:     { name: 'Ladybird', latin: 'Coccinellidae', group: 'Beetle', tier: 'uncommon', type: 'shell', no: '002', st: [27, 32, 42, 27], fact: 'Bright warning colours tell predators they taste bad.' },
+  moth:         { name: 'Moth', latin: 'Lepidoptera', group: 'Butterfly or moth', tier: 'common', type: 'flyer', no: '011', st: [32, 27, 22, 47], fact: 'Not all moths fly at night.' },
+  dragonfly:    { name: 'Dragonfly', latin: 'Anisoptera', group: 'Dragonfly or damselfly', tier: 'common', type: 'hunter', no: '028', st: [27, 37, 17, 52], fact: 'Dragonflies have very short antennae and a long, slender abdomen.' },
+  swallowtail:  { name: 'Swallowtail', latin: 'Papilionidae', group: 'Butterfly or moth', tier: 'rare', type: 'flyer', no: '017', st: [32, 27, 22, 47], fact: 'Birdwings, the largest butterflies, are swallowtails.' },
+  jewel_beetle: { name: 'Jewel beetle', latin: 'Buprestidae', group: 'Beetle', tier: 'epic', type: 'shell', no: '008', st: [27, 32, 42, 27], fact: 'Shine comes from microscopic texture, not pigment.' },
+  firefly:      { name: 'Firefly', latin: 'Lampyridae', group: 'Beetle', tier: 'legendary', type: 'flyer', no: '010', st: [27, 27, 32, 42], fact: 'Some females are wingless and larva-like.' },
+  scarab:       { name: 'Scarab beetle', latin: 'Scarabaeidae', group: 'Beetle', tier: 'rare', type: 'shell', no: '004', st: [37, 27, 47, 17], fact: 'Their antenna tips fan open to smell food.' },
+  orb_weaver:   { name: 'Orb weaver', latin: 'Araneidae', group: 'Spider', tier: 'uncommon', type: 'hunter', no: '043', st: [37, 37, 27, 27], fact: 'Some orb weavers, such as bolas spiders, build no web.' },
+  stag_beetle:  { name: 'Stag beetle', latin: 'Lucanidae', group: 'Beetle', tier: 'epic', type: 'shell', no: '009', st: [27, 47, 32, 17], fact: 'Larvae feed on decaying wood.' },
+  stick_insect: { name: 'Stick insect', latin: 'Phasmida', group: 'Stick insect', tier: 'legendary', type: 'crawler', no: '041', st: [42, 22, 37, 27], fact: 'Many stick insects are wingless and sway like twigs.' },
+  mantis:       { name: 'Mantis', latin: 'Mantodea', group: 'Mantis', tier: 'epic', type: 'hunter', no: '040', st: [32, 47, 22, 27], fact: 'Every mantis has enlarged front legs for gripping prey.' }
 };
-// catch-resistance.md 3.1; windows scaled x1.6 for mouse and touch
+// app/src/data/catch-loop.json tiers; snap windows scaled x1.6 for mouse and touch
 const T = {
-  common:   { walk: .9, turn: 90, fill: 2.5, drain: .30, flush: .4, ring: 1.0, hold: .8, calm: 2.0, gap: [1, 2],     feint: 0,  win: 200, dodge: .12 },
-  uncommon: { walk: .7, turn: 70, fill: 2.0, drain: .25, flush: .6, ring: .9,  hold: 1.0, calm: 1.6, gap: [1.5, 2.5], feint: 0,  win: 160, dodge: .14 },
-  rare:     { walk: .5, turn: 50, fill: 1.5, drain: .20, flush: .8, ring: .78, hold: 1.3, calm: 1.3, gap: [2, 3],     feint: .1, win: 130, dodge: .16 },
-  epic:     { walk: .4, turn: 40, fill: 1.1, drain: .15, flush: 1.0, ring: .65, hold: 1.7, calm: 1.0, gap: [2.5, 3.5], feint: .2, win: 110, dodge: .18 }
+  common:    { walk: .9, turn: 90, fill: 2.5, drain: .30, flush: .4, ring: 1.0, hold: .8, calm: 2.0, gap: [1, 2],     feint: 0,  win: 200, dodge: .12, boltShot: false, boltsToFlee: 0 },
+  uncommon:  { walk: .7, turn: 70, fill: 2.0, drain: .25, flush: .6, ring: .9,  hold: 1.0, calm: 1.6, gap: [1.5, 2.5], feint: 0,  win: 160, dodge: .14, boltShot: false, boltsToFlee: 0 },
+  rare:      { walk: .5, turn: 50, fill: 1.5, drain: .20, flush: .8, ring: .78, hold: 1.3, calm: 1.3, gap: [2, 3],     feint: .1, win: 130, dodge: .16, boltShot: true, boltsToFlee: 0 },
+  epic:      { walk: .4, turn: 40, fill: 1.1, drain: .15, flush: 1.0, ring: .65, hold: 1.7, calm: 1.0, gap: [2.5, 3.5], feint: .2, win: 110, dodge: .18, boltShot: true, boltsToFlee: 2 },
+  legendary: { walk: .3, turn: 30, fill: .8, drain: .12, flush: 1.2, ring: .55, hold: 2.1, calm: .8, gap: [3, 4.5],   feint: .3, win: 90,  dodge: .20, boltShot: true, boltsToFlee: 2 }
 };
-const WIN_SCALE = 1.6, GUARD_WIN = .7, RANGE = 1.8;
-const HABIT_DODGE = { shell: -.05, crawler: -.03, hunter: .03, flyer: .05 };
+const WIN_SCALE = 1.6, RANGE = 1.5, CROSS_AT = .6, MISS_WIDEN = .15, LAMP_GAUGE = .6667;
+const HABIT_DODGE = { shell: -.05, crawler: -.03, hunter: .03, flyer: .05, stinger: .02 };
+// spawn-loop.json, free plan
+const PATCH_CAP = 6, EVERY_MIN = 20, DAY_CAP = 24, LAMPS_FREE = 1, LAMP_DEW = 60, DEW_CATCH = 10, SHARDS_CATCH = 3, XP_CATCH = 100;
 const TIER = {
-  common:   { label: 'Common', odds: '3 in 5', ink: '#13213a', spot: 'rgba(158,164,174,.30)', frame: 'linear-gradient(135deg,#eef0f3,#b4b9c2,#f5f6f8,#9ea4ae)', metal: '#9ea4ae', sh: 3 },
-  uncommon: { label: 'Uncommon', odds: '1 in 4', ink: '#166b4a', spot: 'rgba(47,174,124,.32)', frame: 'linear-gradient(135deg,#a5f0cf,#2fae7c,#c8f7e2,#1d8a60)', metal: '#2fae7c', sh: 4 },
-  rare:     { label: 'Rare', odds: '1 in 9', ink: '#2952c9', spot: 'rgba(59,123,234,.34)', frame: 'linear-gradient(135deg,#bcdcff,#3b7bea,#d8eaff,#2952c9)', metal: '#3b7bea', sh: 6 },
-  epic:     { label: 'Epic', odds: '1 in 34', ink: '#4f22b0', spot: 'rgba(123,63,242,.38)', frame: 'linear-gradient(120deg,#7b3ff2,#19c9a3,#3e8bff,#c04ff2,#7b3ff2)', metal: '#7b3ff2', sh: 10 }
+  common:    { label: 'Common', head: 'Caught', sub: 'Common, 3 in 5', ink: '#13213a', spot: 'rgba(158,164,174,.30)', frame: 'linear-gradient(135deg,#eef0f3,#b4b9c2,#f5f6f8,#9ea4ae)', metal: '#9ea4ae', pale: '#d9dce1', pips: 1, flip: 440 },
+  uncommon:  { label: 'Uncommon', head: 'Nice catch', sub: 'Uncommon, 1 in 4', ink: '#166b4a', spot: 'rgba(47,174,124,.32)', frame: 'linear-gradient(135deg,#a5f0cf,#2fae7c,#c8f7e2,#1d8a60)', metal: '#2fae7c', pale: '#a5f0cf', pips: 2, flip: 680 },
+  rare:      { label: 'Rare', head: 'Rare catch', sub: '1 in 9', ink: '#2952c9', spot: 'rgba(59,123,234,.34)', frame: 'linear-gradient(135deg,#bcdcff,#3b7bea,#d8eaff,#2952c9)', metal: '#3b7bea', pale: '#bcdcff', pips: 3, flip: 920 },
+  epic:      { label: 'Epic', head: 'Epic catch', sub: '1 in 34', ink: '#4f22b0', spot: 'rgba(123,63,242,.38)', frame: 'linear-gradient(120deg,#7b3ff2,#19c9a3,#3e8bff,#c04ff2,#7b3ff2)', metal: '#7b3ff2', pale: '#c9a8ff', pips: 4, flip: 1160 },
+  legendary: { label: 'Legendary', head: 'Legendary', sub: '1 in 298', ink: '#7d5f14', spot: 'rgba(243,213,122,.34)', frame: 'linear-gradient(135deg,#ead596,#c9a24a,#fff3c9,#a27d2c)', metal: '#c9a24a', pale: '#f3d57a', pips: 5, flip: 1820 }
 };
-const HEX = '<svg width="16" height="18" viewBox="0 0 20 22"><path d="M10 1 L18.5 6 V16 L10 21 L1.5 16 V6 Z" fill="#c9a24a" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+const TYPE_ICON = {
+  shell: '<path d="M5 15.5 C5 10 8 7 12 7 C16 7 19 10 19 15.5 Z M12 7 V15.5" fill="#fff" stroke="#0b0b10" stroke-width="1.2" stroke-linejoin="round"/>',
+  flyer: '<path d="M5 15 C7 9 12 7 19 7 C17 12 12 15.5 5 15 Z" fill="#fff" stroke="#0b0b10" stroke-width="1.2" stroke-linejoin="round"/>',
+  crawler: '<circle cx="7.5" cy="12" r="2.6" fill="#fff"/><circle cx="12" cy="12" r="2.6" fill="#fff"/><circle cx="16.5" cy="12" r="2.6" fill="#fff"/>',
+  hunter: '<path d="M12 5.5 L18.5 12 L12 18.5 L5.5 12 Z" fill="#fff" stroke="#0b0b10" stroke-width="1.2" stroke-linejoin="round"/>',
+  stinger: '<path d="M12 5 L17 18 H7 Z" fill="#fff" stroke="#0b0b10" stroke-width="1.2" stroke-linejoin="round"/>'
+};
+const AD_ICON = '<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M3.4 7C3.4 5.78 4.38 4.8 5.6 4.8L18.4 4.8C19.62 4.8 20.6 5.78 20.6 7L20.6 15C20.6 16.22 19.62 17.2 18.4 17.2L5.6 17.2C4.38 17.2 3.4 16.22 3.4 15ZM9 19.1H15A.9.9 0 0 1 15 20.9H9A.9.9 0 0 1 9 19.1ZM10 8.4V13.6C10 13.88 10.2 13.99 10.44 13.86L15.36 11.24C15.6 11.11 15.6 10.89 15.36 10.76L10.44 8.14C10.2 8.01 10 8.12 10 8.4Z"/></svg>';
+const isGuardianTier = t => t === 'epic' || t === 'legendary';
+const HEX = '<svg width="14" height="16" viewBox="0 0 20 22"><path d="M10 1 L18.5 6 V16 L10 21 L1.5 16 V6 Z" fill="#c9a24a" stroke="#13213a" stroke-width="1.4" stroke-linejoin="round"/><path d="M6.5 7.5 L13.5 14.5 M13.5 7.5 L6.5 14.5" stroke="#13213a" stroke-width="1.8" stroke-linecap="round"/></svg>';
 
-// Dex: two families seeded so the first catch reads 3 / 48
-let dex = store.get('bugshot-demo-dex', null);
+// Dex: two families seeded, so the first new catch is the third
+let dex = store.get('bugshot-demo-dex2', null);
 if (!Array.isArray(dex)) dex = ['grasshopper', 'hoverfly'];
 let catches = store.get('bugshot-demo-catches', 0) | 0;
-const saveDex = () => { store.set('bugshot-demo-dex', dex); store.set('bugshot-demo-catches', catches); };
+let dew = store.get('bugshot-demo-dew', 0) | 0;
+const saveDex = () => { store.set('bugshot-demo-dex2', dex); store.set('bugshot-demo-catches', catches); store.set('bugshot-demo-dew', dew); };
 const caught = k => dex.indexOf(k) >= 0;
+// the patch clock: up to 6 bugs out, +1 every 20 minutes, 24 sightings a day
+let sightings = 0, nextAt = 0, lampsLeft = LAMPS_FREE;
 
 // ---------- sound (created on the first click only) ----------
 let ac = null, soundOn = store.get('bugshot-demo-sound', true) !== false;
@@ -948,7 +1195,8 @@ const sfx = {
   miss() { blip(420, .16, 'triangle', .05, 260); },
   bolt() { noise(.25, .07, 700); },
   flip() { noise(.18, .06, 3000); },
-  chime(tier) { const base = { common: 660, uncommon: 740, rare: 830, epic: 880 }[tier] || 660; blip(base, .5, 'sine', .07); setTimeout(() => blip(base * 1.5, .6, 'sine', .05), 90); if (tier === 'rare' || tier === 'epic') setTimeout(() => blip(base * 2, .7, 'sine', .04), 180); },
+  charge() { blip(220, .5, 'sine', .03, 520); },
+  chime(tier) { const base = { common: 660, uncommon: 740, rare: 830, epic: 880, legendary: 990 }[tier] || 660; blip(base, .5, 'sine', .07); setTimeout(() => blip(base * 1.5, .6, 'sine', .05), 90); if (tier !== 'common' && tier !== 'uncommon') setTimeout(() => blip(base * 2, .7, 'sine', .04), 180); },
   tap() { blip(900, .03, 'sine', .03); }
 };
 const SND_ON = '<svg width="22" height="22" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6 M18 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
@@ -967,26 +1215,31 @@ const ease = t => 1 - Math.pow(1 - clamp(t, 0, 1), 3);
 function rel(b) { const dx = b.x - P.x, dy = b.y - P.y; return { d: Math.hypot(dx, dy), r: wrap(Math.atan2(dx, dy) * 180 / Math.PI - P.h) }; }
 function placeAt(d, brg) { const a = brg * Math.PI / 180; return { x: P.x + d * Math.sin(a), y: P.y + d * Math.cos(a) }; }
 
-function spawn(key, d, brg) {
+function spawn(key, d, brg, lamp) {
   const f = FAM[key], p = placeAt(d, P.h + brg);
-  const b = { id: ++uid, key, f, tier: f.tier, guardian: f.tier === 'epic', x: p.x, y: p.y, gauge: 0, bolts: 0, lost: 0, adUsed: false, alive: true, ph: Math.random() * 7, anim: null, hop: 0, fade: 1, blur: -1 };
-  const el = document.createElement('div'); el.className = 'bug' + (CUT ? '' : ' paper');
-  el.innerHTML = '<span class="sh"></span><img alt="" src="' + artSrc(key) + '">';
-  b.el = el; b.img = el.lastChild;
+  const b = { id: ++uid, key, f, tier: f.tier, guardian: isGuardianTier(f.tier), won: false, lamp: !!lamp, x: p.x, y: p.y, gauge: 0, bolts: 0, lost: 0, adUsed: false, alive: true, ph: Math.random() * 7, anim: null, hop: 0, fade: 1, blur: -1, face: Math.random() < .5 ? 1 : -1, sx: null };
+  const el = document.createElement('div'); el.className = 'bug';
+  el.innerHTML = '<span class="sh"></span><div class="fw' + (b.face > 0 ? ' r' : '') + '"><img alt="" src="' + artSrc(key) + '"></div>';
+  b.el = el; b.sh = el.firstChild; b.fw = el.lastChild; b.img = b.fw.firstChild;
   const mood = document.createElement('div'); mood.className = 'mood'; mood.innerHTML = '<svg width="30" height="24" viewBox="0 0 30 24"><path d="M4 18 L9 6 M13 16 L16 3 M22 18 L26 7" fill="none" stroke-width="2.6" stroke-linecap="round"/></svg>';
   b.mood = mood; b.moodPath = mood.querySelector('path');
   bugsEl.appendChild(el); bugsEl.appendChild(mood);
   if (b.guardian) { const g = document.createElement('div'); g.className = 'ghex'; g.innerHTML = HEX; b.hex = g; bugsEl.appendChild(g); }
-  bugs.push(b); return b;
+  bugs.push(b); sightings++; return b;
 }
 function removeBug(b) { b.alive = false; b.el.remove(); b.mood.remove(); if (b.hex) b.hex.remove(); bugs = bugs.filter(x => x !== b); }
-function respawnSoon() {
-  setTimeout(() => {
-    const live = bugs.map(b => b.key), keys = Object.keys(FAM).filter(k => live.indexOf(k) < 0);
-    const fresh = keys.filter(k => !caught(k)), pool = fresh.length ? fresh : keys;
-    if (!pool.length || bugs.length >= 6) return;
-    spawn(pool[Math.floor(Math.random() * pool.length)], rnd(4, 9), rnd(-180, 180));
-  }, 5000);
+const out = () => bugs.filter(b => !b.anim || !b.anim.flee).length;
+function pickNew() {
+  const live = bugs.map(b => b.key), keys = Object.keys(FAM).filter(k => live.indexOf(k) < 0);
+  const fresh = keys.filter(k => !caught(k)), pool = fresh.length ? fresh : keys;
+  return pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
+}
+function tickPatch() {
+  const n = out();
+  if (n >= PATCH_CAP || sightings >= DAY_CAP) { nextAt = 0; return; }
+  const now = Date.now();
+  if (!nextAt) nextAt = now + EVERY_MIN * 60000;
+  else if (now >= nextAt) { const k = pickNew(); if (k) spawn(k, rnd(4, 9), rnd(-180, 180)); nextAt = 0; tickPatch(); }
 }
 
 // ---------- panorama ----------
@@ -1020,16 +1273,15 @@ function placeHud() {
   $('exitBtn').style.left = '16px'; $('exitBtn').style.top = top + 'px';
   $('dexPlate').style.left = '68px'; $('dexPlate').style.top = top + 'px';
   const m = $('mini'); m.style.right = '14px'; m.style.top = (top - 6) + 'px';
-  $('guide').style.top = (top + 118) + 'px';
   $('cap').style.bottom = '44px';
   $('dots').style.bottom = '26px';
   $('word').style.bottom = '138px';
   const wk = $('walk'); wk.style.right = '24px'; wk.style.bottom = '50px';
-  $('tut').style.top = (top + 168) + 'px';
-  $('snapCap').style.top = (H * .2) + 'px';
+  $('tut').style.top = (top + 130) + 'px';
 }
+// every bug stands on the floor: feet on the ground line for its distance, sized like the app (BugSprite, useEncounter)
 const ground = d => { const hy = H * .5, k = Math.min(1, .85 / Math.max(d, .1)); return hy + (H * .96 - hy) * k; };
-const sizeAt = d => clamp(H * .26 / d, 18, H * .32);
+const sizeAt = d => (d <= 3 ? Math.min(180, 104 + (3 - d) * 40) : Math.max(56, 104 - (d - 3) * 14)) * (W / 390);
 
 // ---------- input ----------
 const keys = {};
@@ -1040,12 +1292,12 @@ huntEl.addEventListener('pointerdown', e => {
   if (screen !== 'hunt' || e.target.closest('button,.sheet,.tut')) return;
   drag = { id: e.pointerId, x: e.clientX }; try { huntEl.setPointerCapture(e.pointerId); } catch (er) {}
 });
-huntEl.addEventListener('pointermove', e => { if (!drag || e.pointerId !== drag.id || mode === 'snap') return; const dx = e.clientX - drag.x; drag.x = e.clientX; P.h -= dx / ppd; });
+huntEl.addEventListener('pointermove', e => { if (!drag || e.pointerId !== drag.id || mode === 'snap' || sheetOn) return; const dx = e.clientX - drag.x; drag.x = e.clientX; P.h -= dx / ppd; });
 const endDrag = e => { if (drag && e.pointerId === drag.id) drag = null; };
 huntEl.addEventListener('pointerup', endDrag); huntEl.addEventListener('pointercancel', endDrag);
 
 const walkBtn = $('walk');
-function setWalk(v) { walking = v && mode === 'roam'; walkBtn.classList.toggle('down', walking); if (!walking) walkT = 0; }
+function setWalk(v) { walking = v && mode === 'roam' && !sheetOn; walkBtn.classList.toggle('down', walking); if (!walking) walkT = 0; }
 walkBtn.addEventListener('pointerdown', e => { e.preventDefault(); try { walkBtn.setPointerCapture(e.pointerId); } catch (er) {} setWalk(true); });
 ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(n => walkBtn.addEventListener(n, () => setWalk(false)));
 walkBtn.addEventListener('contextmenu', e => e.preventDefault());
@@ -1080,92 +1332,130 @@ window.addEventListener('keyup', e => {
 window.addEventListener('blur', () => { setWalk(false); turnKey = 0; releaseCap(); });
 
 // ---------- hunt state ----------
-let screen = 'home', mode = 'roam', C = null, sheetOn = false, tutOn = false, wordT = 0, wordTxt = '', candidate = null;
+let screen = 'home', mode = 'roam', C = null, sheetOn = null, tutOn = false, wordT = 0, wordTxt = '', candidate = null;
 function say(t, secs) { wordTxt = t; wordT = secs || 1.2; }
 
 function pressCap() {
+  if (sheetOn) return;
   capDown = true; capBtn.classList.add('down');
   if (mode === 'roam') {
-    if (candidate && candidate.inRange) { sfx.tap(); startCatch(candidate.b); }
-    else if (candidate) say('Closer · ' + Math.max(1, Math.round(candidate.d)) + ' m', 1.2);
+    if (candidate && candidate.inRange) {
+      sfx.tap();
+      if (candidate.b.guardian && !candidate.b.won) openGuardian(candidate.b); else startCatch(candidate.b);
+    } else if (candidate) say('Closer · ' + halfM(candidate.d) + ' m', 1.2);
   } else if (mode === 'catch') {
     if (C.locked) shoot(); else C.holding = true;
   }
 }
 function releaseCap() { capDown = false; capBtn.classList.remove('down'); if (C) C.holding = false; }
+const halfM = d => { const v = Math.max(.5, Math.round(d * 2) / 2); return v % 1 ? v.toFixed(1) : String(v); };
 
 function startCatch(b) {
   const tc = T[b.tier];
-  C = { b, tc, lock: 0, locked: false, holding: false, phase: 'active', t: 0, dur: rnd(tc.gap[0], tc.gap[1]) * .6, feint: false, cross: 0,
-        shots: Math.max(1, 3 - b.lost), winMul: 1, shot: false };
+  C = { b, tc, lock: 0, locked: false, holding: false, phase: 'active', t: 0, dur: (b.lamp ? 0 : rnd(tc.gap[0], tc.gap[1]) * .6), feint: false, cross: 0,
+        shots: Math.max(1, 3 - b.lost), misses: 0, shot: false };
   mode = 'catch'; setWalk(false); capDown = false; capBtn.classList.remove('down');
   huntEl.classList.add('catching');
-  say('Hold to focus', 1.6); drawDots();
+  say('Hold steady', 1.6); drawDots();
 }
 function endCatch() { mode = 'roam'; C = null; huntEl.classList.remove('catching'); $('ring').innerHTML = ''; drawDots(); }
 function drawDots() {
   const d = $('dots');
   if (mode !== 'catch' || !C) { d.innerHTML = ''; d.setAttribute('aria-label', ''); return; }
-  const total = Math.max(3 - C.b.lost, C.shots), used = total - C.shots; let h = '';
-  for (let i = 0; i < Math.max(total, 3); i++) h += '<i class="' + (i < C.shots ? 'on' : '') + '"></i>';
+  let h = '';
+  for (let i = 0; i < Math.max(3, C.shots); i++) h += '<i class="' + (i < C.shots ? 'on' : '') + '"></i>';
   d.innerHTML = h; d.setAttribute('aria-label', C.shots + ' shots left');
 }
-function winMs() { return C.tc.win * WIN_SCALE * C.winMul * (C.b.guardian ? GUARD_WIN : 1); }
-function holdS() { return C.tc.hold + (C.b.guardian ? .2 : 0); }
+function winMs() { return C.tc.win * WIN_SCALE * (1 + MISS_WIDEN * C.misses); }
+function holdS() { return C.tc.hold; }
 function shoot() {
   if (C.shot) return;
   sfx.shutter();
-  if (C.phase !== 'calm') return miss('Not still');
-  if (C.feint) return miss('Feint');
+  if (C.phase !== 'calm' || C.feint) return miss();
   const dt = (C.t - C.cross) * 1000, w = winMs();
-  if (Math.abs(dt) > w / 2) return miss(dt < 0 ? 'Early' : 'Late');
-  const dodge = C.tc.dodge + (HABIT_DODGE[C.b.f.habit] || 0) + .3 * C.b.gauge;
-  if (Math.random() < dodge) return miss('Dodged');
-  success(Math.abs(dt) <= w * .15);
+  if (Math.abs(dt) > w / 2) return miss();
+  const dodge = C.tc.dodge + (HABIT_DODGE[C.b.f.type] || 0) + .3 * C.b.gauge;
+  if (Math.random() < dodge) return miss();
+  success();
 }
-function miss(w) {
-  C.shot = true; C.shots--; C.winMul *= 1.15; drawDots(); sfx.miss();
-  C.b.hop = performance.now(); say(w === 'Not still' || w === 'Feint' ? w : w + ', missed', 1.2);
+function miss() {
+  C.shot = true; C.shots--; C.misses++; drawDots(); sfx.miss();
+  C.b.hop = performance.now(); say('Missed', 1.2);
   C.phase = 'active'; C.t = 0; C.dur = rnd(C.tc.gap[0], C.tc.gap[1]);
   if (C.shots <= 0) {
-    if (C.b.adUsed) { const b = C.b; endCatch(); flee(b, 'It got away'); }
-    else setTimeout(() => { if (mode === 'catch' && C && C.shots <= 0) openSheet(); }, 450);
+    const b = C.b;
+    if (b.adUsed) setTimeout(() => { if (mode === 'catch' && C && C.b === b) { endCatch(); flee(b); openGot('Three misses. Next time, wait for it to go still.'); } }, 450);
+    else setTimeout(() => { if (mode === 'catch' && C && C.shots <= 0) openSheet('sheet', 'adBtn'); }, 450);
   }
 }
-function openSheet() { sheetOn = true; $('sheet').classList.add('on'); setTimeout(() => $('adBtn').focus(), 330); }
-function closeSheet() { sheetOn = false; $('sheet').classList.remove('on'); }
+// ---------- sheets ----------
+function openSheet(id, focus) { closeSheets(); sheetOn = id; setWalk(false); $(id).classList.add('on'); if (focus) setTimeout(() => $(focus).focus({ preventScroll: true }), 260); }
+function closeSheets() { sheetOn = null; document.querySelectorAll('#hunt .sheet.on').forEach(s => s.classList.remove('on')); }
+function openGot(txt) { $('gotTxt').textContent = txt; openSheet('gotSheet', 'keepBtn'); }
 $('adBtn').addEventListener('click', () => {
-  closeSheet(); $('adPlay').classList.add('on');
-  setTimeout(() => { $('adPlay').classList.remove('on'); if (C) { C.b.adUsed = true; C.shots = 1; C.winMul = C.winMul; drawDots(); say('One more try', 1.4); capBtn.focus({ preventScroll: true }); } }, 1400);
+  closeSheets(); $('adPlay').classList.add('on');
+  setTimeout(() => { $('adPlay').classList.remove('on'); if (C) { C.b.adUsed = true; C.shots = 1; drawDots(); capBtn.focus({ preventScroll: true }); } }, 1400);
 });
-$('letGo').addEventListener('click', () => { closeSheet(); if (C) { const b = C.b; endCatch(); flee(b, 'Let it go'); } });
+$('letGo').addEventListener('click', () => { closeSheets(); if (C) { const b = C.b; endCatch(); flee(b); } });
+$('keepBtn').addEventListener('click', () => { closeSheets(); capBtn.focus({ preventScroll: true }); });
+let grdB = null;
+function openGuardian(b) {
+  grdB = b; $('grdName').textContent = b.f.name; $('grdMeta').textContent = TIER[b.tier].label + ', ' + b.f.type[0].toUpperCase() + b.f.type.slice(1);
+  openSheet('grdSheet', 'battleBtn');
+}
+$('battleBtn').addEventListener('click', () => { if (grdB) grdB.won = true; openSheet('unlSheet', 'openCam'); });
+$('runBtn').addEventListener('click', () => { closeSheets(); grdB = null; });
+$('openCam').addEventListener('click', () => {
+  closeSheets(); const b = grdB; grdB = null;
+  if (b && b.alive) { const r = rel(b); if (r.d > RANGE) { const p = placeAt(RANGE * .9, P.h + r.r); b.x = p.x; b.y = p.y; } P.h += r.r; startCatch(b); }
+});
+// the Moth lamp: draws a bug you haven't caught to 3 m in front of you, and calms it (gauge fills slower, the first still comes at once)
+function drawLamp() {
+  const n = lampsLeft; $('lampN').textContent = n ? String(n) : '';
+  $('lampMeta').textContent = n ? 'Free today · 1 a day, 2 with Pro' : 'Used today · 1 a day, 2 with Pro';
+  $('lampUse').innerHTML = n ? 'Use it' : AD_ICON + 'Watch an ad for one';
+  $('lampDew').style.display = n ? 'none' : ''; $('lampDew').textContent = dew >= LAMP_DEW ? 'Or ' + LAMP_DEW + ' Dew' : 'Or ' + LAMP_DEW + ' Dew (you have ' + dew + ')';
+  $('lampDew').disabled = dew < LAMP_DEW;
+}
+function useLamp() {
+  closeSheets();
+  if (bugs.length >= PATCH_CAP) { const old = bugs.filter(b => !b.anim)[0]; if (old) removeBug(old); }
+  const k = pickNew(); if (!k) return;
+  const b = spawn(k, 3, rnd(-12, 12), true); b.fade = 0; b.anim = { t0: performance.now(), dur: 900, fx: b.x, fy: b.y, tx: b.x, ty: b.y, flee: false, lampIn: true };
+  say('The lamp drew one in', 1.8); drawLamp();
+}
+$('lampBtn').addEventListener('click', () => { if (mode !== 'roam' || sheetOn) return; drawLamp(); openSheet('lampSheet', 'lampUse'); });
+$('lampUse').addEventListener('click', () => {
+  if (lampsLeft > 0) { lampsLeft--; useLamp(); return; }
+  closeSheets(); $('adPlay').classList.add('on'); setTimeout(() => { $('adPlay').classList.remove('on'); useLamp(); }, 1400);
+});
+$('lampDew').addEventListener('click', () => { if (dew < LAMP_DEW) return; dew -= LAMP_DEW; saveDex(); useLamp(); });
+$('lampNo').addEventListener('click', closeSheets);
 
 function bolt(b) {
   b.bolts++; sfx.bolt();
-  if (b.tier !== 'common' && b.tier !== 'uncommon') b.lost++;
+  if (T[b.tier].boltShot) b.lost++;
+  const mine = (C && C.b === b) || (candidate && candidate.b === b);
   if (C && C.b === b) endCatch();
-  if (((b.tier === 'epic') && b.bolts >= 2) || b.lost >= 3) return flee(b, 'It got away');
+  if ((T[b.tier].boltsToFlee && b.bolts >= T[b.tier].boltsToFlee) || b.lost >= 3) { flee(b); if (mine) openGot('It spooked. Next time, move slower.'); return; }
   const r = rel(b), nd = clamp(r.d + rnd(1, 3), 2, 11), to = placeAt(nd, P.h + r.r + rnd(-35, 35));
   b.anim = { t0: performance.now(), dur: 650, fx: b.x, fy: b.y, tx: to.x, ty: to.y, flee: false };
-  b.gauge = .25; say(b.lost ? 'It bolted · 1 shot lost' : 'It bolted', 1.6);
+  b.gauge = .25;
 }
-function flee(b, w) {
+function flee(b) {
   const r = rel(b), to = placeAt(r.d + 6, P.h + r.r + rnd(-30, 30));
   b.anim = { t0: performance.now(), dur: 800, fx: b.x, fy: b.y, tx: to.x, ty: to.y, flee: true };
-  say(w || 'It got away', 1.8); respawnSoon();
 }
 
-// ---------- snap ----------
-let snapB = null, snapPerfect = false;
-function success(perfect) {
-  const b = C.b; C.shot = true; mode = 'snap'; snapB = b; snapPerfect = perfect;
+// ---------- snap: no "Caught" beat, the flash goes straight to the card back ----------
+function success() {
+  const b = C.b; C.shot = true; mode = 'snap';
   const r = b.el.getBoundingClientRect(), pr = $('phone').getBoundingClientRect();
   const fl = $('flash'); fl.style.setProperty('--fx', (r.left + r.width / 2 - pr.left) + 'px'); fl.style.setProperty('--fy', (r.top + r.height / 2 - pr.top) + 'px');
   fl.classList.remove('go'); void fl.offsetWidth; fl.classList.add('go');
-  huntEl.classList.add('frozen'); $('ring').innerHTML = '';
-  $('pin').classList.add('go'); $('snapCap').classList.add('go');
-  say('', 0);
-  setTimeout(() => showResult(b, perfect), reduced ? 700 : 1300);
+  const pi = $('paperIn'); pi.classList.remove('go'); void pi.offsetWidth; pi.classList.add('go');
+  $('ring').innerHTML = ''; say('', 0);
+  setTimeout(() => showResult(b), 250);
 }
 
 // ---------- loop ----------
@@ -1193,26 +1483,26 @@ function update(dt) {
   let pushing = false;
   for (const b of bugs.slice()) {
     if (b.anim) continue;
-    const r = rel(b), tc = T[b.tier];
+    const r = rel(b), tc = T[b.tier], mult = b.lamp ? LAMP_GAUGE : 1;
     const near = r.d < 6, overW = speed > tc.walk, overT = turnRate > tc.turn && Math.abs(r.r) < 70;
-    if (near && r.d < tc.flush) b.gauge += dt / (tc.fill * .5);
-    else if (near && (overW || overT)) { b.gauge += dt / tc.fill; pushing = true; }
+    if (near && r.d < tc.flush) b.gauge += dt / (tc.fill * .5) * mult;
+    else if (near && (overW || overT)) { b.gauge += dt / tc.fill * mult; pushing = true; }
     else b.gauge -= tc.drain * dt;
     b.gauge = clamp(b.gauge, 0, 1);
     if (b.gauge >= 1) bolt(b);
   }
-  if (pushing && wordT <= 0) say('Slow down', .5);
+  if (pushing && wordT <= 0) say('Stop', .5);
   // catch rhythm: active, then a still moment (or a fake one)
   if (mode === 'catch' && C) {
     const b = C.b, sx = screenX(b), R = ringR(b), centred = Math.abs(sx - W / 2) < R * .75;
     if (!C.locked) {
       if (C.holding && centred) C.lock += dt / holdS(); else C.lock = Math.max(0, C.lock - dt * 1.2);
-      if (C.lock >= 1) { C.lock = 1; C.locked = true; C.holding = false; sfx.tick(); say('Wait for it to stop', 1.4); }
-      else if (C.holding && !centred && wordT <= 0) say('Centre it', .6);
-    } else if (Math.abs(sx - W / 2) > R * 1.6) { C.locked = false; C.lock = .4; say('Centre it', 1); }
+      if (C.lock >= 1) { C.lock = 1; C.locked = true; C.holding = false; sfx.tick(); say('', 0); }
+      else if (!centred && wordT <= 0) say('Follow it', .6);
+    } else if (Math.abs(sx - W / 2) > R * 1.6) { C.locked = false; C.lock = .4; say('Follow it', 1); }
     C.t += dt;
     if (C.t >= C.dur) {
-      if (C.phase === 'active') { C.phase = 'calm'; C.t = 0; C.dur = C.tc.calm; C.feint = Math.random() < C.tc.feint; C.cross = C.dur * .55; C.shot = false; }
+      if (C.phase === 'active') { C.phase = 'calm'; C.t = 0; C.dur = C.tc.calm; C.feint = Math.random() < C.tc.feint; C.cross = C.dur * CROSS_AT; C.shot = false; }
       else { C.phase = 'active'; C.t = 0; C.dur = rnd(C.tc.gap[0], C.tc.gap[1]); C.shot = false; }
     }
   }
@@ -1236,57 +1526,65 @@ function render(dt) {
   const now = performance.now(), half = (W / 2) / ppd + 10;
   candidate = null;
   for (const b of bugs.slice()) {
+    let moving = false;
     if (b.anim) {
       const k = clamp((now - b.anim.t0) / b.anim.dur, 0, 1), e = ease(k);
       b.x = b.anim.fx + (b.anim.tx - b.anim.fx) * e; b.y = b.anim.fy + (b.anim.ty - b.anim.fy) * e;
-      b.fade = b.anim.flee ? 1 - k : 1;
+      b.fade = b.anim.flee ? 1 - k : b.anim.lampIn ? k : 1; moving = !b.anim.lampIn;
       if (k >= 1) { if (b.anim.flee) { removeBug(b); continue; } b.anim = null; }
     }
     const r = rel(b), vis = Math.abs(r.r) < half + 20;
-    if (!vis) { b.el.style.visibility = 'hidden'; b.mood.style.opacity = 0; if (b.hex) b.hex.style.visibility = 'hidden'; continue; }
+    if (!vis) { b.el.style.visibility = 'hidden'; b.mood.style.opacity = 0; if (b.hex) b.hex.style.visibility = 'hidden'; b.sx = null; continue; }
     b.el.style.visibility = 'visible'; if (b.hex) b.hex.style.visibility = 'visible';
-    let x = W / 2 + 12 + r.r * ppd, y = ground(r.d) + 12; const s = sizeAt(r.d), k = s / 200;
-    // idle life: active bugs fidget, calm ones hold still
-    let wob = 0, flap = 1, jx = 0, jy = 0;
+    const s = sizeAt(r.d), x = W / 2 + 12 + r.r * ppd, feet = ground(r.d) + 12;
+    // facing: every cut-out faces left; a bug moving right on screen is mirrored (only while it moves, not when you turn)
+    if (moving && !b.anim.faced) { b.anim.faced = true; const hr = P.h * Math.PI / 180, vx = (b.anim.tx - b.anim.fx) * Math.cos(hr) - (b.anim.ty - b.anim.fy) * Math.sin(hr); if (Math.abs(vx) > .05) { b.face = vx > 0 ? 1 : -1; b.fw.classList.toggle('r', b.face > 0); } }
+    // idle life from the app: a slow breathe and glance; flyers flutter and hover; nothing moves in a still moment
     const calmNow = mode === 'catch' && C && C.b === b && C.phase === 'calm';
+    let lift = 0, bx = 1, by = 1, rotI = 0;
     if (!still && !calmNow) {
-      const act = mode === 'catch' && C && C.b === b ? 1.8 : 1;
-      if (b.f.habit === 'flyer') { const burst = Math.sin(t * .9 + b.ph) > .7 ? 1 : 0; flap = 1 - burst * .12 * Math.abs(Math.sin(t * 22)); wob = Math.sin(t * 1.1 + b.ph) * 2 * act; }
-      else if (b.f.habit === 'crawler') { wob = Math.sin(t * 2.3 + b.ph) * 4 * act; jx = Math.sin(t * .8 + b.ph) * 6 * act; }
-      else { wob = Math.sin(t * 1.4 + b.ph) * 2.5 * act; jx = Math.sin(t * .5 + b.ph) * 3 * act; }
+      if (b.f.type === 'flyer') { lift = -8 * (.5 + .5 * Math.sin(t * Math.PI * 2 / 1.6 + b.ph)) * (s / 104); bx = 1 - .14 * Math.max(0, Math.sin(t * Math.PI * 2 / .16)) * (Math.sin(t * .9 + b.ph) > .6 ? 1 : 0); }
+      else { const br = Math.sin(t * Math.PI * 2 / 2.6 + b.ph); bx = 1 + .015 * br; by = 1 - .015 * br; const gl = (t + b.ph) % 5.3; rotI = gl < .5 ? -2.5 * Math.sin(gl / .5 * Math.PI) : gl < 1 ? 1.5 * Math.sin((gl - .5) / .5 * Math.PI) : 0; }
     }
-    if (b.hop) { const hk = (now - b.hop) / 450; if (hk >= 1) b.hop = 0; else { jy -= Math.sin(hk * Math.PI) * s * .25; jx += Math.sin(hk * Math.PI) * s * .2; } }
-    if (b.anim && !reduced) { const k2 = (now - b.anim.t0) / b.anim.dur; jy -= Math.sin(clamp(k2, 0, 1) * Math.PI) * s * .12; }
-    x += jx * k * 2; y += jy;
-    b.el.style.transform = 'translate3d(' + (x - 100).toFixed(1) + 'px,' + (y - 200).toFixed(1) + 'px,0) scale(' + k.toFixed(4) + ')';
+    let jy = 0, jx = 0;
+    if (b.hop) { const hk = (now - b.hop) / 450; if (hk >= 1) b.hop = 0; else { jy -= Math.sin(hk * Math.PI) * s * .25; jx += Math.sin(hk * Math.PI) * s * .12; } }
+    if (b.anim && !b.anim.lampIn && !reduced) { const k2 = (now - b.anim.t0) / b.anim.dur; jy -= Math.sin(clamp(k2, 0, 1) * Math.PI) * s * .12; }
+    const k = s / 200, y = feet + jy + lift;
+    b.el.style.transform = 'translate3d(' + (x + jx - 100).toFixed(1) + 'px,' + (y - 200).toFixed(1) + 'px,0) scale(' + k.toFixed(4) + ')';
     b.el.style.zIndex = String(Math.round(1000 - r.d * 50));
     b.el.style.opacity = b.fade.toFixed(2);
-    b.img.style.transform = 'rotate(' + wob.toFixed(2) + 'deg) scaleX(' + flap.toFixed(3) + ')';
+    b.img.style.transform = 'rotate(' + rotI.toFixed(2) + 'deg) scale(' + bx.toFixed(3) + ',' + by.toFixed(3) + ')';
+    // one soft floor shadow under the feet; it stays on the floor while a flyer hovers
+    const shw = 200 * .62, shh = 200 * .15, hov = clamp(-(lift + jy) / (s * .3), 0, 1);
+    b.sh.style.cssText = 'width:' + shw + 'px;height:' + shh + 'px;left:' + (104 - shw / 2).toFixed(1) + 'px;top:' + (200 - shh / 2 - (lift + jy) / k).toFixed(1) + 'px;opacity:' + (1 - .2 * hov).toFixed(2) + ';transform:scale(' + (1 - .1 * hov).toFixed(3) + ')';
     const bl = Math.round(clamp((r.d - 3.5) * .45, 0, 2.2) * 4) / 4;
-    if (bl !== b.blur) { b.blur = bl; b.img.style.filter = (CUT ? 'drop-shadow(0 6px 5px rgba(30,36,20,.28)) ' : '') + (bl ? 'blur(' + bl + 'px)' : ''); if (!CUT && !bl) b.img.style.filter = 'none'; }
+    if (bl !== b.blur) { b.blur = bl; b.img.style.filter = bl ? 'blur(' + bl + 'px)' : 'none'; }
     // mood ticks: one, two, three as the gauge climbs; red while bolting
-    const g = b.anim && !b.anim.flee ? 1 : b.gauge;
+    const g = b.anim && !b.anim.flee && !b.anim.lampIn ? 1 : b.gauge;
     const n = g > .8 ? 3 : g > .5 ? 2 : g > .12 ? 1 : 0;
     b.mood.style.opacity = n ? 1 : 0;
     if (n) {
       b.moodPath.setAttribute('d', ['M4 18 L9 6', 'M4 18 L9 6 M13 16 L16 3', 'M4 18 L9 6 M13 16 L16 3 M22 18 L26 7'][n - 1]);
       b.moodPath.setAttribute('stroke', b.anim ? 'var(--red)' : 'var(--amber)');
-      b.mood.style.transform = 'translate3d(' + (x + s * .22).toFixed(1) + 'px,' + (y - s * .95 - 10).toFixed(1) + 'px,0)';
+      b.mood.style.transform = 'translate3d(' + (x + s * .3).toFixed(1) + 'px,' + (y - s * .8 - 10).toFixed(1) + 'px,0)';
       b.mood.style.zIndex = '1001';
     }
-    if (b.hex) { b.hex.style.transform = 'translate3d(' + (x - 8).toFixed(1) + 'px,' + (y - s * .92 - 26).toFixed(1) + 'px,0)'; b.hex.style.zIndex = '1001'; }
+    if (b.hex) { b.hex.style.transform = 'translate3d(' + (x - 7).toFixed(1) + 'px,' + (y - s * .78 - 22).toFixed(1) + 'px,0)'; b.hex.style.zIndex = '1001'; }
     if (!b.anim && Math.abs(r.r) < half * .8 && (!candidate || r.d < candidate.d)) candidate = { b, d: r.d, inRange: r.d <= RANGE, x, y, s };
   }
   renderHud();
   if (mode === 'catch' && C) renderRing();
 }
 
+function marker(b, cls, pos) { const c = caught(b.key); return '<span class="' + cls + (c ? ' caught' : '') + '" style="' + (pos || '') + (c ? '--tier:' + TIER[b.tier].metal + ';--tierF:' + TIER[b.tier].frame : '') + '">' + (cls === 'blip' ? '<i><img alt="" src="' + artSrc(b.key) + '"></i>' : '<img alt="" src="' + artSrc(b.key) + '">') + (cls === 'blip' && b.guardian ? '<span class="hx">' + HEX + '</span>' : '') + '</span>'; }
 function renderHud() {
   const catching = mode !== 'roam';
   $('hud').style.opacity = mode === 'snap' ? 0 : 1;
   $('mini').style.opacity = catching ? 0 : 1; $('mini').style.transform = catching ? 'scale(.85)' : 'none';
   $('dexPlate').style.opacity = catching ? 0 : 1;
-  // mini radar, heading-up
+  $('lampBtn').style.opacity = catching ? 0 : 1; $('lampBtn').style.pointerEvents = catching ? 'none' : '';
+  const st = $('dexTxt'), sv = sightings + '/' + DAY_CAP; if (st.textContent !== sv) st.textContent = sv;
+  // mini radar, heading-up: light-grey silhouettes until caught
   let h = '';
   const near = bugs.filter(b => !b.anim || !b.anim.flee).map(b => ({ b, r: rel(b) })).sort((a, z) => a.r.d - z.r.d);
   const target = near[0];
@@ -1298,47 +1596,43 @@ function renderHud() {
   const mb = $('miniB'); if (mb._h !== h) { mb.innerHTML = h; mb._h = h; }
   $('miniMap').style.transform = 'rotate(' + (-P.h).toFixed(1) + 'deg)';
   $('mini').setAttribute('aria-label', 'Radar, ' + near.length + ' bugs nearby');
-  // guide plate
-  const gd = $('guide');
-  if (!catching && target) {
-    gd.style.opacity = 1;
-    const d = target.r.d, r = target.r.r, ad = Math.abs(r);
-    const where = ad < 20 ? 'ahead' : ad > 140 ? 'behind you' : r < 0 ? 'to your left' : 'to your right';
-    const txt = Math.max(1, Math.round(d)) + ' m · ' + where;
-    if ($('gTxt').textContent !== txt) $('gTxt').textContent = txt;
-    $('gArrow').style.transform = 'rotate(' + r.toFixed(0) + 'deg)';
-    const gp = $('gPort'), im = gp.firstChild; const src = artSrc(target.b.key);
+  // the edge tab points at the nearest bug while it is off screen
+  const gd = $('guide'), half = (W / 2) / ppd;
+  if (!catching && target && Math.abs(target.r.r) > half * .9) {
+    gd.style.opacity = 1; const side = target.r.r < 0 ? 'l' : 'r'; if (gd._s !== side) { gd.className = 'edge ' + side; gd._s = side; }
+    const txt = halfM(target.r.d) + ' m'; if ($('gTxt').textContent !== txt) $('gTxt').textContent = txt;
+    const gp = $('gPort'), im = gp.firstChild, src = artSrc(target.b.key);
     if (im.getAttribute('src') !== src) im.setAttribute('src', src);
     gp.classList.toggle('caught', caught(target.b.key));
   } else gd.style.opacity = 0;
-  if (!bugs.length && !catching && wordT <= 0) say('Quiet patch · new bug soon', .5);
+  if (!bugs.length && !catching && wordT <= 0) say('Quiet patch · try the lamp', .5);
   // capture / shutter
   const cap = $('cap');
   if (mode === 'roam') {
     cap.style.display = candidate ? '' : 'none';
     cap.classList.toggle('lit', !!(candidate && candidate.inRange)); cap.classList.toggle('dim', !!(candidate && !candidate.inRange));
     cap.classList.remove('shutter', 'calm'); cap.setAttribute('aria-label', 'Capture');
-    if (candidate && !candidate.inRange && wordT <= 0) { wordTxt = 'Closer · ' + Math.max(1, Math.round(candidate.d)) + ' m'; }
+    if (candidate && !candidate.inRange && wordT <= 0) { wordTxt = 'Closer · ' + halfM(candidate.d) + ' m'; }
     else if (wordT <= 0) wordTxt = '';
     $('walk').style.opacity = 1; $('walk').style.pointerEvents = '';
   } else if (mode === 'catch') {
     cap.style.display = ''; cap.classList.remove('lit', 'dim'); cap.classList.add('shutter');
     cap.classList.toggle('calm', C.locked && C.phase === 'calm' && !C.feint);
-    cap.setAttribute('aria-label', C.locked ? 'Shutter' : 'Hold to focus');
-    if (wordT <= 0) wordTxt = !C.locked ? (C.holding ? 'Focusing' : 'Hold to focus') : '';
+    cap.setAttribute('aria-label', C.locked ? 'Shutter' : 'Hold steady');
+    if (wordT <= 0) wordTxt = !C.locked ? 'Hold steady' : '';
     $('walk').style.opacity = 0; $('walk').style.pointerEvents = 'none';
   } else { cap.style.display = 'none'; $('walk').style.opacity = 0; }
   const w = $('word'); if (w.textContent !== wordTxt) w.textContent = wordTxt; w.style.opacity = wordTxt ? 1 : 0;
   const v = $('vig');
-  if (mode === 'catch' && candidate !== undefined && C) { v.style.setProperty('--va', '.42'); }
+  if (mode === 'catch' && C) { v.style.setProperty('--va', '.38'); }
   else v.style.setProperty('--va', '.16');
 }
 function renderRing() {
   const b = C.b, r = rel(b), s = sizeAt(r.d);
-  const cx = W / 2 + 12 + r.r * ppd - 12, cy = ground(r.d) - s * .42;
+  const cx = W / 2 + 12 + r.r * ppd, cy = ground(r.d) + 12 - s * .32;
   const R0 = ringR(b), R = R0 * (1 + .35 * (1 - ease(C.lock)));
   const circ = 2 * Math.PI * R;
-  let h = '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + R.toFixed(1) + '" fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="1.3"/>';
+  let h = '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + R.toFixed(1) + '" fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="1.3"' + (b.hop ? ' stroke-dasharray="6 7"' : '') + '/>';
   if (C.lock > 0) h += '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + R.toFixed(1) + '" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="' + (circ * C.lock).toFixed(1) + ' ' + circ.toFixed(1) + '" transform="rotate(-90 ' + cx.toFixed(1) + ' ' + cy.toFixed(1) + ')"/>';
   if (C.locked && C.phase === 'calm' && !C.feint && !C.shot) {
     // the gold arc: shorter for harder bugs; the thin ring closes onto it at a steady speed
@@ -1350,50 +1644,71 @@ function renderRing() {
     const op = rc < R ? clamp(rc / R * 1.6 - .6, 0, 1) : 1;
     if (rc > 4) h += '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + rc.toFixed(1) + '" fill="none" stroke="#fff" stroke-opacity="' + (.9 * op).toFixed(2) + '" stroke-width="1.2"/>';
   }
-  if (b.guardian) h += '<g transform="translate(' + (cx + R * .72).toFixed(1) + ' ' + (cy - R * .72 - 10).toFixed(1) + ')"><path d="M10 1 L18.5 6 V16 L10 21 L1.5 16 V6 Z" transform="scale(.8)" fill="#c9a24a" stroke="#fff" stroke-width="1.6"/></g>';
   $('ring').innerHTML = h;
   const v = $('vig'); v.style.setProperty('--vx', (cx / W * 100).toFixed(1) + '%'); v.style.setProperty('--vy', (cy / H * 100).toFixed(1) + '%');
 }
 
-// ---------- screens ----------
+// ---------- home: the bearing ring ----------
 function show(id) { ['home', 'hunt', 'result'].forEach(s => $(s).classList.toggle('on', s === id)); screen = id; }
-function goHome() { closeSheet(); if (mode === 'catch') endCatch(); setWalk(false); drawHome(); show('home'); $('startBtn').focus({ preventScroll: true }); }
+function goHome() { closeSheets(); if (mode === 'catch') endCatch(); setWalk(false); drawHome(); show('home'); $('startBtn').focus({ preventScroll: true }); }
+(function ticks() {
+  let s = '<circle cx="111" cy="111" r="100.5" fill="none" stroke="rgba(19,33,58,.55)" stroke-width="1"/>';
+  for (let i = 0; i < 36; i++) { const a = i * 10 * Math.PI / 180, big = i % 9 === 0, r2 = big ? 102.5 : 105; s += '<line x1="' + (111 + 108.5 * Math.sin(a)).toFixed(2) + '" y1="' + (111 - 108.5 * Math.cos(a)).toFixed(2) + '" x2="' + (111 + r2 * Math.sin(a)).toFixed(2) + '" y2="' + (111 - r2 * Math.cos(a)).toFixed(2) + '" stroke="' + (big ? '#13213a' : 'rgba(19,33,58,.24)') + '" stroke-width="' + (big ? 1.4 : 1) + '"/>'; }
+  $('ticks').innerHTML = s;
+})();
 function drawHome() {
-  $('hDex').textContent = 'Dex ' + dex.length + ' / 48';
-  const list = bugs.filter(b => !b.anim || !b.anim.flee).map(b => ({ b, r: rel(b) })).sort((a, z) => a.r.d - z.r.d).slice(0, 4);
+  tickPatch();
+  const n = out(), full = n >= PATCH_CAP, dayDone = sightings >= DAY_CAP;
+  const list = bugs.filter(b => !b.anim || !b.anim.flee).map(b => ({ b, r: rel(b) })).sort((a, z) => a.r.d - z.r.d);
+  // markers ride the rim at their bearing (heading up); a distance tag sits 40 px inward
   let h = '';
   for (const o of list) {
-    const rr = 18 + Math.min(o.r.d, 11) * 7.6, a = o.r.r * Math.PI / 180, x = 111 + rr * Math.sin(a), y = 111 - rr * Math.cos(a), c = caught(o.b.key);
-    h += '<span class="blip' + (c ? ' caught' : '') + '" style="left:' + x.toFixed(1) + 'px;top:' + y.toFixed(1) + 'px;' + (c ? '--tier:' + TIER[o.b.tier].metal : '') + '"><img alt="" src="' + artSrc(o.b.key) + '"><b>' + Math.max(1, Math.round(o.r.d)) + ' m</b>' + (o.b.guardian ? '<span class="hx">' + HEX + '</span>' : '') + '</span>';
+    const a = o.r.r * Math.PI / 180, x = 118 + 104 * Math.sin(a), y = 118 - 104 * Math.cos(a), tx = 118 + 64 * Math.sin(a), ty = 118 - 64 * Math.cos(a);
+    h += marker(o.b, 'blip', 'left:' + x.toFixed(1) + 'px;top:' + y.toFixed(1) + 'px;');
+    h += '<span class="dtag" style="left:' + tx.toFixed(1) + 'px;top:' + ty.toFixed(1) + 'px">' + Math.max(1, Math.round(o.r.d)) + ' m</span>';
   }
   $('hBlips').innerHTML = h;
-  $('medal').setAttribute('aria-label', 'Radar, ' + list.length + ' bugs nearby' + (list.length ? ', nearest ' + Math.round(list[0].r.d) + ' metres' : ''));
-  const g = bugs.some(b => b.guardian);
-  $('hNums').innerHTML = '<div><span class="label">Nearby</span><strong>' + bugs.length + '</strong></div><div><span class="label">Nearest</span><strong>' + (list.length ? Math.max(1, Math.round(list[0].r.d)) + ' m' : '–') + '</strong></div><div><span class="label">Guardian</span><strong>' + (g ? '1' : '0') + '</strong></div>';
-  $('dexTxt').textContent = dex.length + ' / 48';
+  const na = -P.h * Math.PI / 180; $('nMark').style.left = (111 + 94 * Math.sin(na)).toFixed(1) + 'px'; $('nMark').style.top = (111 - 94 * Math.cos(na)).toFixed(1) + 'px';
+  $('ticks').style.transform = 'rotate(' + (-P.h).toFixed(1) + 'deg)';
+  $('medal').setAttribute('aria-label', 'Radar, ' + list.length + ' bugs out' + (list.length ? ', nearest ' + Math.round(list[0].r.d) + ' metres' : ''));
+  $('hOut').innerHTML = n + '<small>/' + PATCH_CAP + '</small>';
+  $('hNext').textContent = full ? 'Full' : dayDone ? 'Tomorrow' : Math.max(1, Math.ceil((nextAt - Date.now()) / 60000)) + ' min';
+  $('hSeen').textContent = sightings + '/' + DAY_CAP; $('hDew').textContent = String(dew);
+  const g = bugs.some(b => b.guardian && !b.won);
+  $('hStatus').textContent = g ? 'A Guardian is out. Win the fight to get the shot.' : '';
+  // an empty patch puts the Moth lamp where Start sweep was
+  const lampHome = n === 0 && !dayDone, sb = $('startBtn');
+  sb.classList.toggle('lamp', lampHome);
+  $('startTxt').textContent = lampHome ? 'Light the Moth lamp' : 'Start sweep';
+  $('startSub').textContent = lampHome ? (lampsLeft ? 'Draws a bug in now, free today' : 'Draws a bug in now, ' + LAMP_DEW + ' Dew') : '';
   layoutHome();
 }
 function layoutHome() {
-  // the medallion sits on the painted patch; numbers and the button keep to the bottom
-  const tight = H < 700, extra = clamp(H - 720, 0, 140), mk = 1 + extra / 700, mt = (tight ? 128 : 150) + extra * .3;
+  // the medallion sits on the painted patch; the plate and the button keep to the bottom
+  const tight = H < 700, extra = clamp(H - 720, 0, 140), mk = 1 + extra / 700, mt = (tight ? 120 : 142) + extra * .3;
   $('medal').style.top = mt + 'px'; $('medal').style.transform = 'scale(' + mk.toFixed(3) + ')'; $('medal').style.transformOrigin = '50% 0';
+  document.querySelector('.hTop').style.top = (mt - 34) + 'px';
   document.querySelector('.hScene').style.top = ((tight ? 96 : 118) + extra * .3) + 'px';
-  $('hNums').style.top = (mt + 236 * mk + 30) + 'px';
+  const hubTop = mt + 236 * mk + 22; $('hub').style.top = hubTop + 'px';
+  $('hStatus').style.top = (hubTop + 74) + 'px';
   $('startBtn').style.bottom = (tight ? 28 : 44) + 'px';
-  $('botw').style.bottom = (tight ? 116 : 140) + 'px';
-  $('botw').style.display = H < 640 ? 'none' : '';
+  $('botw').style.bottom = (tight ? 116 : 136) + 'px';
+  $('botw').style.display = H < 700 ? 'none' : '';
 }
+setInterval(() => { if (screen === 'home' && demoOn) drawHome(); else tickPatch(); }, 5000);
 function startSweep() {
-  sfx.tap(); show('hunt'); last = 0;
-  if (!store.get('bugshot-demo-tut', false)) { tutOn = true; $('tut').classList.add('on'); setTimeout(() => $('tutOk').focus({ preventScroll: true }), 50); }
+  sfx.tap();
+  if ($('startBtn').classList.contains('lamp')) { show('hunt'); last = 0; if (lampsLeft > 0) { lampsLeft--; useLamp(); } else { drawLamp(); openSheet('lampSheet', 'lampUse'); } return; }
+  show('hunt'); last = 0; drawLamp();
+  if (!store.get('bugshot-demo-tut2', false)) { tutOn = true; $('tut').classList.add('on'); setTimeout(() => $('tutOk').focus({ preventScroll: true }), 50); }
   else capBtn.focus({ preventScroll: true });
 }
 $('startBtn').addEventListener('click', startSweep);
 $('exitBtn').addEventListener('click', () => { if (mode === 'catch') endCatch(); else goHome(); });
-$('tutOk').addEventListener('click', () => { tutOn = false; $('tut').classList.remove('on'); store.set('bugshot-demo-tut', true); });
+$('tutOk').addEventListener('click', () => { tutOn = false; $('tut').classList.remove('on'); store.set('bugshot-demo-tut2', true); });
 
-// ---------- result ----------
-let revealed = false, resB = null;
+// ---------- result: the card back arrives; a tap charges it, shakes it, then flips by tier ----------
+let revealed = false, charging = false, resB = null, flipTimer = 0;
 function fitResult() {
   const s = Math.min(1, (H - 300) / 420, (W - 48) / 280), cw = $('cardWrap');
   cw.style.transform = 'scale(' + s.toFixed(3) + ')';
@@ -1413,30 +1728,34 @@ function backSvg(target) {
 }
 backSvg($('backSvg'));
 document.querySelectorAll('.backArt').forEach(backSvg);
-function showResult(b, perfect) {
+const PIP = (fill, c) => '<svg width="10" height="11" viewBox="0 0 12 13"><path d="M6 0.5 L11.2 3.5 V9.5 L6 12.5 L0.8 9.5 V3.5 Z" fill="' + (fill ? c : 'none') + '" stroke="' + c + '" stroke-width="1.2"/></svg>';
+function showResult(b) {
   resB = b; const f = b.f, tr = TIER[b.tier], isNew = !caught(b.key);
-  catches++;
+  catches++; dew += DEW_CATCH;
   if (isNew) dex.push(b.key);
-  saveDex(); $('dexTxt').textContent = dex.length + ' / 48';
-  removeBug(b); respawnSoon();
-  mode = 'roam'; C = null; huntEl.classList.remove('catching', 'frozen');
-  $('pin').classList.remove('go'); $('snapCap').classList.remove('go'); $('flash').classList.remove('go');
-  const res = $('result'); res.classList.remove('rev'); res.classList.toggle('rm', reduced); revealed = false;
+  saveDex();
+  removeBug(b); tickPatch();
+  mode = 'roam'; C = null; huntEl.classList.remove('catching');
+  $('flash').classList.remove('go'); $('paperIn').classList.remove('go');
+  const res = $('result'); res.classList.remove('rev', 'charge'); res.classList.toggle('rm', reduced); revealed = false; charging = false; clearTimeout(flipTimer);
   res.style.setProperty('--spot', tr.spot);
-  $('face').style.setProperty('--tierF', tr.frame);
-  $('rTitle').textContent = tr.label + ' catch'; $('rTitle').style.color = tr.ink;
-  $('rSub').textContent = tr.label + ', 1 in ' + tr.odds.replace(/^\d+ in /, '') ;
-  if (b.tier === 'common') $('rSub').textContent = 'Common, 3 in 5';
-  if (b.guardian) $('rSub').textContent += ', Guardian';
+  const face = $('face'); face.style.setProperty('--tierF', tr.frame); face.style.setProperty('--tierPale', tr.pale); face.style.setProperty('--tierMetal', tr.metal);
+  $('cardWrap').style.setProperty('--glow', tr.spot.replace(/[\d.]+\)$/, '.8)'));
+  $('rTitle').textContent = tr.head; $('rTitle').style.color = tr.ink;
+  $('rSub').textContent = tr.sub;
   const d = new Date(), hh = d.getHours() % 12 || 12, mm = String(d.getMinutes()).padStart(2, '0');
   $('rBackTop').textContent = 'Catch ' + catches + ', ' + hh + ':' + mm + (d.getHours() < 12 ? ' am' : ' pm');
-  const img = $('cImg'); img.src = artSrc(b.key); img.className = CUT ? '' : 'paper';
+  $('cImg').src = artSrc(b.key);
   $('photo').style.backgroundPosition = (((P.h % 360) + 360) % 360 / 3.6).toFixed(0) + '% 78%';
-  $('cName').textContent = f.name; $('cLat').textContent = f.latin; $('cNo').textContent = 'No. ' + f.no;
-  $('cHp').textContent = f.hp; $('cAtk').textContent = f.atk;
-  $('newLine').textContent = isNew ? 'New in your Dex · ' + dex.length + ' / 48' : 'Dex ' + dex.length + ' / 48';
-  res.dataset.xp = isNew ? 100 : 25; res.dataset.sh = tr.sh + (perfect ? 1 : 0); res.dataset.dew = 10;
+  let pips = ''; for (let i = 0; i < 5; i++) pips += PIP(i < tr.pips, tr.pale); $('cPips').innerHTML = pips;
+  $('cNew').style.display = isNew ? '' : 'none';
+  $('cType').innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="rgba(255,255,255,.22)"/>' + TYPE_ICON[f.type] + '</svg>' + f.type.toUpperCase();
+  $('cName').textContent = f.name; $('cLat').textContent = f.latin + ' · ' + f.group;
+  $('cHp').textContent = f.st[0]; $('cAtk').textContent = f.st[1]; $('cDef').textContent = f.st[2]; $('cSpd').textContent = f.st[3];
+  $('cFact').textContent = '“' + f.fact + '”';
+  $('cNo').textContent = 'No. ' + f.no + ' · ' + d.getDate() + ' ' + d.toLocaleString('en', { month: 'short' });
   $('gXp').textContent = '+0'; $('gSh').textContent = '+0'; $('gDew').textContent = '+0';
+  $('hint').textContent = 'Tap the card to reveal';
   $('cardIn').setAttribute('aria-label', 'Reveal your card');
   show('result'); fitResult();
   const ci = $('cardIn'); ci.style.animation = 'none'; void ci.offsetWidth; ci.style.animation = '';
@@ -1446,24 +1765,34 @@ function countUp(el, to, delay) {
   if (reduced) { el.textContent = '+' + to; return; }
   setTimeout(() => { const t0 = performance.now(); const step = () => { const k = clamp((performance.now() - t0) / 400, 0, 1), v = Math.round(to * (1 - Math.pow(1 - k, 3))); el.textContent = '+' + v; if (k < 1) requestAnimationFrame(step); }; step(); }, delay);
 }
-function reveal() {
-  if (revealed || screen !== 'result') return; revealed = true;
-  const res = $('result'); res.classList.toggle('rm', reduced); res.classList.add('rev');
+function tapCard() {
+  if (revealed || screen !== 'result') return;
+  if (charging || reduced) { clearTimeout(flipTimer); return flipNow(); }
+  // anticipation by tier: dip, the glow charges, the card shakes, then it flips (common 440 ms ... legendary 1820 ms)
+  charging = true; const tr = TIER[resB.tier], res = $('result');
+  res.style.setProperty('--cd', tr.flip + 'ms'); res.classList.add('charge'); sfx.charge();
+  setTimeout(() => { if (charging && !revealed) $('hint').textContent = 'Tap again to skip'; }, 600);
+  flipTimer = setTimeout(flipNow, tr.flip);
+}
+function flipNow() {
+  if (revealed) return; revealed = true; charging = false;
+  const res = $('result'); res.classList.toggle('rm', reduced); res.classList.remove('charge');
+  res.style.setProperty('--fd', resB.tier === 'legendary' ? '1s' : '.7s'); res.classList.add('rev');
   sfx.flip(); setTimeout(() => sfx.chime(resB.tier), reduced ? 0 : 420);
   $('cardIn').setAttribute('aria-label', resB.f.name + ', ' + TIER[resB.tier].label);
-  countUp($('gXp'), +res.dataset.xp, reduced ? 0 : 950); countUp($('gSh'), +res.dataset.sh, reduced ? 0 : 1000); countUp($('gDew'), +res.dataset.dew, reduced ? 0 : 1050);
+  countUp($('gXp'), XP_CATCH, reduced ? 0 : 950); countUp($('gSh'), SHARDS_CATCH, reduced ? 0 : 1000); countUp($('gDew'), DEW_CATCH, reduced ? 0 : 1050);
   setTimeout(() => $('contBtn').focus({ preventScroll: true }), reduced ? 50 : 1100);
 }
-$('cardIn').addEventListener('click', reveal);
-$('cardIn').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); reveal(); } });
+$('cardIn').addEventListener('click', tapCard);
+$('cardIn').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tapCard(); } });
 $('contBtn').addEventListener('click', () => { if (!revealed) return; show('hunt'); last = 0; capBtn.focus({ preventScroll: true }); });
 
-// ---------- boot ----------
+// ---------- boot: a full patch, six bugs out ----------
 document.addEventListener('pointerdown', () => { if (soundOn) audio(); }, { once: true });
 spawn('ant', 3.6, -14);
 spawn('ladybird', 6.2, -92);
 spawn('moth', 7, 138);
-spawn('firefly', 8.4, 58);
+spawn('dragonfly', 8.4, 58);
 spawn('swallowtail', 9.5, -158);
 spawn('jewel_beetle', 5.2, 100);
 layout();
