@@ -180,7 +180,7 @@ body{background:var(--paper);overflow-x:hidden;font-family:var(--text);-webkit-f
   .bHp b,.bAtk b{font-size:17px}
 }
 @media (prefers-reduced-motion:reduce){
-  .live .bar i,.live .ft,.live .orbit,.live .closing,.live .goldR,.live .pip,.live .atk img,.live .foe img,.live .foe .fxSlash,.live .dmg,.live .intent,.live .boss .hp i,.live .atkHp i,.live .dnow{animation:none!important}
+  .live .bar i,.live .ft,.live .orbit,.live .closing,.live .goldR,.live .pip,.live .atk img,.live .foe img,.live .foe .fxSlash,.live .dmg,.live .intent,.live .boss .hp i,.live .atkHp i,.live .dnow,.live .endBug img,.live .endBrand img,.live .endBrand::after,.live .studio img,.live .studio small{animation:none!important}
   .flipC.rev .mflip{animation:none!important}
   .mface{transform:none;opacity:0;transition:opacity .25s ease-out!important}
   .mflip .miniBack{transition:opacity .25s ease-out!important}
@@ -342,7 +342,21 @@ body{background:var(--paper);overflow-x:hidden;font-family:var(--text);-webkit-f
 @media (max-width:760px){.road{grid-template-columns:1fr}.road li{border-top:0;border-left:2px solid var(--hairStrong);padding:0 0 22px 22px}.road li::before{left:-7px;top:2px}.road li.now{border-left-color:var(--primary)}}
 .close{text-align:center}
 .close .ph{display:inline-block;margin-top:24px;font-size:15px;font-weight:600;color:var(--muted);border:1px dashed var(--hairStrong);border-radius:12px;padding:10px 16px}
-.studio{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:44px}
+.studio{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:40px}
+/* closing motion: the beetle walks in and keeps a slow idle, the badge drops and gets a light sweep, the studio mark settles last */
+.endBug{display:block}
+.live .endBug img{animation:bugIn 1.1s var(--ease) both,bugIdle 3.6s ease-in-out 1.1s infinite}
+@keyframes bugIn{from{transform:translate(-140px,24px) rotate(-14deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes bugIdle{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-6px) rotate(-3deg)}50%{transform:translateY(0) rotate(0)}75%{transform:translateY(-3px) rotate(2deg)}}
+.endBrand{position:relative;display:block;width:fit-content;margin-left:auto;margin-right:auto}
+.live .endBrand img{animation:badgeIn .9s var(--pop) .35s both}
+@keyframes badgeIn{from{transform:rotate(-14deg) scale(.6) translateY(-40px);opacity:0}to{transform:rotate(-4deg);opacity:1}}
+.endBrand::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,rgba(255,255,255,0) 35%,rgba(255,255,255,.55) 50%,rgba(255,255,255,0) 65%);background-size:250% 100%;background-position:150% 0;-webkit-mask:url(art/brand/wordmark-a1-badge.svg) center/contain no-repeat;mask:url(art/brand/wordmark-a1-badge.svg) center/contain no-repeat;transform:rotate(-4deg)}
+.live .endBrand::after{animation:shine 4s ease-in-out 1.3s infinite}
+@keyframes shine{0%{background-position:150% 0}35%,100%{background-position:-50% 0}}
+.live .studio img{animation:quillIn 1s var(--ease) .9s both}
+.live .studio small{animation:fadeUp .5s var(--ease) .8s both}
+@keyframes quillIn{from{opacity:0;transform:translate(-30px,10px) rotate(-8deg)}to{opacity:1;transform:none}}
 .studio small{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
 .studio img{display:block;width:min(220px,56vw);height:auto}
 button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer;-webkit-user-select:none;user-select:none;touch-action:manipulation}
@@ -847,12 +861,11 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
   </div>
 </section>
 
-<section class="slide close" aria-label="Thank you">
+<section class="slide close" data-live aria-label="Thank you">
   <div class="wrap">
-    <img src="art/cut/jewel_beetle.webp" alt="" data-in style="width:clamp(110px,14vw,170px);filter:drop-shadow(0 16px 12px rgba(19,33,58,.22))">
-    <h2 class="brand" data-in style="--d:.08s;margin-top:18px"><img src="art/brand/wordmark-a1-badge.svg" alt="Bugshot" width="580" height="206"></h2>
+    <div class="endBug" data-in><img src="art/cut/jewel_beetle.webp" alt="" style="width:clamp(110px,14vw,170px);filter:drop-shadow(0 16px 12px rgba(19,33,58,.22))"></div>
+    <h2 class="brand endBrand" data-in style="--d:.08s;margin-top:18px"><img src="art/brand/wordmark-a1-badge.svg" alt="Bugshot" width="580" height="206"></h2>
     <p class="lead" data-in style="--d:.16s;margin:16px auto 0;text-align:center">Find the bugs in your own home.</p>
-    <div data-in style="--d:.24s"><span class="ph">[contact]</span> <span class="ph">[link]</span></div>
     <div class="studio" data-in style="--d:.32s"><small>A game by</small><img src="art/brand/plume-throttle.svg" alt="Plume &amp; Throttle" width="220" height="112"></div>
   </div>
 </section>
