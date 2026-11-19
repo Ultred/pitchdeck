@@ -54,7 +54,9 @@ body{background:var(--paper);overflow-x:hidden;font-family:var(--text);-webkit-f
 .brand{margin:0;line-height:0}
 .brand img{display:block;width:min(640px,84vw);height:auto;margin:0 auto;transform:rotate(-4deg);filter:drop-shadow(0 14px 22px rgba(19,33,58,.22))}
 .close .brand img{width:min(340px,64vw)}
-.cover .lead{display:block;width:fit-content;max-width:min(30em,100%);margin:22px auto 28px;padding:12px 22px;border-radius:16px;background:rgba(242,241,239,.9);box-shadow:0 8px 24px rgba(19,33,58,.12);color:var(--ink);font-weight:600;text-align:center;text-wrap:balance}
+.cover .lead{margin:22px auto 30px;max-width:24em;color:var(--ink);font-weight:600;font-size:clamp(17px,2vw,22px);line-height:1.45;text-align:center;text-wrap:balance;text-shadow:0 0 2px var(--paper),0 0 10px var(--paper),0 0 22px var(--paper)}
+/* a soft paper glow behind the logo and line, so the painted garden calms down where the words sit */
+.cover .calm{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 46% 40% at 50% 46%,rgba(242,241,239,.94) 0%,rgba(242,241,239,.82) 38%,rgba(242,241,239,.45) 64%,rgba(242,241,239,0) 86%)}
 .cta{display:inline-flex;height:58px;padding:0 26px;border-radius:16px;background:var(--primary);color:#fff;font-size:17px;font-weight:700;align-items:center;gap:10px;text-decoration:none;box-shadow:0 10px 26px rgba(19,33,58,.2);transition:transform .14s ease-out,background .14s}
 .cta:active{transform:scale(.97);background:var(--primaryPress)}
 .coverBug{position:absolute;filter:drop-shadow(0 12px 10px rgba(30,36,20,.3));pointer-events:none}
@@ -570,6 +572,7 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 
 <section class="slide cover" id="s-cover" aria-label="Bugshot">
   <div class="art" aria-hidden="true"></div>
+  <div class="calm" aria-hidden="true"></div>
   <img class="coverBug" src="art/cut/ladybird.webp" alt="" style="right:12%;bottom:12%;width:clamp(70px,9vw,130px);transform:rotate(-8deg)">
   <img class="coverBug" src="art/cut/swallowtail.webp" alt="" style="left:9%;bottom:30%;width:clamp(80px,11vw,160px);transform:rotate(10deg)">
   <img class="coverBug" src="art/cut/ant.webp" alt="" style="left:38%;bottom:7%;width:clamp(44px,5vw,70px);transform:rotate(18deg)">
